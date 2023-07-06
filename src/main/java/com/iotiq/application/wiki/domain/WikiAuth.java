@@ -18,19 +18,14 @@ public class WikiAuth {
     private static final Logger logger = LoggerFactory.getLogger(WikiAuth.class);
 
     private String authToken;
-    private String refreshToken;
     private Date accessTokenValidUntil;
-    private Date refreshTokenValidUntil;
 
     public static WikiAuth from(WikiAuthResponse authResponse) {
         String authToken = authResponse.getJwt();
         Date accessExpirationTime = getExpirationTime(authToken);
-//        Date refreshExpirationTime = getExpirationTime(authResponse.getRefreshToken());
         return WikiAuth.builder()
                 .authToken(authToken)
-//                .refreshToken(authResponse.getRefreshToken())
                 .accessTokenValidUntil(accessExpirationTime)
-//                .refreshTokenValidUntil(refreshExpirationTime)
                 .build();
     }
 
@@ -46,16 +41,5 @@ public class WikiAuth {
 
     public boolean isAccessTokenExpired() {
         return accessTokenValidUntil.before(Date.from(Instant.now()));
-    }
-
-    public boolean isRefreshTokenExpired() {
-        return refreshTokenValidUntil.before(Date.from(Instant.now()));
-    }
-
-    public void refreshWith(WikiAuthResponse authResponse) {
-        this.authToken = authResponse.getJwt();
-//        this.refreshToken = authResponse.getRefreshToken();
-        this.accessTokenValidUntil = getExpirationTime(authToken);
-//        this.refreshTokenValidUntil = getExpirationTime(authResponse.getRefreshToken());
     }
 }
