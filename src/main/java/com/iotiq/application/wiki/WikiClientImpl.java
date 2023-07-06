@@ -33,24 +33,11 @@ public class WikiClientImpl implements WikiClient {
 
     @Override
     public Collection<ItemDto> getItems(ItemFilter filter) {
-//        language=GraphQL
-        String query = """
-                query {
-                  pages {
-                    list(orderBy: TITLE) {
-                      id
-                      path
-                      title
-                    }
-                  }
-                }
-                """;
-
         return graphQlClient
                 .mutate()
                 .header("Authorization", authService.getAccessToken())
                 .build()
-                .document(query)
+                .document("getPages")
                 .retrieve("pages.list")
                 .toEntityList(ItemDto.class)
                 .block();
@@ -58,22 +45,8 @@ public class WikiClientImpl implements WikiClient {
 
     @Override
     public Optional<ItemDto> getItem(@NotNull Integer id) {
-//        language=GraphQL
-        String query = """
-                query($id: Int!) {
-                  pages {
-                    single (id: $id) {
-                      path
-                      title
-                      createdAt
-                      updatedAt
-                    }
-                  }
-                }
-                 """;
-
         return graphQlClient
-                .document(query)
+                .document("getPage")
                 .variable("id", id)
                 .retrieve("pages.single")
                 .toEntity(ItemDto.class)
@@ -83,43 +56,12 @@ public class WikiClientImpl implements WikiClient {
     @Override
     @WikiAuthenticatedRequest
     public ItemCreateResponse createItem(ItemRequest request) {
-//        language=GraphQL
-        String query = """
-                mutation($path: String!) {
-                     pages {
-                         create(
-                             content: "some content"
-                             description: "some description"
-                             editor: "ckeditor"
-                             isPublished: false
-                             isPrivate: true
-                             locale: "en"
-                             path: $path
-                             title: "some-title"
-                             tags: ["tag1"]
-                         ) {
-                             responseResult {
-                                 succeeded
-                                 errorCode
-                                 slug
-                                 message
-                             }
-                             page {
-                                 id
-                                 path
-                                 title
-                             }
-                         }
-                     }
-                 }
-                """;
-
         String accessToken = authService.getAccessToken();
         return graphQlClient
                 .mutate()
                 .header("Authorization", accessToken)
                 .build()
-                .document(query)
+                .document("createPage")
                 .variable("path", request.path())
                 .retrieve("pages.create")
                 .toEntity(ItemCreateResponse.class)
@@ -129,19 +71,8 @@ public class WikiClientImpl implements WikiClient {
     @Override
     @WikiAuthenticatedRequest
     public ResponseResult deleteItem(String id) {
-//        language=GraphQL
-        String query = """
-                query($id: Int!) {
-                  pages  {
-                    single (id: $id) {
-                      id
-                    }
-                  }
-                }
-                """;
-
         return graphQlClient
-                .document(query)
+                .document("deletePage")
                 .retrieve("pages.delete.responseResult")
                 .toEntity(ResponseResult.class)
                 .block();

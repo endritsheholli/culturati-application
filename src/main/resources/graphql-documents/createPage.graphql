@@ -1,0 +1,27 @@
+mutation($path: String!) {
+    pages {
+        create(
+            content: "some content"
+            description: "some description"
+            editor: "ckeditor"
+            isPublished: false
+            isPrivate: true
+            locale: "en"
+            path: $path
+            title: "some-title"
+            tags: ["tag1"]
+        ) {
+            responseResult {
+                succeeded
+                errorCode
+                slug
+                message
+            }
+            page {
+                id
+                path
+                title
+            }
+        }
+    }
+}

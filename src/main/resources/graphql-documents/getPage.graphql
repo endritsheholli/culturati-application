@@ -1,0 +1,10 @@
+query($id: Int!) {
+    pages {
+        single (id: $id) {
+            path
+            title
+            createdAt
+            updatedAt
+        }
+    }
+}
