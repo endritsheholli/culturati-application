@@ -34,10 +34,7 @@ public class WikiClientImpl implements WikiClient {
     @Override
     public Collection<PageDto> getPages(ItemFilter filter) {
         return graphQlClient
-                .mutate()
-                .header("Authorization", authService.getAccessToken())
-                .build()
-                .document("getPages")
+                .documentName("getPages")
                 .retrieve("pages.list")
                 .toEntityList(PageDto.class)
                 .block();
@@ -46,7 +43,7 @@ public class WikiClientImpl implements WikiClient {
     @Override
     public Optional<PageDto> getPage(@NotNull Integer id) {
         return graphQlClient
-                .document("getPage")
+                .documentName("getPage")
                 .variable("id", id)
                 .retrieve("pages.single")
                 .toEntity(PageDto.class)
@@ -61,7 +58,7 @@ public class WikiClientImpl implements WikiClient {
                 .mutate()
                 .header("Authorization", accessToken)
                 .build()
-                .document("createPage")
+                .documentName("createPage")
                 .variable("path", request.path())
                 .retrieve("pages.create")
                 .toEntity(ItemCreateResponse.class)
@@ -71,8 +68,12 @@ public class WikiClientImpl implements WikiClient {
     @Override
     @WikiAuthenticatedRequest
     public ResponseResult deletePage(String id) {
+        String accessToken = authService.getAccessToken();
         return graphQlClient
-                .document("deletePage")
+                .mutate()
+                .header("Authorization", accessToken)
+                .build()
+                .documentName("deletePage")
                 .retrieve("pages.delete.responseResult")
                 .toEntity(ResponseResult.class)
                 .block();
