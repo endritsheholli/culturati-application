@@ -1,5 +1,6 @@
 package com.iotiq.application.wiki;
 
+import com.iotiq.application.wiki.annotation.WikiAuthenticatedRequest;
 import com.iotiq.application.wiki.domain.ItemDto;
 import com.iotiq.application.wiki.messages.ItemCreateResponse;
 import com.iotiq.application.wiki.messages.ItemFilter;
@@ -17,12 +18,18 @@ import java.util.Optional;
 @Service
 public class WikiClientImpl implements WikiClient {
 
+    private final WikiAuthService authService;
     private final HttpGraphQlClient graphQlClient;
 
-    public WikiClientImpl(@Value("http://localhost/graphql/") String url) {
+    public WikiClientImpl(
+            WikiAuthService wikiAuthService,
+            @Value("http://localhost/graphql/") String url
+    ) {
+        this.authService = wikiAuthService;
+
         WebClient webClient = WebClient.builder().baseUrl(url).build();
         graphQlClient = HttpGraphQlClient.builder(webClient)
-                .header("Authorization", "Bearer " + "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJpbmNpQGlvdGlxLm5ldCIsIm5hbWUiOiJBZG1pbmlzdHJhdG9yIiwiYXYiOm51bGwsInR6IjoiQW1lcmljYS9OZXdfWW9yayIsImxjIjoiZW4iLCJkZiI6IiIsImFwIjoiIiwicGVybWlzc2lvbnMiOlsibWFuYWdlOnN5c3RlbSJdLCJncm91cHMiOlsxXSwiaWF0IjoxNjg4NDc2NzAyLCJleHAiOjE2ODg0Nzg1MDIsImF1ZCI6InVybjp3aWtpLmpzIiwiaXNzIjoidXJuOndpa2kuanMifQ.Mp03Tfe2weamzBGOeyKTA2GjIE1Ekum_3SDohkcSGfmk2s1FHRLS905THTocJ8sFBjjTnfNH4wuQAJt6O_bwgYrp0XCfMGBmGSabvk-ukD86jiq8CYrmvXAGjgNi7OXcgvr0OEjmiePcVQdkdXmFC6EBSNKHpCelKCYd0aYhr9F41q1-1vD7PcqxfBXvKC1qsfKEtzcrG_OoMMxU_ZWkTWoDtQYV6yN3tLJb14Q0FDdWZHeTqW07pldnAdf40jrLxv9_uzwgQ0NulqKKOFfohlPLIp4Y2HXwEZQD_3eP3T1YAR4VHR3mVEJbPZskf-bCk8M_CIXsIDWH8UCaoMkiaw")
+//                .header("Authorization", "Bearer " + "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJpbmNpQGlvdGlxLm5ldCIsIm5hbWUiOiJBZG1pbmlzdHJhdG9yIiwiYXYiOm51bGwsInR6IjoiQW1lcmljYS9OZXdfWW9yayIsImxjIjoiZW4iLCJkZiI6IiIsImFwIjoiIiwicGVybWlzc2lvbnMiOlsibWFuYWdlOnN5c3RlbSJdLCJncm91cHMiOlsxXSwiaWF0IjoxNjg4NDc2NzAyLCJleHAiOjE2ODg0Nzg1MDIsImF1ZCI6InVybjp3aWtpLmpzIiwiaXNzIjoidXJuOndpa2kuanMifQ.Mp03Tfe2weamzBGOeyKTA2GjIE1Ekum_3SDohkcSGfmk2s1FHRLS905THTocJ8sFBjjTnfNH4wuQAJt6O_bwgYrp0XCfMGBmGSabvk-ukD86jiq8CYrmvXAGjgNi7OXcgvr0OEjmiePcVQdkdXmFC6EBSNKHpCelKCYd0aYhr9F41q1-1vD7PcqxfBXvKC1qsfKEtzcrG_OoMMxU_ZWkTWoDtQYV6yN3tLJb14Q0FDdWZHeTqW07pldnAdf40jrLxv9_uzwgQ0NulqKKOFfohlPLIp4Y2HXwEZQD_3eP3T1YAR4VHR3mVEJbPZskf-bCk8M_CIXsIDWH8UCaoMkiaw")
                 .build();
     }
 
@@ -41,7 +48,14 @@ public class WikiClientImpl implements WikiClient {
                 }
                 """;
 
-        return graphQlClient.document(query).retrieve("pages.list").toEntityList(ItemDto.class).block();
+        return graphQlClient
+                .mutate()
+                .header("Authorization", authService.getAccessToken())
+                .build()
+                .document(query)
+                .retrieve("pages.list")
+                .toEntityList(ItemDto.class)
+                .block();
     }
 
     @Override
@@ -60,11 +74,16 @@ public class WikiClientImpl implements WikiClient {
                 }
                  """;
 
-        return graphQlClient.document(query).variable("id", id)
-                .retrieve("pages.single").toEntity(ItemDto.class).blockOptional();
+        return graphQlClient
+                .document(query)
+                .variable("id", id)
+                .retrieve("pages.single")
+                .toEntity(ItemDto.class)
+                .blockOptional();
     }
 
     @Override
+    @WikiAuthenticatedRequest
     public ItemCreateResponse createItem(ItemRequest request) {
 //        language=GraphQL
         String query = """
@@ -97,11 +116,20 @@ public class WikiClientImpl implements WikiClient {
                  }
                 """;
 
-        return graphQlClient.document(query).variable("path", request.path())
-                .retrieve("pages.create").toEntity(ItemCreateResponse.class).block();
+        String accessToken = authService.getAccessToken();
+        return graphQlClient
+                .mutate()
+                .header("Authorization", accessToken)
+                .build()
+                .document(query)
+                .variable("path", request.path())
+                .retrieve("pages.create")
+                .toEntity(ItemCreateResponse.class)
+                .block();
     }
 
     @Override
+    @WikiAuthenticatedRequest
     public ResponseResult deleteItem(String id) {
 //        language=GraphQL
         String query = """
@@ -114,7 +142,10 @@ public class WikiClientImpl implements WikiClient {
                 }
                 """;
 
-        return graphQlClient.document(query).retrieve("pages.delete.responseResult").toEntity(ResponseResult.class)
+        return graphQlClient
+                .document(query)
+                .retrieve("pages.delete.responseResult")
+                .toEntity(ResponseResult.class)
                 .block();
     }
 }

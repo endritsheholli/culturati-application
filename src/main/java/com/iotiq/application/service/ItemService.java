@@ -28,7 +28,6 @@ public class ItemService {
 
     public Item create(ItemRequest request) throws Exception {
         ItemCreateResponse response = wikiClient.createItem(request);
-        System.out.println(response);
 
         if (!response.responseResult().isSucceeded()) {
             throw new Exception("Could not create item in wiki");
