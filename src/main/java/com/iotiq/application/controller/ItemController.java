@@ -2,7 +2,7 @@ package com.iotiq.application.controller;
 
 import com.iotiq.application.domain.Item;
 import com.iotiq.application.service.ItemService;
-import com.iotiq.application.wiki.domain.ItemDto;
+import com.iotiq.application.wiki.domain.PageDto;
 import com.iotiq.application.wiki.messages.ItemRequest;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -20,7 +20,7 @@ public class ItemController {
     private final ItemService itemService;
 
     @GetMapping
-    public Map<Integer, ItemDto> getAll() {
+    public Map<Integer, PageDto> getAll() {
         return itemService.getAll();
     }
 

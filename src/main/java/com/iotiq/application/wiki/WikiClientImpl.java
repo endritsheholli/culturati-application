@@ -1,7 +1,7 @@
 package com.iotiq.application.wiki;
 
 import com.iotiq.application.wiki.annotation.WikiAuthenticatedRequest;
-import com.iotiq.application.wiki.domain.ItemDto;
+import com.iotiq.application.wiki.domain.PageDto;
 import com.iotiq.application.wiki.messages.ItemCreateResponse;
 import com.iotiq.application.wiki.messages.ItemFilter;
 import com.iotiq.application.wiki.messages.ItemRequest;
@@ -32,30 +32,30 @@ public class WikiClientImpl implements WikiClient {
     }
 
     @Override
-    public Collection<ItemDto> getItems(ItemFilter filter) {
+    public Collection<PageDto> getPages(ItemFilter filter) {
         return graphQlClient
                 .mutate()
                 .header("Authorization", authService.getAccessToken())
                 .build()
                 .document("getPages")
                 .retrieve("pages.list")
-                .toEntityList(ItemDto.class)
+                .toEntityList(PageDto.class)
                 .block();
     }
 
     @Override
-    public Optional<ItemDto> getItem(@NotNull Integer id) {
+    public Optional<PageDto> getPage(@NotNull Integer id) {
         return graphQlClient
                 .document("getPage")
                 .variable("id", id)
                 .retrieve("pages.single")
-                .toEntity(ItemDto.class)
+                .toEntity(PageDto.class)
                 .blockOptional();
     }
 
     @Override
     @WikiAuthenticatedRequest
-    public ItemCreateResponse createItem(ItemRequest request) {
+    public ItemCreateResponse createPage(ItemRequest request) {
         String accessToken = authService.getAccessToken();
         return graphQlClient
                 .mutate()
@@ -70,7 +70,7 @@ public class WikiClientImpl implements WikiClient {
 
     @Override
     @WikiAuthenticatedRequest
-    public ResponseResult deleteItem(String id) {
+    public ResponseResult deletePage(String id) {
         return graphQlClient
                 .document("deletePage")
                 .retrieve("pages.delete.responseResult")
