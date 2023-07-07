@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.UUID;
 
 @Tag(name = "Items", description = "Items API")
 @RestController
@@ -20,12 +21,17 @@ public class ItemController {
     private final ItemService itemService;
 
     @GetMapping
-    public Map<Integer, PageDto> getAll() {
+    public Map<UUID, PageDto> getAll() {
         return itemService.getAll();
     }
 
     @PostMapping
     public Item create(@RequestBody @Valid ItemRequest request) throws Exception {
         return itemService.create(request);
+    }
+
+    @DeleteMapping
+    public void delete(UUID id) {
+        itemService.delete(id);
     }
 }
