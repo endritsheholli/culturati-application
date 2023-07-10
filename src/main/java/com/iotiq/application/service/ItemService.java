@@ -23,20 +23,20 @@ public class ItemService {
 
     public Map<Integer, PageDto> getAll() {
         return wikiClient.getPages(new ItemFilter()).stream()
-                .collect(Collectors.toMap(PageDto::getId, Function.identity()));
+                .collect(Collectors.toMap(PageDto::id, Function.identity()));
     }
 
     public Item create(ItemRequest request) throws Exception {
         ItemCreateResponse response = wikiClient.createPage(request);
 
-        if (!response.responseResult().isSucceeded()) {
-            throw new Exception(response.responseResult().getMessage());
+        if (!response.responseResult().succeeded()) {
+            throw new Exception(response.responseResult().message());
         }
         PageDto pageDto = response.page();
         Item item = new Item();
-        item.setPath(pageDto.getPath());
-        item.setWikiId(String.valueOf(pageDto.getId()));
-        item.setTitle(pageDto.getTitle());
+        item.setPath(pageDto.path());
+        item.setWikiId(String.valueOf(pageDto.id()));
+        item.setTitle(pageDto.title());
 
         return itemRepository.save(item);
     }

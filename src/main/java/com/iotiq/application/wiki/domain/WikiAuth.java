@@ -21,7 +21,7 @@ public class WikiAuth {
     private Date accessTokenValidUntil;
 
     public static WikiAuth from(WikiAuthResponse authResponse) {
-        String authToken = authResponse.getJwt();
+        String authToken = authResponse.jwt();
         Date accessExpirationTime = getExpirationTime(authToken);
         return WikiAuth.builder()
                 .authToken(authToken)
