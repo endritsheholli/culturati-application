@@ -1,3 +1,8 @@
+#   README
+#
+#   Copy this file and rename to `application-dev.yml`. Then replace the placeholders with your own credentials.
+#   Do not commit the file you've created!
+#
 app:
   jwt:
     secret: doSCf7QzUN8XxRr9eTGaLAOPOb4yWq1NMFDUV5MhH39MbDZJbaLarAie42MleAlFdoSCf7QzUN8XxRr9eTGaLAOPOb4yWq1NMFDUV5MhH39MbDZJbaLarAie42MleAlF
@@ -7,9 +12,10 @@ app:
       expirationMinutes: 60
 
   wiki:
-    username: inci@iotiq.net
-    password: admin123
+    username: <wiki email>
+    password: <wiki password>
     strategy: local
+    baseUrl: http://localhost/graphql/
 
 defaultTenant: tenant_1
 tenantPropertiesPath: application/src/main/resources/tenants
