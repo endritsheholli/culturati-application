@@ -30,7 +30,7 @@ public class ItemService {
         ItemCreateResponse response = wikiClient.createPage(request);
 
         if (!response.responseResult().isSucceeded()) {
-            throw new Exception("Could not create item in wiki");
+            throw new Exception(response.responseResult().getMessage());
         }
         PageDto pageDto = response.page();
         Item item = new Item();

@@ -4,7 +4,6 @@ import com.iotiq.application.wiki.domain.WikiAuth;
 import com.iotiq.application.wiki.exception.AuthenticationException;
 import com.iotiq.application.wiki.exception.WikiException;
 import com.iotiq.application.wiki.messages.WikiAuthResponse;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.graphql.client.HttpGraphQlClient;
@@ -13,7 +12,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 @Service
-@RequiredArgsConstructor
 public class WikiAuthServiceImpl implements WikiAuthService {
 
     private WikiAuth auth;
@@ -21,11 +19,16 @@ public class WikiAuthServiceImpl implements WikiAuthService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private final WebClient webClient = WebClient.builder()
-            .baseUrl("http://localhost/graphql/")
-            .build();
+    private final HttpGraphQlClient graphQlClient;
 
-    private final HttpGraphQlClient graphQlClient = HttpGraphQlClient.builder(webClient).build();
+    public WikiAuthServiceImpl(WikiAuthConfig config) {
+        this.config = config;
+
+        WebClient webClient = WebClient.builder()
+                .baseUrl("http://localhost/graphql/")
+                .build();
+        this.graphQlClient = HttpGraphQlClient.builder(webClient).build();
+    }
 
     /**
      * <a href="https://whimsical.com/sending-requests-to-cotwin-api-7VocHj9v5rDSKKfbpvv8hf">authentication flowchart</a>

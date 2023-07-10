@@ -7,7 +7,6 @@ import com.iotiq.application.wiki.messages.ItemFilter;
 import com.iotiq.application.wiki.messages.ItemRequest;
 import com.iotiq.application.wiki.messages.ResponseResult;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.graphql.client.HttpGraphQlClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -23,11 +22,11 @@ public class WikiClientImpl implements WikiClient {
 
     public WikiClientImpl(
             WikiAuthService wikiAuthService,
-            @Value("http://localhost/graphql/") String url
+            WikiAuthConfig wikiAuthConfig
     ) {
         this.authService = wikiAuthService;
 
-        WebClient webClient = WebClient.builder().baseUrl(url).build();
+        WebClient webClient = WebClient.builder().baseUrl(wikiAuthConfig.getBaseUrl()).build();
         graphQlClient = HttpGraphQlClient.builder(webClient).build();
     }
 

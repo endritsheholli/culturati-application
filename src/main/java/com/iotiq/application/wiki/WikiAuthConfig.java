@@ -11,4 +11,5 @@ public class WikiAuthConfig {
     private String username;
     private String password;
     private String strategy;
+    private String baseUrl;
 }
