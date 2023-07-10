@@ -15,15 +15,20 @@ import reactor.core.publisher.Mono;
 public class WikiAuthServiceImpl implements WikiAuthService {
 
     private WikiAuth auth;
+    private final WikiAuthConfig config;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private final WebClient webClient = WebClient.builder()
-            .baseUrl("http://localhost/graphql/")
-//            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .build();
+    private final HttpGraphQlClient graphQlClient;
 
-    private final HttpGraphQlClient graphQlClient = HttpGraphQlClient.builder(webClient).build();
+    public WikiAuthServiceImpl(WikiAuthConfig config) {
+        this.config = config;
+
+        WebClient webClient = WebClient.builder()
+                .baseUrl("http://localhost/graphql/")
+                .build();
+        this.graphQlClient = HttpGraphQlClient.builder(webClient).build();
+    }
 
     /**
      * <a href="https://whimsical.com/sending-requests-to-cotwin-api-7VocHj9v5rDSKKfbpvv8hf">authentication flowchart</a>
@@ -41,16 +46,12 @@ public class WikiAuthServiceImpl implements WikiAuthService {
     }
 
     private void authenticate() {
-        String username = "inci@iotiq.net";
-        String password = "admin123";
-        String strategy = "local";
-
         WikiAuthResponse authResponse = graphQlClient.mutate()
                 .build()
                 .documentName("authenticate")
-                .variable("username", username)
-                .variable("password", password)
-                .variable("strategy", strategy)
+                .variable("username", config.getUsername())
+                .variable("password", config.getPassword())
+                .variable("strategy", config.getStrategy())
                 .retrieve("authentication.login")
                 .toEntity(WikiAuthResponse.class)
 //                .onStatus(status -> HttpStatus.UNAUTHORIZED == status, response -> Mono.error(new AuthenticationException()))
