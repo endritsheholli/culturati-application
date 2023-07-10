@@ -30,9 +30,8 @@ public class ItemService {
                 .collect(Collectors.toMap(item -> Integer.parseInt(item.getWikiId()), Item::getId));
 
         BiConsumer<HashMap<UUID, PageDto>, PageDto> hashMapPageDtoBiConsumer = (map, pageDto) -> {
-            UUID uuid = wikiIdToItemId.get(pageDto.getId());
+            UUID uuid = wikiIdToItemId.get(pageDto.id());
             if (uuid != null) {
-                pageDto.setPath("http://localhost/en/" + pageDto.getPath());
                 map.put(uuid, pageDto);
             }
         };
@@ -59,7 +58,7 @@ public class ItemService {
         Item item = itemRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("item"));
 
         ResponseResult responseResult = wikiClient.deletePage(item.getWikiId());
-        if (responseResult.isSucceeded()) {
+        if (responseResult.succeeded()) {
             itemRepository.deleteById(id);
         }
     }
