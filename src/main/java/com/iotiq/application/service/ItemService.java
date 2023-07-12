@@ -4,6 +4,7 @@ import com.iotiq.application.domain.Item;
 import com.iotiq.application.repository.ItemRepository;
 import com.iotiq.application.wiki.WikiClient;
 import com.iotiq.application.wiki.domain.PageDto;
+import com.iotiq.application.wiki.exception.WikiException;
 import com.iotiq.application.wiki.messages.ItemCreateResponse;
 import com.iotiq.application.wiki.messages.ItemFilter;
 import com.iotiq.application.wiki.messages.ItemRequest;
@@ -26,11 +27,11 @@ public class ItemService {
                 .collect(Collectors.toMap(PageDto::id, Function.identity()));
     }
 
-    public Item create(ItemRequest request) throws Exception {
+    public Item create(ItemRequest request) {
         ItemCreateResponse response = wikiClient.createPage(request);
 
         if (!response.responseResult().succeeded()) {
-            throw new Exception(response.responseResult().message());
+            throw new WikiException();
         }
         PageDto pageDto = response.page();
         Item item = new Item();
