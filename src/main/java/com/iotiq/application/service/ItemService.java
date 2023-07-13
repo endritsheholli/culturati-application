@@ -1,7 +1,7 @@
 package com.iotiq.application.service;
 
 import com.iotiq.application.domain.ExhibitionItem;
-import com.iotiq.application.repository.ItemRepository;
+import com.iotiq.application.repository.ExhibitionItemRepository;
 import com.iotiq.application.wiki.WikiClient;
 import com.iotiq.application.wiki.domain.PageDto;
 import com.iotiq.application.wiki.messages.ItemCreateResponse;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class ItemService {
 
     private final WikiClient wikiClient;
-    private final ItemRepository itemRepository;
+    private final ExhibitionItemRepository exhibitionItemRepository;
 
     public Map<Integer, PageDto> getAll() {
         return wikiClient.getPages(new ItemFilter()).stream()
@@ -38,6 +38,6 @@ public class ItemService {
         exhibitionItem.setWikiId(String.valueOf(pageDto.id()));
         exhibitionItem.setTitle(pageDto.title());
 
-        return itemRepository.save(exhibitionItem);
+        return exhibitionItemRepository.save(exhibitionItem);
     }
 }
