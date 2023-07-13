@@ -15,7 +15,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/items")
 @RequiredArgsConstructor
-public class ItemController {
+public class ExhibitionItemController {
 
     private final ExhibitionItemService exhibitionItemService;
 
