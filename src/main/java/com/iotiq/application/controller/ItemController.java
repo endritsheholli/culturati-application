@@ -1,7 +1,7 @@
 package com.iotiq.application.controller;
 
 import com.iotiq.application.domain.ExhibitionItem;
-import com.iotiq.application.service.ItemService;
+import com.iotiq.application.service.ExhibitionItemService;
 import com.iotiq.application.wiki.domain.PageDto;
 import com.iotiq.application.wiki.messages.ItemRequest;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,15 +17,15 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ItemController {
 
-    private final ItemService itemService;
+    private final ExhibitionItemService exhibitionItemService;
 
     @GetMapping
     public Map<Integer, PageDto> getAll() {
-        return itemService.getAll();
+        return exhibitionItemService.getAll();
     }
 
     @PostMapping
     public ExhibitionItem create(@RequestBody @Valid ItemRequest request) throws Exception {
-        return itemService.create(request);
+        return exhibitionItemService.create(request);
     }
 }

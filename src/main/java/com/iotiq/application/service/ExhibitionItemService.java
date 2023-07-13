@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ItemService {
+public class ExhibitionItemService {
 
     private final WikiClient wikiClient;
     private final ExhibitionItemRepository exhibitionItemRepository;
