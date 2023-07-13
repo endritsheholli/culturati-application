@@ -1,6 +1,6 @@
 package com.iotiq.application.controller;
 
-import com.iotiq.application.domain.Item;
+import com.iotiq.application.domain.ExhibitionItem;
 import com.iotiq.application.service.ItemService;
 import com.iotiq.application.wiki.domain.PageDto;
 import com.iotiq.application.wiki.messages.ItemRequest;
@@ -25,7 +25,7 @@ public class ItemController {
     }
 
     @PostMapping
-    public Item create(@RequestBody @Valid ItemRequest request) throws Exception {
+    public ExhibitionItem create(@RequestBody @Valid ItemRequest request) throws Exception {
         return itemService.create(request);
     }
 }

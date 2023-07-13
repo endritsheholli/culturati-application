@@ -1,6 +1,6 @@
 package com.iotiq.application.service;
 
-import com.iotiq.application.domain.Item;
+import com.iotiq.application.domain.ExhibitionItem;
 import com.iotiq.application.repository.ItemRepository;
 import com.iotiq.application.wiki.WikiClient;
 import com.iotiq.application.wiki.domain.PageDto;
@@ -26,18 +26,18 @@ public class ItemService {
                 .collect(Collectors.toMap(PageDto::id, Function.identity()));
     }
 
-    public Item create(ItemRequest request) throws Exception {
+    public ExhibitionItem create(ItemRequest request) throws Exception {
         ItemCreateResponse response = wikiClient.createPage(request);
 
         if (!response.responseResult().succeeded()) {
             throw new Exception(response.responseResult().message());
         }
         PageDto pageDto = response.page();
-        Item item = new Item();
-        item.setPath(pageDto.path());
-        item.setWikiId(String.valueOf(pageDto.id()));
-        item.setTitle(pageDto.title());
+        ExhibitionItem exhibitionItem = new ExhibitionItem();
+        exhibitionItem.setPath(pageDto.path());
+        exhibitionItem.setWikiId(String.valueOf(pageDto.id()));
+        exhibitionItem.setTitle(pageDto.title());
 
-        return itemRepository.save(item);
+        return itemRepository.save(exhibitionItem);
     }
 }
