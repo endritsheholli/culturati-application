@@ -1,33 +1,41 @@
 package com.iotiq.application.service;
 
 import com.iotiq.application.domain.ExhibitionItem;
+import com.iotiq.application.messages.ExhibitionItemCreateRequest;
+import com.iotiq.application.messages.ExhibitionItemFilter;
+import com.iotiq.application.messages.ExhibitionItemUpdateRequest;
 import com.iotiq.application.repository.ExhibitionItemRepository;
 import com.iotiq.application.wiki.WikiClient;
 import com.iotiq.application.wiki.domain.PageDto;
-import com.iotiq.application.wiki.messages.ItemCreateResponse;
-import com.iotiq.application.wiki.messages.ItemFilter;
-import com.iotiq.application.wiki.messages.ItemRequest;
+import com.iotiq.application.wiki.messages.PageCreateRequest;
+import com.iotiq.application.wiki.messages.PageCreateResponse;
+import com.iotiq.commons.exceptions.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class ExhibitionItemService {
 
-    private final WikiClient wikiClient;
     private final ExhibitionItemRepository exhibitionItemRepository;
+    private final WikiClient wikiClient;
 
-    public Map<Integer, PageDto> getAll() {
-        return wikiClient.getPages(new ItemFilter()).stream()
-                .collect(Collectors.toMap(PageDto::id, Function.identity()));
+    public Page<ExhibitionItem> getAll(ExhibitionItemFilter filter, Sort sort) {
+        return exhibitionItemRepository.findAll(filter.buildSpecification(), filter.buildPageable(sort));
     }
 
-    public ExhibitionItem create(ItemRequest request) throws Exception {
-        ItemCreateResponse response = wikiClient.createPage(request);
+    public ExhibitionItem getOne(UUID id) {
+        return exhibitionItemRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("exhibitionItem"));
+    }
+
+    @Transactional
+    public void create(ExhibitionItemCreateRequest request) throws Exception {
+        PageCreateResponse response = wikiClient.createPage(new PageCreateRequest(request.path()));
 
         if (!response.responseResult().succeeded()) {
             throw new Exception(response.responseResult().message());
@@ -38,6 +46,17 @@ public class ExhibitionItemService {
         exhibitionItem.setWikiId(String.valueOf(pageDto.id()));
         exhibitionItem.setTitle(pageDto.title());
 
-        return exhibitionItemRepository.save(exhibitionItem);
+        exhibitionItemRepository.save(exhibitionItem);
+    }
+
+    @Transactional
+    public void update(UUID id, ExhibitionItemUpdateRequest request) {
+        ExhibitionItem exhibitionItem = getOne(id);
+
+        exhibitionItem.setTitle(request.title());
+    }
+
+    public void delete(UUID id) {
+        exhibitionItemRepository.deleteById(id);
     }
 }
