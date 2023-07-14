@@ -2,9 +2,9 @@ package com.iotiq.application.wiki;
 
 import com.iotiq.application.wiki.annotation.WikiAuthenticatedRequest;
 import com.iotiq.application.wiki.domain.PageDto;
-import com.iotiq.application.wiki.messages.ItemCreateResponse;
+import com.iotiq.application.wiki.messages.PageCreateResponse;
 import com.iotiq.application.wiki.messages.ItemFilter;
-import com.iotiq.application.wiki.messages.ItemRequest;
+import com.iotiq.application.wiki.messages.PageCreateRequest;
 import com.iotiq.application.wiki.messages.ResponseResult;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.graphql.client.HttpGraphQlClient;
@@ -51,7 +51,7 @@ public class WikiClientImpl implements WikiClient {
 
     @Override
     @WikiAuthenticatedRequest
-    public ItemCreateResponse createPage(ItemRequest request) {
+    public PageCreateResponse createPage(PageCreateRequest request) {
         String accessToken = authService.getAccessToken();
         return graphQlClient
                 .mutate()
@@ -60,7 +60,7 @@ public class WikiClientImpl implements WikiClient {
                 .documentName("createPage")
                 .variable("path", request.path())
                 .retrieve("pages.create")
-                .toEntity(ItemCreateResponse.class)
+                .toEntity(PageCreateResponse.class)
                 .block();
     }
 
