@@ -6,6 +6,8 @@ import com.iotiq.application.repository.ExhibitRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ExhibitService {
@@ -17,4 +19,9 @@ public class ExhibitService {
         exhibit.setItems(request.items());
         exhibitRepository.save(exhibit);
     }
+
+    public List<Exhibit> getAll() {
+        return exhibitRepository.findAll();
+    }
+    
 }

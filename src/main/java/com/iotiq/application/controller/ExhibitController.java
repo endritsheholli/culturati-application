@@ -1,5 +1,6 @@
 package com.iotiq.application.controller;
 
+import com.iotiq.application.messages.Exhibit.ExhibitDto;
 import com.iotiq.application.messages.Exhibit.ExhibitRequest;
 import com.iotiq.application.service.ExhibitService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 @Tag(name = "Exhibit", description = "Exhibit API")
 @RestController
@@ -22,6 +24,13 @@ public class ExhibitController {
     @PreAuthorize("hasAuthority(@ExhibitionAuth.CREATE)")
     public void create(@RequestBody @Valid ExhibitRequest request) throws Exception {
         exhibitService.create(request);
+    }
+    
+    @GetMapping
+    @PreAuthorize("hasAuthority(@ExhibitionAuth.VIEW)")
+    public List<ExhibitDto> getAll() throws Exception {
+        return exhibitService.getAll().stream()
+                .map(ExhibitDto::of).toList();
     }
     
 }
