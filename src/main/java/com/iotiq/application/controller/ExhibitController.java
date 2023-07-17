@@ -1,8 +1,8 @@
 package com.iotiq.application.controller;
 
 import com.iotiq.application.domain.Exhibit;
-import com.iotiq.application.messages.Exhibit.ExhibitDto;
-import com.iotiq.application.messages.Exhibit.ExhibitRequest;
+import com.iotiq.application.messages.exhibit.ExhibitDto;
+import com.iotiq.application.messages.exhibit.ExhibitRequest;
 import com.iotiq.application.service.ExhibitService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

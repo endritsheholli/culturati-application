@@ -1,4 +1,4 @@
-package com.iotiq.application.messages.Exhibit;
+package com.iotiq.application.messages.exhibit;
 
 import com.iotiq.application.domain.ExhibitionItem;
 

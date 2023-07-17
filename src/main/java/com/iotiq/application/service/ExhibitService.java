@@ -1,7 +1,7 @@
 package com.iotiq.application.service;
 
 import com.iotiq.application.domain.Exhibit;
-import com.iotiq.application.messages.Exhibit.ExhibitRequest;
+import com.iotiq.application.messages.exhibit.ExhibitRequest;
 import com.iotiq.application.repository.ExhibitRepository;
 import com.iotiq.commons.exceptions.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
