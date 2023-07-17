@@ -30,4 +30,10 @@ public class ExhibitService {
         return exhibitRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("exhibit"));
     }
     
+    public void update(UUID id, ExhibitRequest request){
+        Exhibit exhibit = getOne(id);
+        exhibit.setName(request.name());
+        exhibit.setItems(request.items());
+    }
+    
 }

@@ -42,4 +42,11 @@ public class ExhibitController {
         return ExhibitDto.of(exhibit);
     }
     
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority(@ExhibitionAuth.UPDATE)")
+    public void update(@PathVariable UUID id, @RequestBody @Valid ExhibitRequest request) throws Exception{
+        exhibitService.update(id, request);
+    }
+    
 }
