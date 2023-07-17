@@ -42,14 +42,14 @@ public class ExhibitController {
         return ExhibitDto.of(exhibit);
     }
     
-    @GetMapping("/{id}")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority(@ExhibitionAuth.UPDATE)")
     public void update(@PathVariable UUID id, @RequestBody @Valid ExhibitRequest request) throws Exception{
         exhibitService.update(id, request);
     }
     
-    @RequestMapping("/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority(@ExhibitionAuth.DELETE)")
     public void delete(@PathVariable UUID id) throws Exception{
