@@ -36,4 +36,7 @@ public class ExhibitService {
         exhibit.setItems(request.items());
     }
     
+    public void delete(UUID id){
+        exhibitRepository.deleteById(id);
+    }
 }

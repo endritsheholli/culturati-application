@@ -49,4 +49,11 @@ public class ExhibitController {
         exhibitService.update(id, request);
     }
     
+    @RequestMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority(@ExhibitionAuth.DELETE)")
+    public void delete(@PathVariable UUID id) throws Exception{
+        exhibitService.delete(id);
+    }
+    
 }
