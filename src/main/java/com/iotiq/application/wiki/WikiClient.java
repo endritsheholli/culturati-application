@@ -1,9 +1,9 @@
 package com.iotiq.application.wiki;
 
 import com.iotiq.application.wiki.domain.PageDto;
-import com.iotiq.application.wiki.messages.ItemCreateResponse;
+import com.iotiq.application.wiki.messages.PageCreateResponse;
 import com.iotiq.application.wiki.messages.ItemFilter;
-import com.iotiq.application.wiki.messages.ItemRequest;
+import com.iotiq.application.wiki.messages.PageCreateRequest;
 import com.iotiq.application.wiki.messages.ResponseResult;
 
 import java.util.Collection;
@@ -15,7 +15,7 @@ public interface WikiClient {
 
     Optional<PageDto> getPage(Integer id);
 
-    ItemCreateResponse createPage(ItemRequest request);
+    PageCreateResponse createPage(PageCreateRequest request);
 
     ResponseResult deletePage(String id);
 

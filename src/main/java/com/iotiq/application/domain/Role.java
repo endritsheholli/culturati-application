@@ -1,5 +1,7 @@
 package com.iotiq.application.domain;
 
+import com.iotiq.application.domain.authority.ExhibitionAuthority;
+import com.iotiq.user.domain.authorities.UserManagementAuthority;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -11,7 +13,19 @@ public enum Role implements com.iotiq.user.domain.authorities.Role {
             new SimpleGrantedAuthority("ROLE_SUPER_ADMIN")
     ),
     ADMIN(
-            new SimpleGrantedAuthority("ROLE_ADMIN")
+            new SimpleGrantedAuthority("ROLE_ADMIN"),
+
+
+            UserManagementAuthority.VIEW,
+            UserManagementAuthority.CREATE,
+            UserManagementAuthority.UPDATE,
+            UserManagementAuthority.DELETE,
+            UserManagementAuthority.CHANGE_PASSWORD,
+
+            ExhibitionAuthority.VIEW,
+            ExhibitionAuthority.CREATE,
+            ExhibitionAuthority.UPDATE,
+            ExhibitionAuthority.DELETE
     ),
     CURATOR(),
     VISITOR();
