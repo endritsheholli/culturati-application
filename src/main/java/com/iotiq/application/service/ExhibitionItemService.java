@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -58,5 +59,14 @@ public class ExhibitionItemService {
 
     public void delete(UUID id) {
         exhibitionItemRepository.deleteById(id);
+    }
+    
+    @Transactional
+    public void updateWithNullExhibit(UUID exhibitId) {
+        List<ExhibitionItem> exhibitionItems = exhibitionItemRepository.findByExhibitId(exhibitId);
+        for (ExhibitionItem item : exhibitionItems) {
+            item.setExhibit(null);
+            exhibitionItemRepository.save(item);
+        }
     }
 }
