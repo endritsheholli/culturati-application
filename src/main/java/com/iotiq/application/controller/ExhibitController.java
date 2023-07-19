@@ -2,11 +2,16 @@ package com.iotiq.application.controller;
 
 import com.iotiq.application.domain.Exhibit;
 import com.iotiq.application.messages.exhibit.ExhibitDto;
+import com.iotiq.application.messages.exhibit.ExhibitFilter;
 import com.iotiq.application.messages.exhibit.ExhibitRequest;
 import com.iotiq.application.service.ExhibitService;
+import com.iotiq.commons.message.response.PagedResponse;
+import com.iotiq.commons.message.response.PagedResponseBuilder;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -30,9 +35,10 @@ public class ExhibitController {
     
     @GetMapping
     @PreAuthorize("hasAuthority(@ExhibitionAuth.VIEW)")
-    public List<ExhibitDto> getAll() throws Exception {
-        return exhibitService.getAll().stream()
-                .map(ExhibitDto::of).toList();
+    public PagedResponse<ExhibitDto> getAll(ExhibitFilter filter, Sort sort) throws Exception {
+        Page<Exhibit> page = exhibitService.getAll(filter, sort);
+        List<ExhibitDto> dtos = page.getContent().stream().map(ExhibitDto::of).toList();
+        return PagedResponseBuilder.createResponse(page, dtos);
     }
     
     @GetMapping("/{id}")

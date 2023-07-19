@@ -2,12 +2,15 @@ package com.iotiq.application.service;
 
 import com.iotiq.application.domain.Exhibit;
 import com.iotiq.application.domain.ExhibitionItem;
+import com.iotiq.application.messages.exhibit.ExhibitFilter;
 import com.iotiq.application.messages.exhibit.ExhibitRequest;
 import com.iotiq.application.repository.ExhibitRepository;
 import com.iotiq.application.repository.ExhibitionItemRepository;
 import com.iotiq.commons.exceptions.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,8 +45,8 @@ public class ExhibitService {
         exhibitRepository.save(exhibit);
     }
 
-    public List<Exhibit> getAll() {
-        return exhibitRepository.findAll();
+    public Page<Exhibit> getAll(ExhibitFilter filter, Sort sort) {
+        return exhibitRepository.findAll(filter.buildSpecification(), filter.buildPageable(sort));
     }
 
     public Exhibit getOne(UUID id) {
