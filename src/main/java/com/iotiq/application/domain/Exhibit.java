@@ -1,5 +1,6 @@
 package com.iotiq.application.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
@@ -14,6 +15,7 @@ import java.util.UUID;
 @Getter
 public class Exhibit extends AbstractPersistable<UUID> {
     private String name;
+    @JsonIgnore
     @OneToMany(mappedBy = "exhibit")
-    private List<ExhibitionItem> items;
+    private List<ExhibitionItem> exhibitionItems;
 }
