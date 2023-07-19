@@ -78,8 +78,9 @@ public class ExhibitService {
         // Save the updated Exhibit in the database
         exhibitRepository.save(exhibit);
     }
-    
-    public void delete(UUID id){
+
+    public void delete(UUID id) {
+        exhibitionItemService.updateWithNullExhibit(id);
         exhibitRepository.deleteById(id);
     }
 }
