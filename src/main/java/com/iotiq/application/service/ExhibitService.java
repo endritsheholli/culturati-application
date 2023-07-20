@@ -25,8 +25,9 @@ public class ExhibitService {
     private final ExhibitionItemService exhibitionItemService;
 
     @Transactional
-    public void create(ExhibitRequest request) throws Exception {
+    public void create(ExhibitRequest request) {
         Exhibit exhibit = new Exhibit();
+
         exhibit.setName(request.name());
 
         // Fetch the ExhibitionItem entities using the provided UUIDs from the request
@@ -35,10 +36,6 @@ public class ExhibitService {
             throw new IllegalArgumentException("One or more ExhibitionItems not found.");
         }
 
-        // Set the ExhibitionItems for the Exhibit
-        for (ExhibitionItem item : exhibitionItems) {
-            item.setExhibit(exhibit);
-        }
         exhibit.setExhibitionItems(exhibitionItems);
 
         // Save the Exhibit in the database
@@ -54,7 +51,7 @@ public class ExhibitService {
     }
 
     @Transactional
-    public void update(UUID exhibitId, ExhibitRequest request) throws Exception {
+    public void update(UUID exhibitId, ExhibitRequest request) {
         // Find the existing Exhibit to update
         Optional<Exhibit> optionalExhibit = exhibitRepository.findById(exhibitId);
         if (optionalExhibit.isEmpty()) {
