@@ -1,9 +1,10 @@
 package com.iotiq.application.messages.exhibit;
 
-import com.iotiq.application.domain.ExhibitionItem;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 import java.util.UUID;
 
-public record ExhibitRequest(String name, List<UUID> exhibitionItemIds) {
+public record ExhibitRequest(@NotEmpty String name, @NotNull List<UUID> exhibitionItemIds) {
 }
