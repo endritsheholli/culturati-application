@@ -35,7 +35,7 @@ public class ExhibitionItemService {
 
     @Transactional
     public void create(ExhibitionItemCreateRequest request) throws Exception {
-        PageCreateResponse response = wikiClient.createPage(new PageCreateRequest(request.path(), "", "", ""));
+        PageCreateResponse response = wikiClient.createPage(new PageCreateRequest(request.path(), request.content(), request.description(), request.title() ));
 
         if (!response.responseResult().succeeded()) {
             throw new Exception(response.responseResult().message());
@@ -45,6 +45,8 @@ public class ExhibitionItemService {
         exhibitionItem.setPath(pageDto.path());
         exhibitionItem.setWikiId(String.valueOf(pageDto.id()));
         exhibitionItem.setTitle(pageDto.title());
+        exhibitionItem.setContent(pageDto.content());
+        exhibitionItem.setDescription(pageDto.description());
 
         exhibitionItemRepository.save(exhibitionItem);
     }

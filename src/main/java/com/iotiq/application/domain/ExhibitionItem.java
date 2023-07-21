@@ -13,4 +13,6 @@ public class ExhibitionItem extends AbstractPersistable<UUID> {
     private String wikiId;
     private String title;
     private String path;
+    private String content;
+    private String description;
 }
