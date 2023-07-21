@@ -33,7 +33,7 @@ public class ExhibitService {
         // Fetch the ExhibitionItem entities using the provided UUIDs from the request
         List<ExhibitionItem> exhibitionItems = exhibitionItemRepository.findAllByIdIn(request.exhibitionItemIds());
         if (exhibitionItems.size() != request.exhibitionItemIds().size()) {
-            throw new IllegalArgumentException("One or more ExhibitionItems not found.");
+            throw new EntityNotFoundException("One or more ExhibitionItems not found.");
         }
 
         exhibit.setExhibitionItems(exhibitionItems);
@@ -61,7 +61,7 @@ public class ExhibitService {
         // Fetch the ExhibitionItem entities using the provided UUIDs from the request
         List<ExhibitionItem> exhibitionItems = exhibitionItemRepository.findAllByIdIn(request.exhibitionItemIds());
         if (exhibitionItems.size() != request.exhibitionItemIds().size()) {
-            throw new IllegalArgumentException("One or more ExhibitionItems not found.");
+            throw new EntityNotFoundException("One or more ExhibitionItems not found.");
         }
 
         // Set the updated ExhibitionItems for the Exhibit
