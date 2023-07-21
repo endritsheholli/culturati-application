@@ -29,13 +29,13 @@ public class ExhibitController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority(@ExhibitionAuth.CREATE)")
-    public void create(@RequestBody @Valid ExhibitRequest request) throws Exception {
+    public void create(@RequestBody @Valid ExhibitRequest request) {
         exhibitService.create(request);
     }
     
     @GetMapping
     @PreAuthorize("hasAuthority(@ExhibitionAuth.VIEW)")
-    public PagedResponse<ExhibitDto> getAll(ExhibitFilter filter, Sort sort) throws Exception {
+    public PagedResponse<ExhibitDto> getAll(ExhibitFilter filter, Sort sort) {
         Page<Exhibit> page = exhibitService.getAll(filter, sort);
         List<ExhibitDto> dtos = page.getContent().stream().map(ExhibitDto::of).toList();
         return PagedResponseBuilder.createResponse(page, dtos);
@@ -43,7 +43,7 @@ public class ExhibitController {
     
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority(@ExhibitionAuth.VIEW)")
-    public ExhibitDto getOne(@PathVariable UUID id) throws Exception{
+    public ExhibitDto getOne(@PathVariable UUID id) {
         Exhibit exhibit = exhibitService.getOne(id);
         return ExhibitDto.of(exhibit);
     }
@@ -51,14 +51,14 @@ public class ExhibitController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority(@ExhibitionAuth.UPDATE)")
-    public void update(@PathVariable UUID id, @RequestBody @Valid ExhibitRequest request) throws Exception{
+    public void update(@PathVariable UUID id, @RequestBody @Valid ExhibitRequest request) {
         exhibitService.update(id, request);
     }
     
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority(@ExhibitionAuth.DELETE)")
-    public void delete(@PathVariable UUID id) throws Exception{
+    public void delete(@PathVariable UUID id) {
         exhibitService.delete(id);
     }
     
