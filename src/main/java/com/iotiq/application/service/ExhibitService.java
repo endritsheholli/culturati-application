@@ -53,11 +53,7 @@ public class ExhibitService {
     @Transactional
     public void update(UUID exhibitId, ExhibitRequest request) {
         // Find the existing Exhibit to update
-        Optional<Exhibit> optionalExhibit = exhibitRepository.findById(exhibitId);
-        if (optionalExhibit.isEmpty()) {
-            throw new IllegalArgumentException("Exhibit with ID " + exhibitId + " not found.");
-        }
-        Exhibit exhibit = optionalExhibit.get();
+        Exhibit exhibit = getOne(exhibitId);
 
         // Update the Exhibit name
         exhibit.setName(request.name());
@@ -80,6 +76,8 @@ public class ExhibitService {
     }
 
     public void delete(UUID id) {
+        // Find the existing Exhibit to delete
+        getOne(id);
         exhibitionItemService.updateWithNullExhibit(id);
         exhibitRepository.deleteById(id);
     }
