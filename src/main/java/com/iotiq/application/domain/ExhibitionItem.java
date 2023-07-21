@@ -15,7 +15,6 @@ public class ExhibitionItem extends AbstractPersistable<UUID> {
     private String wikiId;
     private String title;
     private String path;
-    @JsonIgnore
     @ManyToOne
     private Exhibit exhibit;
 }
