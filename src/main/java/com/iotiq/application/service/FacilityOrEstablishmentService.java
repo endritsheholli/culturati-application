@@ -22,7 +22,7 @@ public class FacilityOrEstablishmentService {
         return facilityRepository.findAll();
     }
 
-    public FacilityOrEstablishment getOneById(UUID id) {
+    public FacilityOrEstablishment getOne(UUID id) {
         return facilityRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("facility"));
     }
 
@@ -36,14 +36,14 @@ public class FacilityOrEstablishmentService {
 
     @Transactional
     public void update(UUID id, FacilityRequest request) {
-        FacilityOrEstablishment facility = getOneById(id);
+        FacilityOrEstablishment facility = getOne(id);
         facility.setOpeningTime(request.getOpeningTimeAsLocalTime());
         facility.setClosingTime(request.getClosingTimeAsLocalTime());
         facilityRepository.save(facility);
     }
 
     public void delete(UUID id) {
-        getOneById(id);
+        getOne(id);
         facilityRepository.deleteById(id);
     }
 }

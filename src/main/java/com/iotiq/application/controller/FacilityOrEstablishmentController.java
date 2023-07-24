@@ -31,8 +31,8 @@ public class FacilityOrEstablishmentController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority(@FacilityAuth.VIEW)")
-    public ResponseEntity<FacilityDto> getOneById(@PathVariable UUID id) {
-        FacilityOrEstablishment facility = facilityService.getOneById(id);
+    public ResponseEntity<FacilityDto> getOne(@PathVariable UUID id) {
+        FacilityOrEstablishment facility = facilityService.getOne(id);
         if (facility != null) {
             return new ResponseEntity<>(FacilityDto.of(facility), HttpStatus.OK);
         }
