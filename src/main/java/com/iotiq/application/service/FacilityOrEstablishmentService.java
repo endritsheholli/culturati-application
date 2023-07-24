@@ -29,16 +29,16 @@ public class FacilityOrEstablishmentService {
     @Transactional
     public void create(FacilityRequest request) {
         FacilityOrEstablishment facility = new FacilityOrEstablishment();
-        facility.setOpeningTime(request.getOpeningTimeAsLocalTime());
-        facility.setClosingTime(request.getClosingTimeAsLocalTime());
+        facility.setOpeningTime(request.openingTime());
+        facility.setClosingTime(request.closingTime());
         facilityRepository.save(facility);
     }
 
     @Transactional
     public void update(UUID id, FacilityRequest request) {
         FacilityOrEstablishment facility = getOne(id);
-        facility.setOpeningTime(request.getOpeningTimeAsLocalTime());
-        facility.setClosingTime(request.getClosingTimeAsLocalTime());
+        facility.setOpeningTime(request.openingTime());
+        facility.setClosingTime(request.closingTime());
         facilityRepository.save(facility);
     }
 
