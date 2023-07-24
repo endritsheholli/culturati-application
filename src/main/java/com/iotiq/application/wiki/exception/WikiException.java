@@ -1,7 +1,12 @@
 package com.iotiq.application.wiki.exception;
 
-public class WikiException extends RuntimeException {
+import com.iotiq.commons.exceptions.ApplicationException;
+import org.springframework.http.HttpStatus;
+
+import java.util.Collections;
+
+public class WikiException extends ApplicationException {
     public WikiException() {
-        super("Wiki generic exception");
+        super(HttpStatus.INTERNAL_SERVER_ERROR, "wikiException", Collections.emptyList());
     }
 }
