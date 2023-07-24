@@ -35,7 +35,7 @@ public class FacilityOrEstablishmentService {
     }
 
     @Transactional
-    public void updateFacilityHours(UUID id, FacilityRequest request) {
+    public void update(UUID id, FacilityRequest request) {
         FacilityOrEstablishment facility = getOneById(id);
         facility.setOpeningTime(request.getOpeningTimeAsLocalTime());
         facility.setClosingTime(request.getClosingTimeAsLocalTime());

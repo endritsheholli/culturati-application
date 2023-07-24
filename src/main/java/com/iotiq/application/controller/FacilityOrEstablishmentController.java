@@ -48,9 +48,9 @@ public class FacilityOrEstablishmentController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority(@FacilityAuth.UPDATE)")
-    public ResponseEntity<Void> updateFacilityHours(@PathVariable UUID id,
+    public ResponseEntity<Void> update(@PathVariable UUID id,
                                     @RequestBody @Valid FacilityRequest facility) {
-        facilityService.updateFacilityHours(id, facility);
+        facilityService.update(id, facility);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
