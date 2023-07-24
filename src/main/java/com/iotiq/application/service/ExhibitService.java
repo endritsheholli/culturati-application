@@ -65,11 +65,12 @@ public class ExhibitService {
         }
 
         // Set the updated ExhibitionItems for the Exhibit
-        exhibitionItemService.updateWithNullExhibit(exhibitId);
         for (ExhibitionItem item : exhibitionItems) {
             item.setExhibit(exhibit);
         }
-        exhibit.setExhibitionItems(exhibitionItems);
+        // clear and add the exhibitionItems list to the Exhibit, if you prefer to refresh the association:
+        exhibit.getExhibitionItems().clear();
+        exhibit.getExhibitionItems().addAll(exhibitionItems);
 
         // Save the updated Exhibit in the database
         exhibitRepository.save(exhibit);
@@ -78,7 +79,6 @@ public class ExhibitService {
     public void delete(UUID id) {
         // Find the existing Exhibit to delete
         getOne(id);
-        exhibitionItemService.updateWithNullExhibit(id);
         exhibitRepository.deleteById(id);
     }
 }

@@ -61,12 +61,4 @@ public class ExhibitionItemService {
         exhibitionItemRepository.deleteById(id);
     }
     
-    @Transactional
-    public void updateWithNullExhibit(UUID exhibitId) {
-        List<ExhibitionItem> exhibitionItems = exhibitionItemRepository.findByExhibitId(exhibitId);
-        for (ExhibitionItem item : exhibitionItems) {
-            item.setExhibit(null);
-            exhibitionItemRepository.save(item);
-        }
-    }
 }
