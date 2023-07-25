@@ -3,7 +3,8 @@ package com.iotiq.application.service;
 import com.iotiq.application.domain.Exhibit;
 import com.iotiq.application.domain.ExhibitionItem;
 import com.iotiq.application.messages.exhibit.ExhibitFilter;
-import com.iotiq.application.messages.exhibit.ExhibitRequest;
+import com.iotiq.application.messages.exhibit.ExhibitCreateRequest;
+import com.iotiq.application.messages.exhibit.ExhibitUpdateRequest;
 import com.iotiq.application.repository.ExhibitRepository;
 import com.iotiq.application.repository.ExhibitionItemRepository;
 import com.iotiq.commons.exceptions.EntityNotFoundException;
@@ -25,7 +26,7 @@ public class ExhibitService {
     private final ExhibitionItemService exhibitionItemService;
 
     @Transactional
-    public void create(ExhibitRequest request) {
+    public void create(ExhibitCreateRequest request) {
         Exhibit exhibit = new Exhibit();
 
         exhibit.setName(request.name());
@@ -51,7 +52,7 @@ public class ExhibitService {
     }
 
     @Transactional
-    public void update(UUID exhibitId, ExhibitRequest request) {
+    public void update(UUID exhibitId, ExhibitUpdateRequest request) {
         // Find the existing Exhibit to update
         Exhibit exhibit = getOne(exhibitId);
 

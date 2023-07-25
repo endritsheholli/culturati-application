@@ -3,7 +3,8 @@ package com.iotiq.application.controller;
 import com.iotiq.application.domain.Exhibit;
 import com.iotiq.application.messages.exhibit.ExhibitDto;
 import com.iotiq.application.messages.exhibit.ExhibitFilter;
-import com.iotiq.application.messages.exhibit.ExhibitRequest;
+import com.iotiq.application.messages.exhibit.ExhibitCreateRequest;
+import com.iotiq.application.messages.exhibit.ExhibitUpdateRequest;
 import com.iotiq.application.service.ExhibitService;
 import com.iotiq.commons.message.response.PagedResponse;
 import com.iotiq.commons.message.response.PagedResponseBuilder;
@@ -29,7 +30,7 @@ public class ExhibitController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority(@ExhibitionAuth.CREATE)")
-    public void create(@RequestBody @Valid ExhibitRequest request) {
+    public void create(@RequestBody @Valid ExhibitCreateRequest request) {
         exhibitService.create(request);
     }
     
@@ -51,7 +52,7 @@ public class ExhibitController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority(@ExhibitionAuth.UPDATE)")
-    public void update(@PathVariable UUID id, @RequestBody @Valid ExhibitRequest request) {
+    public void update(@PathVariable UUID id, @RequestBody @Valid ExhibitUpdateRequest request) {
         exhibitService.update(id, request);
     }
     

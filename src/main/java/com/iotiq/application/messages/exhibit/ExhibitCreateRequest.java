@@ -6,5 +6,5 @@ import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
 
-public record ExhibitRequest(@NotEmpty String name, @NotNull List<UUID> exhibitionItemIds) {
+public record ExhibitCreateRequest(@NotEmpty String name, @NotNull List<UUID> exhibitionItemIds) {
 }
