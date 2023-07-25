@@ -27,19 +27,15 @@ public class ExhibitService {
 
     @Transactional
     public void create(ExhibitCreateRequest request) {
-        Exhibit exhibit = new Exhibit();
-
-        exhibit.setName(request.name());
-
-        // Fetch the ExhibitionItem entities using the provided UUIDs from the request
         List<ExhibitionItem> exhibitionItems = exhibitionItemRepository.findAllByIdIn(request.exhibitionItemIds());
         if (exhibitionItems.size() != request.exhibitionItemIds().size()) {
             throw new EntityNotFoundException("One or more ExhibitionItems not found.");
         }
-
+        
+        Exhibit exhibit = new Exhibit();
+        exhibit.setName(request.name());
         exhibit.setExhibitionItems(exhibitionItems);
 
-        // Save the Exhibit in the database
         exhibitRepository.save(exhibit);
     }
 
@@ -53,18 +49,14 @@ public class ExhibitService {
 
     @Transactional
     public void update(UUID exhibitId, ExhibitUpdateRequest request) {
-        // Find the existing Exhibit to update
-        Exhibit exhibit = getOne(exhibitId);
-
-        // Update the Exhibit name
-        exhibit.setName(request.name());
-
-        // Fetch the ExhibitionItem entities using the provided UUIDs from the request
         List<ExhibitionItem> exhibitionItems = exhibitionItemRepository.findAllByIdIn(request.exhibitionItemIds());
         if (exhibitionItems.size() != request.exhibitionItemIds().size()) {
             throw new EntityNotFoundException("One or more ExhibitionItems not found.");
         }
 
+        Exhibit exhibit = getOne(exhibitId);
+        exhibit.setName(request.name());
+        
         // Set the updated ExhibitionItems for the Exhibit
         for (ExhibitionItem item : exhibitionItems) {
             item.setExhibit(exhibit);
@@ -72,8 +64,7 @@ public class ExhibitService {
         // clear and add the exhibitionItems list to the Exhibit, if you prefer to refresh the association:
         exhibit.getExhibitionItems().clear();
         exhibit.getExhibitionItems().addAll(exhibitionItems);
-
-        // Save the updated Exhibit in the database
+        
         exhibitRepository.save(exhibit);
     }
 
