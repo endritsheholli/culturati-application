@@ -68,7 +68,6 @@ public class ExhibitService {
     }
 
     public void delete(UUID id) {
-        getOne(id);
         exhibitRepository.deleteById(id);
     }
 }
