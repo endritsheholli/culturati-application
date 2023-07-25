@@ -45,8 +45,7 @@ public class ExhibitController {
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority(@ExhibitionAuth.VIEW)")
     public ExhibitDto getOne(@PathVariable UUID id) {
-        Exhibit exhibit = exhibitService.getOne(id);
-        return ExhibitDto.of(exhibit);
+        return ExhibitDto.of(exhibitService.getOne(id));
     }
     
     @PutMapping("/{id}")
