@@ -30,7 +30,8 @@ public class ExhibitionItemService {
     }
 
     public ExhibitionItem getOne(UUID id) {
-        return exhibitionItemRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("exhibitionItem"));
+        return exhibitionItemRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("exhibitionItem", id.toString()));
     }
 
     @Transactional
