@@ -59,6 +59,9 @@ public class WikiClientImpl implements WikiClient {
                 .build()
                 .documentName("createPage")
                 .variable("path", request.path())
+                .variable("content", request.content())
+                .variable("description", request.description())
+                .variable("title", request.title())
                 .retrieve("pages.create")
                 .toEntity(PageCreateResponse.class)
                 .block();

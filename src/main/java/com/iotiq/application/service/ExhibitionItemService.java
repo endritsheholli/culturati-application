@@ -7,6 +7,7 @@ import com.iotiq.application.messages.ExhibitionItemUpdateRequest;
 import com.iotiq.application.repository.ExhibitionItemRepository;
 import com.iotiq.application.wiki.WikiClient;
 import com.iotiq.application.wiki.domain.PageDto;
+import com.iotiq.application.wiki.exception.CreatePageException;
 import com.iotiq.application.wiki.messages.PageCreateRequest;
 import com.iotiq.application.wiki.messages.PageCreateResponse;
 import com.iotiq.commons.exceptions.EntityNotFoundException;
@@ -36,10 +37,10 @@ public class ExhibitionItemService {
 
     @Transactional
     public void create(ExhibitionItemCreateRequest request) throws Exception {
-        PageCreateResponse response = wikiClient.createPage(new PageCreateRequest(request.path()));
+        PageCreateResponse response = wikiClient.createPage(new PageCreateRequest(request.path(), "-", "-",request.title() ));
 
         if (!response.responseResult().succeeded()) {
-            throw new Exception(response.responseResult().message());
+            throw new CreatePageException();
         }
         PageDto pageDto = response.page();
         ExhibitionItem exhibitionItem = new ExhibitionItem();

@@ -25,7 +25,7 @@ public class WikiAuthServiceImpl implements WikiAuthService {
         this.config = config;
 
         WebClient webClient = WebClient.builder()
-                .baseUrl("http://localhost/graphql/")
+                .baseUrl(config.getBaseUrl())
                 .build();
         this.graphQlClient = HttpGraphQlClient.builder(webClient).build();
     }
