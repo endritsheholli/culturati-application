@@ -60,5 +60,8 @@ public class NavPointService {
         // Save NavPoint entity to the database
         navPointRepository.save(navPoint);
     }
-    
+
+    public List<NavPoint> getAll(){
+        return navPointRepository.findAll();
+    }
 }

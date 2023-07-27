@@ -29,4 +29,10 @@ public class NavPointController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @GetMapping
+    @PreAuthorize("hasAuthority(@NavPointAuth.VIEW)")
+    public ResponseEntity<List<NavPointDto>> getAll(){
+        List<NavPoint> navPoints = navPointService.getAll();
+        return new ResponseEntity<>(navPoints.stream().map(NavPointDto::of).toList(), HttpStatus.OK);
+    }
 }
