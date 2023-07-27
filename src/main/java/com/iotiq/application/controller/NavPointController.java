@@ -35,4 +35,15 @@ public class NavPointController {
         List<NavPoint> navPoints = navPointService.getAll();
         return new ResponseEntity<>(navPoints.stream().map(NavPointDto::of).toList(), HttpStatus.OK);
     }
+
+
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority(@NavPointAuth.VIEW)")
+    public ResponseEntity<NavPointDto> getOne(@PathVariable UUID id){
+        NavPoint navPoint = navPointService.getOne(id);
+        if (navPoint != null){
+            return new ResponseEntity<>(NavPointDto.of(navPoint), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 }

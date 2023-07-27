@@ -64,4 +64,8 @@ public class NavPointService {
     public List<NavPoint> getAll(){
         return navPointRepository.findAll();
     }
+
+    public NavPoint getOne(UUID id){
+        return navPointRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("NavPoint"));
+    }
 }
