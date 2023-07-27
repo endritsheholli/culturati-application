@@ -68,4 +68,7 @@ public class NavPointService {
     public NavPoint getOne(UUID id){
         return navPointRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("NavPoint"));
     }
+    public void delete(UUID id){
+        navPointRepository.deleteById(id);
+    }
 }

@@ -46,4 +46,11 @@ public class NavPointController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+    
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority(@NavPointAuth.DELETE)")
+    public ResponseEntity<Void> delete(@PathVariable UUID id){
+        navPointService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
