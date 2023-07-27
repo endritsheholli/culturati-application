@@ -1,9 +1,7 @@
 package com.iotiq.application.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.AbstractPersistable;
@@ -18,7 +16,11 @@ public class NavPoint extends AbstractPersistable<UUID> {
     private String mapId;
 
     // Many-to-many relationship with itself (NavPoint)
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
     @JoinTable(
             name = "navpoint_navpoint",
             joinColumns = @JoinColumn(name = "parent_navpoint_id"),
@@ -26,11 +28,21 @@ public class NavPoint extends AbstractPersistable<UUID> {
     )
     private Set<NavPoint> children = new HashSet<>();
 
-    @ManyToMany(mappedBy = "children")
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "children")
+    @JsonIgnore
     private Set<NavPoint> parents = new HashSet<>();
 
     // Many-to-many relationship with FacilityOrEstablishment entity
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
     @JoinTable(
             name = "navpoint_facility",
             joinColumns = @JoinColumn(name = "navpoint_id"),
@@ -39,7 +51,11 @@ public class NavPoint extends AbstractPersistable<UUID> {
     private Set<FacilityOrEstablishment> facilities = new HashSet<>();
     
     // Many-to-many relationship with ExhibitionItem entity
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
     @JoinTable(
             name = "navpoint_exhibitionItem",
             joinColumns = @JoinColumn(name = "navpoint_id"),
@@ -48,7 +64,11 @@ public class NavPoint extends AbstractPersistable<UUID> {
     private Set<ExhibitionItem> exhibitionItems = new HashSet<>();
     
     // Many-to-many relationship with Exhibit entity
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
     @JoinTable(
             name = "navpoint_exhibit",
             joinColumns = @JoinColumn(name = "navpoint_id"),

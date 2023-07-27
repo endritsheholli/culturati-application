@@ -1,9 +1,7 @@
 package com.iotiq.application.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.AbstractPersistable;
@@ -16,10 +14,17 @@ import java.util.*;
 public class Exhibit extends AbstractPersistable<UUID> {
     private String name;
     @OneToMany
+    @JsonIgnore
     @JoinColumn(name = "exhibit_id")
     private List<ExhibitionItem> exhibitionItems = new ArrayList<>();
 
     // Many-to-many relationship with NavPoint entity
-    @ManyToMany(mappedBy = "exhibits")
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "exhibits")
+    @JsonIgnore
     private Set<NavPoint> navPoints = new HashSet<>();
 }

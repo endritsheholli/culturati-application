@@ -1,6 +1,9 @@
 package com.iotiq.application.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToMany;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +21,12 @@ public class FacilityOrEstablishment extends AbstractPersistable<UUID> {
     private LocalTime closingTime;
 
     // Many-to-many relationship with NavPoint entity
-    @ManyToMany(mappedBy = "facilities")
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "facilities")
+    @JsonIgnore
     private Set<NavPoint> navPoints = new HashSet<>();
 }
