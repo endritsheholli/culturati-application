@@ -1,9 +1,9 @@
 package com.iotiq.application.controller;
 
-import com.iotiq.application.domain.FacilityOrEstablishment;
+import com.iotiq.application.domain.Facility;
 import com.iotiq.application.messages.facility.FacilityDto;
 import com.iotiq.application.messages.facility.FacilityRequest;
-import com.iotiq.application.service.FacilityOrEstablishmentService;
+import com.iotiq.application.service.FacilityService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,20 +19,20 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/facility")
 @RequiredArgsConstructor
-public class FacilityOrEstablishmentController {
-    private final FacilityOrEstablishmentService facilityService;
+public class FacilityController {
+    private final FacilityService facilityService;
 
     @GetMapping
     @PreAuthorize("hasAuthority(@FacilityAuth.VIEW)")
     public ResponseEntity<List<FacilityDto>> getAll() {
-        List<FacilityOrEstablishment> facilities = facilityService.getAll();
+        List<Facility> facilities = facilityService.getAll();
         return new ResponseEntity<>(facilities.stream().map(FacilityDto::of).toList(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority(@FacilityAuth.VIEW)")
     public ResponseEntity<FacilityDto> getOne(@PathVariable UUID id) {
-        FacilityOrEstablishment facility = facilityService.getOne(id);
+        Facility facility = facilityService.getOne(id);
         if (facility != null) {
             return new ResponseEntity<>(FacilityDto.of(facility), HttpStatus.OK);
         }
@@ -48,8 +48,7 @@ public class FacilityOrEstablishmentController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority(@FacilityAuth.UPDATE)")
-    public ResponseEntity<Void> update(@PathVariable UUID id,
-                                    @RequestBody @Valid FacilityRequest facility) {
+    public ResponseEntity<Void> update(@PathVariable UUID id, @RequestBody @Valid FacilityRequest facility) {
         facilityService.update(id, facility);
         return new ResponseEntity<>(HttpStatus.OK);
     }
