@@ -41,7 +41,6 @@ public class FacilityService {
     }
 
     public void delete(UUID id) {
-        getOne(id);
         facilityRepository.deleteById(id);
     }
 }
