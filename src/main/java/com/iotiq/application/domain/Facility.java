@@ -16,7 +16,7 @@ import java.util.UUID;
 @Entity
 @Setter
 @Getter
-public class FacilityOrEstablishment extends AbstractPersistable<UUID> {
+public class Facility extends AbstractPersistable<UUID> {
     private LocalTime openingTime;
     private LocalTime closingTime;
 
