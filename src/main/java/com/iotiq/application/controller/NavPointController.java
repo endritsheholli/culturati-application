@@ -3,6 +3,7 @@ package com.iotiq.application.controller;
 import com.iotiq.application.domain.NavPoint;
 import com.iotiq.application.messages.navpoint.NavPointCreateRequest;
 import com.iotiq.application.messages.navpoint.NavPointDto;
+import com.iotiq.application.messages.navpoint.NavPointUpdateRequest;
 import com.iotiq.application.service.NavPointService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -52,5 +53,13 @@ public class NavPointController {
     public ResponseEntity<Void> delete(@PathVariable UUID id){
         navPointService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority(@NavPointAuth.UPDATE)")
+    public ResponseEntity<Void> update(@PathVariable UUID id ,
+                                       @RequestBody @Valid NavPointUpdateRequest request){
+        navPointService.update(id,request);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
