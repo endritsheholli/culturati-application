@@ -1,6 +1,8 @@
 package com.iotiq.application.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import lombok.*;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
@@ -13,4 +15,6 @@ public class ExhibitionItem extends AbstractPersistable<UUID> {
     private String wikiId;
     private String title;
     private String path;
+    @ManyToOne
+    private Exhibit exhibit;
 }

@@ -7,6 +7,7 @@ import com.iotiq.application.messages.ExhibitionItemUpdateRequest;
 import com.iotiq.application.repository.ExhibitionItemRepository;
 import com.iotiq.application.wiki.WikiClient;
 import com.iotiq.application.wiki.domain.PageDto;
+import com.iotiq.application.wiki.exception.CreatePageException;
 import com.iotiq.application.wiki.messages.PageCreateRequest;
 import com.iotiq.application.wiki.messages.PageCreateResponse;
 import com.iotiq.commons.exceptions.EntityNotFoundException;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -30,15 +32,16 @@ public class ExhibitionItemService {
     }
 
     public ExhibitionItem getOne(UUID id) {
-        return exhibitionItemRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("exhibitionItem"));
+        return exhibitionItemRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("exhibitionItem", id.toString()));
     }
 
     @Transactional
     public void create(ExhibitionItemCreateRequest request) throws Exception {
-        PageCreateResponse response = wikiClient.createPage(new PageCreateRequest(request.path()));
+        PageCreateResponse response = wikiClient.createPage(new PageCreateRequest(request.path(), "-", "-",request.title() ));
 
         if (!response.responseResult().succeeded()) {
-            throw new Exception(response.responseResult().message());
+            throw new CreatePageException();
         }
         PageDto pageDto = response.page();
         ExhibitionItem exhibitionItem = new ExhibitionItem();
@@ -59,4 +62,5 @@ public class ExhibitionItemService {
     public void delete(UUID id) {
         exhibitionItemRepository.deleteById(id);
     }
+    
 }
