@@ -2,13 +2,13 @@ package com.iotiq.application.service;
 
 import com.iotiq.application.domain.Exhibit;
 import com.iotiq.application.domain.ExhibitionItem;
-import com.iotiq.application.domain.FacilityOrEstablishment;
+import com.iotiq.application.domain.Facility;
 import com.iotiq.application.domain.NavPoint;
 import com.iotiq.application.messages.navpoint.NavPointCreateRequest;
 import com.iotiq.application.messages.navpoint.NavPointUpdateRequest;
 import com.iotiq.application.repository.ExhibitRepository;
 import com.iotiq.application.repository.ExhibitionItemRepository;
-import com.iotiq.application.repository.FacilityOrEstablishmentRepository;
+import com.iotiq.application.repository.FacilityRepository;
 import com.iotiq.application.repository.NavPointRepository;
 import com.iotiq.commons.exceptions.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ public class NavPointService {
     private final NavPointRepository navPointRepository;
     private final ExhibitionItemRepository exhibitionItemRepository;
     private final ExhibitRepository exhibitRepository;
-    private final FacilityOrEstablishmentRepository facilityRepository;
+    private final FacilityRepository facilityRepository;
 
     @Transactional
     public void create(NavPointCreateRequest request) {
@@ -42,7 +42,7 @@ public class NavPointService {
             throw new EntityNotFoundException("One or more Exhibit not found.");
         }
 
-        Set<FacilityOrEstablishment> facility = facilityRepository.findAllByIdIn(request.facilityIds());
+        Set<Facility> facility = facilityRepository.findAllByIdIn(request.facilityIds());
         if (facility.size() != request.facilityIds().size()) {
             throw new EntityNotFoundException("One or more facility not found.");
         }
@@ -83,7 +83,7 @@ public class NavPointService {
         existingNavPoint.setMapId(request.mapId());
 
         // Find the Facility objects related to the ID list from the FacilityIds and associate them with the NavPoint
-        Set<FacilityOrEstablishment> facilities = facilityRepository.findAllByIdIn(request.facilityIds());
+        Set<Facility> facilities = facilityRepository.findAllByIdIn(request.facilityIds());
         if (facilities.size() != request.facilityIds().size()) {
             throw new EntityNotFoundException("One or more facility not found.");
         }

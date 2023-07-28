@@ -9,6 +9,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+
 @Entity
 @Setter
 @Getter
@@ -48,8 +49,8 @@ public class NavPoint extends AbstractPersistable<UUID> {
             joinColumns = @JoinColumn(name = "navpoint_id"),
             inverseJoinColumns = @JoinColumn(name = "facility_id")
     )
-    private Set<FacilityOrEstablishment> facilities = new HashSet<>();
-    
+    private Set<Facility> facilities = new HashSet<>();
+
     // Many-to-many relationship with ExhibitionItem entity
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
@@ -62,7 +63,7 @@ public class NavPoint extends AbstractPersistable<UUID> {
             inverseJoinColumns = @JoinColumn(name = "exhibitionItem_id")
     )
     private Set<ExhibitionItem> exhibitionItems = new HashSet<>();
-    
+
     // Many-to-many relationship with Exhibit entity
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
@@ -75,5 +76,5 @@ public class NavPoint extends AbstractPersistable<UUID> {
             inverseJoinColumns = @JoinColumn(name = "exhibit_id")
     )
     private Set<Exhibit> exhibits = new HashSet<>();
-    
+
 }
