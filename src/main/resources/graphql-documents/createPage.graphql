@@ -1,14 +1,14 @@
-mutation($path: String!) {
+mutation($path: String! $content: String!, $description: String!, $title: String!) {
     pages {
         create(
-            content: "some content"
-            description: "some description"
+            content: $content
+            description: $description
             editor: "ckeditor"
             isPublished: false
             isPrivate: true
             locale: "en"
             path: $path
-            title: "some-title"
+            title: $title
             tags: ["tag1"]
         ) {
             responseResult {
