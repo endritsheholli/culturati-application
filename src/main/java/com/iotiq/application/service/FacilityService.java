@@ -1,7 +1,8 @@
 package com.iotiq.application.service;
 
 import com.iotiq.application.domain.Facility;
-import com.iotiq.application.messages.facility.FacilityRequest;
+import com.iotiq.application.messages.facility.FacilityCreateRequest;
+import com.iotiq.application.messages.facility.FacilityUpdateRequest;
 import com.iotiq.application.repository.FacilityRepository;
 import com.iotiq.commons.exceptions.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ public class FacilityService {
     }
 
     @Transactional
-    public void create(FacilityRequest request) {
+    public void create(FacilityCreateRequest request) {
         Facility facility = new Facility();
         facility.setOpeningTime(request.openingTime());
         facility.setClosingTime(request.closingTime());
@@ -33,7 +34,7 @@ public class FacilityService {
     }
 
     @Transactional
-    public void update(UUID id, FacilityRequest request) {
+    public void update(UUID id, FacilityUpdateRequest request) {
         Facility facility = getOne(id);
         facility.setOpeningTime(request.openingTime());
         facility.setClosingTime(request.closingTime());
