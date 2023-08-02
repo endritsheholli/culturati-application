@@ -9,5 +9,5 @@ public record NavPointCreateRequest(String mapId,
                                     @NotNull List<UUID> facilityIds,
                                     @NotNull List<UUID> exhibitionItemIds,
                                     @NotNull List<UUID> exhibitIds,
-                                    @NotNull List<UUID> childrenIds) {
+                                    @NotNull List<UUID> edgeIds) {
 }
