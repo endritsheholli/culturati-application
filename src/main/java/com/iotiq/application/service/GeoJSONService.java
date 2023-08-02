@@ -32,7 +32,7 @@ public class GeoJSONService {
 
             return destFile.getAbsolutePath();
         } catch (IOException exp) {
-            throw new GeoJsonFileOperationException("file_save_error", "Error while saving the GeoJSON file.", exp);
+            throw new GeoJsonFileOperationException("file_save_error", "exception.geoJsonSaveError", exp);
         }
     }
 
@@ -46,7 +46,7 @@ public class GeoJSONService {
                 Files.delete(filePath);
             }
         } catch (IOException exp) {
-            throw new GeoJsonFileOperationException("file_delete_error", "Error while deleting the GeoJSON file.", exp);
+            throw new GeoJsonFileOperationException("file_delete_error", "exception.geoJsonDeleteError", exp);
         }
     }
 
@@ -56,7 +56,7 @@ public class GeoJSONService {
 
         Resource resource = new FileSystemResource(filePath.toFile());
         if (!resource.exists()) {
-            throw new GeoJsonFileNotFoundException("File not found.");
+            throw new GeoJsonFileNotFoundException("exception.geoJsonNotFound");
         }
 
         return resource;
