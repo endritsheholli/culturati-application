@@ -1,6 +1,5 @@
 package com.iotiq.application.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -27,6 +26,5 @@ public class Facility extends AbstractPersistable<UUID> {
                     CascadeType.MERGE
             },
             mappedBy = "facilities")
-    @JsonIgnore
     private Set<NavPoint> navPoints = new HashSet<>();
 }

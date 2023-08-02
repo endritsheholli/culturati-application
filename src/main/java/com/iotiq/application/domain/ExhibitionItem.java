@@ -1,6 +1,5 @@
 package com.iotiq.application.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.AbstractPersistable;
@@ -26,6 +25,5 @@ public class ExhibitionItem extends AbstractPersistable<UUID> {
                     CascadeType.MERGE
             },
             mappedBy = "exhibitionItems")
-    @JsonIgnore
     private Set<NavPoint> navPoints = new HashSet<>();
 }
