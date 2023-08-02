@@ -23,6 +23,6 @@ public record NavPointDto(UUID id,
                 navPoint.getExhibitionItems().stream().map(ExhibitionItemDto::of).collect(Collectors.toSet()),
                 navPoint.getExhibits().stream().map(ExhibitDto::of).collect(Collectors.toSet()),
                 navPoint.getFacilities().stream().map(FacilityDto::of).collect(Collectors.toSet()),
-                navPoint.getChildren().stream().map(AbstractPersistable::getId).collect(Collectors.toSet()));
+                navPoint.getEdges().stream().map(AbstractPersistable::getId).collect(Collectors.toSet()));
     }
 }

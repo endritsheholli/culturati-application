@@ -54,7 +54,7 @@ public class NavPointService {
 
         NavPoint navPoint = new NavPoint();
         navPoint.setMapId(request.mapId());
-        navPoint.setChildren(children);
+        navPoint.setEdges(children);
         navPoint.setExhibits(exhibits);
         navPoint.setFacilities(facility);
         navPoint.setExhibitionItems(exhibitionItems);
@@ -108,7 +108,7 @@ public class NavPointService {
         if (children.size() != request.childrenIds().size()) {
             throw new EntityNotFoundException("One or more nav_point children not found.");
         }
-        existingNavPoint.setChildren(children);
+        existingNavPoint.setEdges(children);
 
         navPointRepository.save(existingNavPoint);
     }

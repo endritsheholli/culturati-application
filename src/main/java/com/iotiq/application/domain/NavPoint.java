@@ -1,6 +1,5 @@
 package com.iotiq.application.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,27 +15,17 @@ import java.util.UUID;
 public class NavPoint extends AbstractPersistable<UUID> {
     private String mapId;
 
-    // Many-to-many relationship with itself (NavPoint)
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
                     CascadeType.MERGE
             })
     @JoinTable(
-            name = "navpoint_navpoint",
-            joinColumns = @JoinColumn(name = "parent_navpoint_id"),
-            inverseJoinColumns = @JoinColumn(name = "child_navpoint_id")
+            name = "navpoint_edges",
+            joinColumns = @JoinColumn(name = "navpoint_id"),
+            inverseJoinColumns = @JoinColumn(name = "connected_navpoint_id")
     )
-    private Set<NavPoint> children = new HashSet<>();
-
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            },
-            mappedBy = "children")
-    @JsonIgnore
-    private Set<NavPoint> parents = new HashSet<>();
+    private Set<NavPoint> edges = new HashSet<>();
 
     // Many-to-many relationship with FacilityOrEstablishment entity
     @ManyToMany(fetch = FetchType.LAZY,
