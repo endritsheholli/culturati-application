@@ -23,9 +23,12 @@ public class NavPoint extends AbstractPersistable<UUID> {
     @JoinTable(
             name = "navpoint_edges",
             joinColumns = @JoinColumn(name = "navpoint_id"),
-            inverseJoinColumns = @JoinColumn(name = "connected_navpoint_id")
+            inverseJoinColumns = @JoinColumn(name = "edge_id")
     )
     private Set<NavPoint> edges = new HashSet<>();
+
+    @ManyToMany(mappedBy = "edges")
+    private Set<NavPoint> edeges = new HashSet<>();
 
     // Many-to-many relationship with FacilityOrEstablishment entity
     @ManyToMany(fetch = FetchType.LAZY,
@@ -65,5 +68,15 @@ public class NavPoint extends AbstractPersistable<UUID> {
             inverseJoinColumns = @JoinColumn(name = "exhibit_id")
     )
     private Set<Exhibit> exhibits = new HashSet<>();
+
+    public void addEdge(NavPoint edge) {
+        this.edges.add(edge);
+        edge.getEdges().add(this);
+    }
+
+    public void removeEdge(NavPoint edge) {
+        this.edges.remove(edge);
+        edge.getEdges().remove(this);
+    }
 
 }

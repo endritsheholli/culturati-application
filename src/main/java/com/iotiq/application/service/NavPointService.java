@@ -47,18 +47,21 @@ public class NavPointService {
             throw new EntityNotFoundException("One or more facility not found.");
         }
 
-        Set<NavPoint> children = navPointRepository.findAllByIdIn(request.edgeIds());
-        if (children.size() != request.edgeIds().size()) {
-            throw new EntityNotFoundException("One or more nav_point children not found.");
+        Set<NavPoint> edges = navPointRepository.findAllByIdIn(request.edgeIds());
+        if (edges.size() != request.edgeIds().size()) {
+            throw new EntityNotFoundException("One or more nav_point edges not found.");
         }
 
         NavPoint navPoint = new NavPoint();
         navPoint.setMapId(request.mapId());
-        navPoint.setEdges(children);
         navPoint.setExhibits(exhibits);
         navPoint.setFacilities(facility);
         navPoint.setExhibitionItems(exhibitionItems);
 
+        // Set the edges and add the new NavPoint to each edge's edges collection
+        for (NavPoint edge : edges) {
+            navPoint.addEdge(edge);
+        }
         // Save NavPoint entity to the database
         navPointRepository.save(navPoint);
     }
@@ -104,11 +107,17 @@ public class NavPointService {
         existingNavPoint.setExhibits(exhibits);
 
         // Find the NavPoint objects related to the ID list from edgeIds and associate them with the NavPoint
-        Set<NavPoint> children = navPointRepository.findAllByIdIn(request.edgeIds());
-        if (children.size() != request.edgeIds().size()) {
-            throw new EntityNotFoundException("One or more nav_point children not found.");
+        Set<NavPoint> edges = navPointRepository.findAllByIdIn(request.edgeIds());
+        if (edges.size() != request.edgeIds().size()) {
+            throw new EntityNotFoundException("One or more nav_point edges not found.");
         }
-        existingNavPoint.setEdges(children);
+        // Remove existing edges
+        for (NavPoint edge : existingNavPoint.getEdges()) {
+            edge.removeEdge(existingNavPoint);
+        }
+        existingNavPoint.getEdges().clear();
+
+        existingNavPoint.setEdges(edges);
 
         navPointRepository.save(existingNavPoint);
     }
