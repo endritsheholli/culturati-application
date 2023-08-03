@@ -24,14 +24,14 @@ public class FacilityController {
     private final FacilityService facilityService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority(@FacilityAuth.VIEW)")
+    @PreAuthorize("hasAuthority(@MuseumManagementAuth.VIEW)")
     public ResponseEntity<List<FacilityDto>> getAll() {
         List<Facility> facilities = facilityService.getAll();
         return new ResponseEntity<>(facilities.stream().map(FacilityDto::of).toList(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority(@FacilityAuth.VIEW)")
+    @PreAuthorize("hasAuthority(@MuseumManagementAuth.VIEW)")
     public ResponseEntity<FacilityDto> getOne(@PathVariable UUID id) {
         Facility facility = facilityService.getOne(id);
         if (facility != null) {
@@ -41,21 +41,21 @@ public class FacilityController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority(@FacilityAuth.CREATE)")
+    @PreAuthorize("hasAuthority(@MuseumManagementAuth.CREATE)")
     public ResponseEntity<Void> create(@RequestBody @Valid FacilityCreateRequest facility) {
         facilityService.create(facility);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority(@FacilityAuth.UPDATE)")
+    @PreAuthorize("hasAuthority(@MuseumManagementAuth.UPDATE)")
     public ResponseEntity<Void> update(@PathVariable UUID id, @RequestBody @Valid FacilityUpdateRequest facility) {
         facilityService.update(id, facility);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority(@FacilityAuth.DELETE)")
+    @PreAuthorize("hasAuthority(@MuseumManagementAuth.DELETE)")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         facilityService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

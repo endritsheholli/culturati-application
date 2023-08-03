@@ -24,14 +24,14 @@ public class NavPointController {
     private final NavPointService navPointService;
 
     @PostMapping
-    @PreAuthorize("hasAuthority(@NavPointAuth.CREATE)")
+    @PreAuthorize("hasAuthority(@MuseumManagementAuth.CREATE)")
     public ResponseEntity<Void> create(@RequestBody @Valid NavPointCreateRequest navPointCreateRequest) {
         navPointService.create(navPointCreateRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority(@NavPointAuth.VIEW)")
+    @PreAuthorize("hasAuthority(@MuseumManagementAuth.VIEW)")
     public ResponseEntity<List<NavPointDto>> getAll(){
         List<NavPoint> navPoints = navPointService.getAll();
         return new ResponseEntity<>(navPoints.stream().map(NavPointDto::of).toList(), HttpStatus.OK);
@@ -39,7 +39,7 @@ public class NavPointController {
 
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority(@NavPointAuth.VIEW)")
+    @PreAuthorize("hasAuthority(@MuseumManagementAuth.VIEW)")
     public ResponseEntity<NavPointDto> getOne(@PathVariable UUID id){
         NavPoint navPoint = navPointService.getOne(id);
         if (navPoint != null){
@@ -49,14 +49,14 @@ public class NavPointController {
     }
     
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority(@NavPointAuth.DELETE)")
+    @PreAuthorize("hasAuthority(@MuseumManagementAuth.DELETE)")
     public ResponseEntity<Void> delete(@PathVariable UUID id){
         navPointService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority(@NavPointAuth.UPDATE)")
+    @PreAuthorize("hasAuthority(@MuseumManagementAuth.UPDATE)")
     public ResponseEntity<Void> update(@PathVariable UUID id ,
                                        @RequestBody @Valid NavPointUpdateRequest request){
         navPointService.update(id,request);
