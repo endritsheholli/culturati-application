@@ -48,6 +48,8 @@ public class ExhibitionItemService {
         exhibitionItem.setPath(pageDto.path());
         exhibitionItem.setWikiId(String.valueOf(pageDto.id()));
         exhibitionItem.setTitle(pageDto.title());
+        exhibitionItem.setLatitude(request.latitude());
+        exhibitionItem.setLongitude(request.longitude());
 
         exhibitionItemRepository.save(exhibitionItem);
     }
@@ -57,6 +59,10 @@ public class ExhibitionItemService {
         ExhibitionItem exhibitionItem = getOne(id);
 
         exhibitionItem.setTitle(request.title());
+        exhibitionItem.setLatitude(request.latitude());
+        exhibitionItem.setLongitude(request.longitude());
+        
+        exhibitionItemRepository.save(exhibitionItem);
     }
 
     public void delete(UUID id) {
