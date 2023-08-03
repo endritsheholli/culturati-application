@@ -15,6 +15,9 @@ import java.util.UUID;
 public class NavPoint extends AbstractPersistable<UUID> {
     private String mapId;
 
+    private double latitude;
+    private double longitude;
+
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
