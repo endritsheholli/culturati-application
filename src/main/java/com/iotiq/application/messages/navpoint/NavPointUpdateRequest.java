@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.UUID;
 
 public record NavPointUpdateRequest(String mapId,
+                                    double latitude,
+                                    double longitude,
                                     @NotNull List<UUID> facilityIds,
                                     @NotNull List<UUID> exhibitionItemIds,
                                     @NotNull List<UUID> exhibitIds,
