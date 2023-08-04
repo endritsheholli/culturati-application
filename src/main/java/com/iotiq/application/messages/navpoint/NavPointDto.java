@@ -16,7 +16,7 @@ public record NavPointDto(UUID id,
                           Set<ExhibitionItemDto> exhibitionItems,
                           Set<ExhibitDto> exhibits,
                           Set<FacilityDto> facilities,
-                          Set<UUID> edges) {
+                          Set<UUID> edgeIds) {
 
     public static NavPointDto of(NavPoint navPoint) {
         return new NavPointDto(navPoint.getId(),
