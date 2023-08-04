@@ -14,6 +14,6 @@ public class GeoJsonFileOperationException extends ApplicationException {
     public GeoJsonFileOperationException(String prefix, String message, Throwable cause) {
         super(HttpStatus.INTERNAL_SERVER_ERROR, prefix, Collections.singletonList(message));
         
-        log.error("file_save_error", cause);
+        log.error(prefix , cause);
     }
 }
