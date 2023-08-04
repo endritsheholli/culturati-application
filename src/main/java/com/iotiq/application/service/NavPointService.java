@@ -88,7 +88,7 @@ public class NavPointService {
         // Find the Facility objects related to the ID list from the FacilityIds and associate them with the NavPoint
         Set<Facility> facilities = facilityRepository.findAllByIdIn(request.facilityIds());
         if (facilities.size() != request.facilityIds().size()) {
-            throw new EntityNotFoundException("One or more facility not found.");
+            throw new EntityNotFoundException("facility");
         }
         existingNavPoint.setFacilities(facilities);
 
