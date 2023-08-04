@@ -26,9 +26,7 @@ public class NavPoint extends AbstractPersistable<UUID> {
             inverseJoinColumns = @JoinColumn(name = "edge_id")
     )
     private Set<NavPoint> edges = new HashSet<>();
-
-    @ManyToMany(mappedBy = "edges")
-    private Set<NavPoint> edeges = new HashSet<>();
+    
 
     // Many-to-many relationship with FacilityOrEstablishment entity
     @ManyToMany(fetch = FetchType.LAZY,
