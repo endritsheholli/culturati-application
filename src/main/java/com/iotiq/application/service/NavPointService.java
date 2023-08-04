@@ -117,8 +117,11 @@ public class NavPointService {
         }
         existingNavPoint.getEdges().clear();
 
-        existingNavPoint.setEdges(edges);
-
+        // Set the edges and add the new NavPoint to each edge's edges collection
+        for (NavPoint edge : edges) {
+            existingNavPoint.addEdge(edge);
+        }
+        
         navPointRepository.save(existingNavPoint);
     }
 }
