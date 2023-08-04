@@ -2,7 +2,8 @@ package com.iotiq.application.controller;
 
 import com.iotiq.application.domain.Facility;
 import com.iotiq.application.messages.facility.FacilityDto;
-import com.iotiq.application.messages.facility.FacilityRequest;
+import com.iotiq.application.messages.facility.FacilityCreateRequest;
+import com.iotiq.application.messages.facility.FacilityUpdateRequest;
 import com.iotiq.application.service.FacilityService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -41,14 +42,14 @@ public class FacilityController {
 
     @PostMapping
     @PreAuthorize("hasAuthority(@FacilityAuth.CREATE)")
-    public ResponseEntity<Void> create(@RequestBody @Valid FacilityRequest facility) {
+    public ResponseEntity<Void> create(@RequestBody @Valid FacilityCreateRequest facility) {
         facilityService.create(facility);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority(@FacilityAuth.UPDATE)")
-    public ResponseEntity<Void> update(@PathVariable UUID id, @RequestBody @Valid FacilityRequest facility) {
+    public ResponseEntity<Void> update(@PathVariable UUID id, @RequestBody @Valid FacilityUpdateRequest facility) {
         facilityService.update(id, facility);
         return new ResponseEntity<>(HttpStatus.OK);
     }
