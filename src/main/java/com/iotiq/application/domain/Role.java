@@ -2,6 +2,7 @@ package com.iotiq.application.domain;
 
 import com.iotiq.application.domain.authority.ExhibitionAuthority;
 import com.iotiq.application.domain.authority.FacilityAuthority;
+import com.iotiq.application.domain.authority.NavPointAuthority;
 import com.iotiq.application.domain.authority.GeoJSONAuthority;
 import com.iotiq.user.domain.authorities.UserManagementAuthority;
 import org.springframework.security.core.GrantedAuthority;
@@ -34,10 +35,14 @@ public enum Role implements com.iotiq.user.domain.authorities.Role {
             FacilityAuthority.UPDATE,
             FacilityAuthority.DELETE,
 
+            NavPointAuthority.VIEW,
+            NavPointAuthority.CREATE,
+            NavPointAuthority.UPDATE,
+            NavPointAuthority.DELETE,
+
             GeoJSONAuthority.VIEW,
             GeoJSONAuthority.CREATE,
             GeoJSONAuthority.DELETE
-            
             
     ),
     CURATOR(),
