@@ -1,4 +1,6 @@
 package com.iotiq.application.messages;
 
-public record ExhibitionItemCreateRequest(String title, String path, Double latitude, Double longitude) {
+import com.iotiq.application.domain.Location;
+
+public record ExhibitionItemCreateRequest(String title, String path, Location location) {
 }

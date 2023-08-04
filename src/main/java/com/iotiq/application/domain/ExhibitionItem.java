@@ -1,6 +1,6 @@
 package com.iotiq.application.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import lombok.*;
@@ -15,9 +15,8 @@ public class ExhibitionItem extends AbstractPersistable<UUID> {
     private String wikiId;
     private String title;
     private String path;
-
-    private double latitude;
-    private double longitude;
+    @Embedded
+    private Location location;
     @ManyToOne
     private Exhibit exhibit;
 }
