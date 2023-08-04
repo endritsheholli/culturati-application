@@ -11,7 +11,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public record NavPointDto(UUID id,
-                          String mapId,
                           double latitude, 
                           double longitude,
                           Set<ExhibitionItemDto> exhibitionItems,
@@ -21,7 +20,6 @@ public record NavPointDto(UUID id,
 
     public static NavPointDto of(NavPoint navPoint) {
         return new NavPointDto(navPoint.getId(),
-                navPoint.getMapId(),
                 navPoint.getLatitude(),
                 navPoint.getLongitude(),
                 navPoint.getExhibitionItems().stream().map(ExhibitionItemDto::of).collect(Collectors.toSet()),

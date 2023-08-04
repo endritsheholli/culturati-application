@@ -53,7 +53,6 @@ public class NavPointService {
         }
 
         NavPoint navPoint = new NavPoint();
-        navPoint.setMapId(request.mapId());
         navPoint.setLatitude(request.latitude());
         navPoint.setLongitude(request.longitude());
         navPoint.setExhibits(exhibits);
@@ -85,7 +84,6 @@ public class NavPointService {
 
         NavPoint existingNavPoint = getOne(id);
 
-        existingNavPoint.setMapId(request.mapId());
         existingNavPoint.setLatitude(request.latitude());
         existingNavPoint.setLongitude(request.longitude());
 

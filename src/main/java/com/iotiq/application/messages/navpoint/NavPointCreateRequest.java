@@ -5,8 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
 
-public record NavPointCreateRequest(String mapId,
-                                    double latitude,
+public record NavPointCreateRequest(double latitude,
                                     double longitude,
                                     @NotNull List<UUID> facilityIds,
                                     @NotNull List<UUID> exhibitionItemIds,
