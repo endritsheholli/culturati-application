@@ -13,8 +13,8 @@ import java.util.UUID;
 @Setter
 @Getter
 public class NavPoint extends AbstractPersistable<UUID> {
-    private double latitude;
-    private double longitude;
+    @Embedded
+    private Location location;
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {

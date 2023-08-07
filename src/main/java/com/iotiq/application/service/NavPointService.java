@@ -53,8 +53,7 @@ public class NavPointService {
         }
 
         NavPoint navPoint = new NavPoint();
-        navPoint.setLatitude(request.latitude());
-        navPoint.setLongitude(request.longitude());
+        navPoint.setLocation(request.location());
         navPoint.setExhibits(exhibits);
         navPoint.setFacilities(facility);
         navPoint.setExhibitionItems(exhibitionItems);
@@ -84,8 +83,7 @@ public class NavPointService {
 
         NavPoint existingNavPoint = getOne(id);
 
-        existingNavPoint.setLatitude(request.latitude());
-        existingNavPoint.setLongitude(request.longitude());
+        existingNavPoint.setLocation(request.location());
 
         // Find the Facility objects related to the ID list from the FacilityIds and associate them with the NavPoint
         Set<Facility> facilities = facilityRepository.findAllByIdIn(request.facilityIds());

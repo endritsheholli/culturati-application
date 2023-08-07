@@ -1,5 +1,6 @@
 package com.iotiq.application.messages.navpoint;
 
+import com.iotiq.application.domain.Location;
 import com.iotiq.application.domain.NavPoint;
 import com.iotiq.application.messages.ExhibitionItemDto;
 import com.iotiq.application.messages.exhibit.ExhibitDto;
@@ -11,8 +12,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public record NavPointDto(UUID id,
-                          double latitude, 
-                          double longitude,
+                          Location location,
                           Set<ExhibitionItemDto> exhibitionItems,
                           Set<ExhibitDto> exhibits,
                           Set<FacilityDto> facilities,
@@ -20,8 +20,7 @@ public record NavPointDto(UUID id,
 
     public static NavPointDto of(NavPoint navPoint) {
         return new NavPointDto(navPoint.getId(),
-                navPoint.getLatitude(),
-                navPoint.getLongitude(),
+                navPoint.getLocation(),
                 navPoint.getExhibitionItems().stream().map(ExhibitionItemDto::of).collect(Collectors.toSet()),
                 navPoint.getExhibits().stream().map(ExhibitDto::of).collect(Collectors.toSet()),
                 navPoint.getFacilities().stream().map(FacilityDto::of).collect(Collectors.toSet()),
