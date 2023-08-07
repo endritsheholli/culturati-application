@@ -1,4 +1,4 @@
-package com.iotiq.application.messages;
+package com.iotiq.application.messages.exhibitionItem;
 
 import com.iotiq.application.domain.ExhibitionItem;
 import com.iotiq.application.domain.Location;

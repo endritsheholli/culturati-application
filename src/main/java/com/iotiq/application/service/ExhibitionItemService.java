@@ -1,9 +1,9 @@
 package com.iotiq.application.service;
 
 import com.iotiq.application.domain.ExhibitionItem;
-import com.iotiq.application.messages.ExhibitionItemCreateRequest;
-import com.iotiq.application.messages.ExhibitionItemFilter;
-import com.iotiq.application.messages.ExhibitionItemUpdateRequest;
+import com.iotiq.application.messages.exhibitionItem.ExhibitionItemCreateRequest;
+import com.iotiq.application.messages.exhibitionItem.ExhibitionItemFilter;
+import com.iotiq.application.messages.exhibitionItem.ExhibitionItemUpdateRequest;
 import com.iotiq.application.repository.ExhibitionItemRepository;
 import com.iotiq.application.wiki.WikiClient;
 import com.iotiq.application.wiki.domain.PageDto;
@@ -17,7 +17,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service

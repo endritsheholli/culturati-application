@@ -1,7 +1,7 @@
 package com.iotiq.application.messages.navpoint;
 
 import com.iotiq.application.domain.NavPoint;
-import com.iotiq.application.messages.ExhibitionItemDto;
+import com.iotiq.application.messages.exhibitionItem.ExhibitionItemDto;
 import com.iotiq.application.messages.exhibit.ExhibitDto;
 import com.iotiq.application.messages.facility.FacilityDto;
 import org.springframework.data.jpa.domain.AbstractPersistable;
