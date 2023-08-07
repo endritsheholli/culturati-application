@@ -2,6 +2,7 @@ package com.iotiq.application.service;
 
 import com.iotiq.application.exception.GeoJsonFileNotFoundException;
 import com.iotiq.application.exception.GeoJsonFileOperationException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -9,20 +10,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 @Service
 public class GeoJSONService {
 
-    private static final String FILE_DIRECTORY = System.getProperty("user.dir") + "/application/src/main/resources/files/";
-
+    @Value("${file_directory}")
+    private Resource fileDirectory;
+    
     public String saveGeoJSONFile(String tenantName, MultipartFile file) throws GeoJsonFileOperationException {
-        String fileName = tenantName + ".geojson";
-
         try {
-            File directory = new File(FILE_DIRECTORY);
+            String fileName = tenantName + ".geojson";
+            File directory = new File(fileDirectory.getFile().getAbsolutePath());
             if (!directory.exists()) {
                 directory.mkdirs();
             }
@@ -37,28 +35,32 @@ public class GeoJSONService {
     }
 
 
-    public void deleteGeoJSONFile(String tenantName) throws GeoJsonFileOperationException {
-        String fileName = tenantName + ".geojson";
-
-        Path filePath = Paths.get(FILE_DIRECTORY, fileName);
+    public void deleteGeoJSONFile(String tenantName) {
         try {
-            if (Files.exists(filePath)) {
-                Files.delete(filePath);
+            String fileName = tenantName + ".geojson";
+            File fileToDelete = new File(fileDirectory.getFile().getAbsolutePath(), fileName);
+
+            if (fileToDelete.exists()) {
+                fileToDelete.delete();
             }
         } catch (IOException exp) {
             throw new GeoJsonFileOperationException("geoJsonDeleteError", "geoJsonDeleteError", exp);
         }
     }
 
-    public Resource getGeoJSONFile(String tenantName) throws GeoJsonFileNotFoundException {
-        String fileName = tenantName + ".geojson";
-        Path filePath = Paths.get(FILE_DIRECTORY, fileName);
+    public Resource getGeoJSONFile(String tenantName) {
+        try {
+            String fileName = tenantName + ".geojson";
+            File file = new File(fileDirectory.getFile().getAbsolutePath(), fileName);
 
-        Resource resource = new FileSystemResource(filePath.toFile());
-        if (!resource.exists()) {
-            throw new GeoJsonFileNotFoundException("geoJsonNotFound");
+            Resource resource = new FileSystemResource(file);
+            if (!resource.exists()) {
+                throw new GeoJsonFileNotFoundException("geoJsonNotFound");
+            }
+
+            return resource;
+        } catch (IOException exp) {
+            throw new GeoJsonFileOperationException("geoJsonNotFound", "geoJsonNotFound", exp);
         }
-
-        return resource;
     }
 }
