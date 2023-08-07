@@ -1,5 +1,6 @@
 package com.iotiq.application.controller;
 
+import com.iotiq.application.config.TenantContext;
 import com.iotiq.application.service.GeoJSONService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -20,24 +21,27 @@ public class GeoJSONController {
 
     private final GeoJSONService geoJSONService;
 
-    @PostMapping("/{tenantName}")
+    @PostMapping("/")
     @PreAuthorize("hasAuthority(@GeoJSONAuth.CREATE)")
-    public ResponseEntity<Void> uploadGeoJSON(@PathVariable String tenantName, @RequestParam("file") MultipartFile file) throws Exception {
+    public ResponseEntity<Void> uploadGeoJSON(@RequestParam("file") MultipartFile file) throws Exception {
+        String tenantName = TenantContext.getCurrentTenant();
         geoJSONService.saveGeoJSONFile(tenantName, file);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/{tenantName}")
+    @DeleteMapping("/")
     @PreAuthorize("hasAuthority(@GeoJSONAuth.DELETE)")
-    public ResponseEntity<Void> deleteGeoJSON(@PathVariable String tenantName) {
+    public ResponseEntity<Void> deleteGeoJSON() {
+        String tenantName = TenantContext.getCurrentTenant();
         geoJSONService.deleteGeoJSONFile(tenantName);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/{tenantName}")
+    @GetMapping("/")
     @PreAuthorize("hasAuthority(@GeoJSONAuth.VIEW)")
-    public ResponseEntity<Resource> getGeoJSON(@PathVariable String tenantName) {
+    public ResponseEntity<Resource> getGeoJSON() {
+        String tenantName = TenantContext.getCurrentTenant();
         Resource resource = geoJSONService.getGeoJSONFile(tenantName);
 
         return ResponseEntity.ok()
