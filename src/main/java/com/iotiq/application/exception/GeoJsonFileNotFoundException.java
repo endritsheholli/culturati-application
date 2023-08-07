@@ -9,7 +9,7 @@ import java.util.List;
 public class GeoJsonFileNotFoundException extends ApplicationException {
 
     public GeoJsonFileNotFoundException(String message) {
-        super(HttpStatus.NOT_FOUND, "file_not_found", Collections.singletonList(message));
+        super(HttpStatus.NOT_FOUND, "geoJsonNotFound", Collections.singletonList(message));
 
     }
 }
