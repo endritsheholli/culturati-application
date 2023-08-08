@@ -21,14 +21,14 @@ public class GeoJSONController {
 
     private final GeoJSONService geoJSONService;
 
-    @PostMapping("/")
+    @PostMapping
     @PreAuthorize("hasAuthority(@GeoJSONAuth.CREATE)")
     public ResponseEntity<Void> uploadGeoJSON(@RequestParam("file") MultipartFile file) throws Exception {
         geoJSONService.saveGeoJSONFile(file);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/")
+    @DeleteMapping
     @PreAuthorize("hasAuthority(@GeoJSONAuth.DELETE)")
     public ResponseEntity<Void> deleteGeoJSON() {
         geoJSONService.deleteGeoJSONFile();
@@ -36,7 +36,7 @@ public class GeoJSONController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/")
+    @GetMapping
     @PreAuthorize("hasAuthority(@GeoJSONAuth.VIEW)")
     public ResponseEntity<Resource> getGeoJSON() {
         Resource resource = geoJSONService.getGeoJSONFile();
