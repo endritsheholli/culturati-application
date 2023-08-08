@@ -11,9 +11,9 @@ public class GeoJsonFileOperationException extends ApplicationException {
 
     private final transient Logger log = LoggerFactory.getLogger(TenantDataSourceConnectionException.class);
 
-    public GeoJsonFileOperationException(String prefix, String message, Throwable cause) {
-        super(HttpStatus.INTERNAL_SERVER_ERROR, prefix, Collections.singletonList(message));
+    public GeoJsonFileOperationException(String message, Throwable cause) {
+        super(HttpStatus.INTERNAL_SERVER_ERROR, "geoJsonException", Collections.singletonList(message));
         
-        log.error(prefix , cause);
+        log.error("geoJsonException" , cause);
     }
 }

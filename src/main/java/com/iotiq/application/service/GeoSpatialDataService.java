@@ -1,8 +1,8 @@
 package com.iotiq.application.service;
 
 import com.iotiq.application.config.TenantContext;
-import com.iotiq.application.exception.GeoJsonFileNotFoundException;
 import com.iotiq.application.exception.GeoJsonFileOperationException;
+import com.iotiq.commons.exceptions.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -18,14 +18,14 @@ public class GeoSpatialDataService {
     @Value("${file_directory}")
     private Resource fileDirectory;
     
-    public String saveGeoJSONFile(MultipartFile file) throws GeoJsonFileOperationException {
+    public String saveGeoJSONFile(MultipartFile file) {
         try {
             File directory = createGeoJsonFile();
             file.transferTo(directory);
 
             return directory.getAbsolutePath();
         } catch (IOException exp) {
-            throw new GeoJsonFileOperationException("geoJsonSaveError", "geoJsonSaveError", exp);
+            throw new GeoJsonFileOperationException("Problem in save geoJson", exp);
         }
     }
 
@@ -38,7 +38,7 @@ public class GeoSpatialDataService {
                 fileToDelete.delete();
             }
         } catch (IOException exp) {
-            throw new GeoJsonFileOperationException("geoJsonDeleteError", "geoJsonDeleteError", exp);
+            throw new GeoJsonFileOperationException("Problem in Delete geoJson.", exp);
         }
     }
 
@@ -47,12 +47,12 @@ public class GeoSpatialDataService {
             File file = getGeoJsonFile();
             Resource resource = new FileSystemResource(file);
             if (!resource.exists()) {
-                throw new GeoJsonFileNotFoundException("geoJsonNotFound");
+                throw new EntityNotFoundException("geoJsonNotFound");
             }
 
             return resource;
         } catch (IOException exp) {
-            throw new GeoJsonFileOperationException("geoJsonNotFound", "geoJsonNotFound", exp);
+            throw new GeoJsonFileOperationException("Problem in fetch geoJson", exp);
         }
     }
     private File createGeoJsonFile() throws IOException {
