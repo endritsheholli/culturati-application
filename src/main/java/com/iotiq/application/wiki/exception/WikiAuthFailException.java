@@ -7,6 +7,6 @@ import java.util.Collections;
 
 public class WikiAuthFailException extends ApplicationException {
     public WikiAuthFailException() {
-        super(HttpStatus.INTERNAL_SERVER_ERROR, "wikiAuthFail", Collections.emptyList());
+        super(HttpStatus.UNAUTHORIZED, "wikiAuthFail", Collections.emptyList());
     }
 }

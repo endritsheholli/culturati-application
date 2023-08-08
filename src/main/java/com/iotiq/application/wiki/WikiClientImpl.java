@@ -1,6 +1,7 @@
 package com.iotiq.application.wiki;
 
 import com.iotiq.application.wiki.annotation.WikiAuthenticatedRequest;
+import com.iotiq.application.wiki.annotation.WikiNotResponding;
 import com.iotiq.application.wiki.domain.PageDto;
 import com.iotiq.application.wiki.messages.PageCreateResponse;
 import com.iotiq.application.wiki.messages.ItemFilter;
@@ -51,6 +52,7 @@ public class WikiClientImpl implements WikiClient {
 
     @Override
     @WikiAuthenticatedRequest
+    @WikiNotResponding
     public PageCreateResponse createPage(PageCreateRequest request) {
         String accessToken = authService.getAccessToken();
         return graphQlClient
@@ -69,6 +71,7 @@ public class WikiClientImpl implements WikiClient {
 
     @Override
     @WikiAuthenticatedRequest
+    @WikiNotResponding
     public ResponseResult deletePage(String id) {
         String accessToken = authService.getAccessToken();
         return graphQlClient

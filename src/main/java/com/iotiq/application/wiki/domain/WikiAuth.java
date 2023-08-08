@@ -1,6 +1,5 @@
 package com.iotiq.application.wiki.domain;
 
-import com.iotiq.application.wiki.exception.WikiAuthFailException;
 import com.iotiq.application.wiki.messages.WikiAuthResponse;
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTParser;
@@ -23,9 +22,6 @@ public class WikiAuth {
 
     public static WikiAuth from(WikiAuthResponse authResponse) {
         String authToken = authResponse.jwt();
-        if (authToken == null) {
-            throw new WikiAuthFailException();
-        }
 
         Date accessExpirationTime = getExpirationTime(authToken);
         return WikiAuth.builder()

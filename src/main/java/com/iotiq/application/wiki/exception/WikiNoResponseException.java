@@ -7,6 +7,6 @@ import java.util.Collections;
 
 public class WikiNoResponseException extends ApplicationException {
     public WikiNoResponseException() {
-        super(HttpStatus.INTERNAL_SERVER_ERROR, "wikiNoResponse", Collections.emptyList());
+        super(HttpStatus.GATEWAY_TIMEOUT, "wikiNoResponse", Collections.emptyList());
     }
 }
