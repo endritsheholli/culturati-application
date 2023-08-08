@@ -13,7 +13,7 @@ import java.io.File;
 import java.io.IOException;
 
 @Service
-public class GeoJSONService {
+public class GeoSpatialDataService {
 
     @Value("${file_directory}")
     private Resource fileDirectory;

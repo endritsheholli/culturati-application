@@ -1,7 +1,7 @@
 package com.iotiq.application.controller;
 
 import com.iotiq.application.config.TenantContext;
-import com.iotiq.application.service.GeoJSONService;
+import com.iotiq.application.service.GeoSpatialDataService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
@@ -13,31 +13,31 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
-@Tag(name = "Geospatial", description = "Geospatial API")
+@Tag(name = "Geospatial Data", description = "Geospatial Data API")
 @RestController
-@RequestMapping("/api/v1/geojson")
+@RequestMapping("/api/v1/geospatial")
 @RequiredArgsConstructor
-public class GeoJSONController {
+public class GeoSpatialDataController {
 
-    private final GeoJSONService geoJSONService;
+    private final GeoSpatialDataService geoSpatialDataService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAuthority(@GeoJSONAuth.CREATE)")
+    @PreAuthorize("hasAuthority(@GeoSpatialDataAuth.CREATE)")
     public void uploadGeoJSON(@RequestParam("file") MultipartFile file) throws Exception {
-        geoJSONService.saveGeoJSONFile(file);
+        geoSpatialDataService.saveGeoJSONFile(file);
     }
 
     @DeleteMapping
-    @PreAuthorize("hasAuthority(@GeoJSONAuth.DELETE)")
+    @PreAuthorize("hasAuthority(@GeoSpatialDataAuth.DELETE)")
     public void deleteGeoJSON() {
-        geoJSONService.deleteGeoJSONFile();
+        geoSpatialDataService.deleteGeoJSONFile();
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority(@GeoJSONAuth.VIEW)")
+    @PreAuthorize("hasAuthority(@GeoSpatialDataAuth.VIEW)")
     public ResponseEntity<Resource> getGeoJSON() {
-        Resource resource = geoJSONService.getGeoJSONFile();
+        Resource resource = geoSpatialDataService.getGeoJSONFile();
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + TenantContext.getCurrentTenant() + ".json\"")
