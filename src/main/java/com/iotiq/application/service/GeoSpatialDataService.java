@@ -20,17 +20,10 @@ public class GeoSpatialDataService {
     
     public String saveGeoJSONFile(MultipartFile file) throws GeoJsonFileOperationException {
         try {
-            String tenantName = TenantContext.getCurrentTenant();
-            String fileName = tenantName + ".geojson";
-            File directory = new File(fileDirectory.getFile().getAbsolutePath());
-            if (!directory.exists()) {
-                directory.mkdirs();
-            }
+            File directory = createGeoJsonFile();
+            file.transferTo(directory);
 
-            File destFile = new File(directory, fileName);
-            file.transferTo(destFile);
-
-            return destFile.getAbsolutePath();
+            return directory.getAbsolutePath();
         } catch (IOException exp) {
             throw new GeoJsonFileOperationException("geoJsonSaveError", "geoJsonSaveError", exp);
         }
@@ -39,9 +32,7 @@ public class GeoSpatialDataService {
 
     public void deleteGeoJSONFile() {
         try {
-            String tenantName = TenantContext.getCurrentTenant();
-            String fileName = tenantName + ".geojson";
-            File fileToDelete = new File(fileDirectory.getFile().getAbsolutePath(), fileName);
+            File fileToDelete = getGeoJsonFile();
 
             if (fileToDelete.exists()) {
                 fileToDelete.delete();
@@ -53,10 +44,7 @@ public class GeoSpatialDataService {
 
     public Resource getGeoJSONFile() {
         try {
-            String tenantName = TenantContext.getCurrentTenant();
-            String fileName = tenantName + ".geojson";
-            File file = new File(fileDirectory.getFile().getAbsolutePath(), fileName);
-
+            File file = getGeoJsonFile();
             Resource resource = new FileSystemResource(file);
             if (!resource.exists()) {
                 throw new GeoJsonFileNotFoundException("geoJsonNotFound");
@@ -66,5 +54,18 @@ public class GeoSpatialDataService {
         } catch (IOException exp) {
             throw new GeoJsonFileOperationException("geoJsonNotFound", "geoJsonNotFound", exp);
         }
+    }
+    private File createGeoJsonFile() throws IOException {
+        File directory = getGeoJsonFile();
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+        return directory;
+    }
+
+    private File getGeoJsonFile() throws IOException {
+        String tenantName = TenantContext.getCurrentTenant();
+        String fileName = tenantName + ".geojson";
+        return new File(fileDirectory.getFile().getAbsolutePath(), fileName);
     }
 }
