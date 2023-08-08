@@ -24,16 +24,14 @@ public class GeoJSONController {
     @PostMapping("/")
     @PreAuthorize("hasAuthority(@GeoJSONAuth.CREATE)")
     public ResponseEntity<Void> uploadGeoJSON(@RequestParam("file") MultipartFile file) throws Exception {
-        String tenantName = TenantContext.getCurrentTenant();
-        geoJSONService.saveGeoJSONFile(tenantName, file);
+        geoJSONService.saveGeoJSONFile(file);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/")
     @PreAuthorize("hasAuthority(@GeoJSONAuth.DELETE)")
     public ResponseEntity<Void> deleteGeoJSON() {
-        String tenantName = TenantContext.getCurrentTenant();
-        geoJSONService.deleteGeoJSONFile(tenantName);
+        geoJSONService.deleteGeoJSONFile();
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -41,11 +39,10 @@ public class GeoJSONController {
     @GetMapping("/")
     @PreAuthorize("hasAuthority(@GeoJSONAuth.VIEW)")
     public ResponseEntity<Resource> getGeoJSON() {
-        String tenantName = TenantContext.getCurrentTenant();
-        Resource resource = geoJSONService.getGeoJSONFile(tenantName);
+        Resource resource = geoJSONService.getGeoJSONFile();
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + tenantName + ".json\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + TenantContext.getCurrentTenant() + ".json\"")
                 .body(resource);
     }
 }

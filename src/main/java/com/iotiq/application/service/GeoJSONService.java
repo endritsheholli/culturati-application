@@ -1,5 +1,6 @@
 package com.iotiq.application.service;
 
+import com.iotiq.application.config.TenantContext;
 import com.iotiq.application.exception.GeoJsonFileNotFoundException;
 import com.iotiq.application.exception.GeoJsonFileOperationException;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,8 +18,9 @@ public class GeoJSONService {
     @Value("${file_directory}")
     private Resource fileDirectory;
     
-    public String saveGeoJSONFile(String tenantName, MultipartFile file) throws GeoJsonFileOperationException {
+    public String saveGeoJSONFile(MultipartFile file) throws GeoJsonFileOperationException {
         try {
+            String tenantName = TenantContext.getCurrentTenant();
             String fileName = tenantName + ".geojson";
             File directory = new File(fileDirectory.getFile().getAbsolutePath());
             if (!directory.exists()) {
@@ -35,8 +37,9 @@ public class GeoJSONService {
     }
 
 
-    public void deleteGeoJSONFile(String tenantName) {
+    public void deleteGeoJSONFile() {
         try {
+            String tenantName = TenantContext.getCurrentTenant();
             String fileName = tenantName + ".geojson";
             File fileToDelete = new File(fileDirectory.getFile().getAbsolutePath(), fileName);
 
@@ -48,8 +51,9 @@ public class GeoJSONService {
         }
     }
 
-    public Resource getGeoJSONFile(String tenantName) {
+    public Resource getGeoJSONFile() {
         try {
+            String tenantName = TenantContext.getCurrentTenant();
             String fileName = tenantName + ".geojson";
             File file = new File(fileDirectory.getFile().getAbsolutePath(), fileName);
 
