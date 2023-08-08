@@ -22,18 +22,16 @@ public class GeoJSONController {
     private final GeoJSONService geoJSONService;
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority(@GeoJSONAuth.CREATE)")
-    public ResponseEntity<Void> uploadGeoJSON(@RequestParam("file") MultipartFile file) throws Exception {
+    public void uploadGeoJSON(@RequestParam("file") MultipartFile file) throws Exception {
         geoJSONService.saveGeoJSONFile(file);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping
     @PreAuthorize("hasAuthority(@GeoJSONAuth.DELETE)")
-    public ResponseEntity<Void> deleteGeoJSON() {
+    public void deleteGeoJSON() {
         geoJSONService.deleteGeoJSONFile();
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping
