@@ -24,10 +24,10 @@ public class NavPointController {
     private final NavPointService navPointService;
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority(@NavPointAuth.CREATE)")
-    public ResponseEntity<Void> create(@RequestBody @Valid NavPointCreateRequest navPointCreateRequest) {
+    public void create(@RequestBody @Valid NavPointCreateRequest navPointCreateRequest) {
         navPointService.create(navPointCreateRequest);
-        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -50,16 +50,14 @@ public class NavPointController {
     
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority(@NavPointAuth.DELETE)")
-    public ResponseEntity<Void> delete(@PathVariable UUID id){
+    public void delete(@PathVariable UUID id){
         navPointService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority(@NavPointAuth.UPDATE)")
-    public ResponseEntity<Void> update(@PathVariable UUID id ,
+    public void update(@PathVariable UUID id ,
                                        @RequestBody @Valid NavPointUpdateRequest request){
         navPointService.update(id,request);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
