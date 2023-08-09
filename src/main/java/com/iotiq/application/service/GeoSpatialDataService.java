@@ -15,17 +15,16 @@ import java.io.IOException;
 @Service
 public class GeoSpatialDataService {
 
-    @Value("${file_directory}")
+    @Value("${mapFileDirectory}")
     private Resource fileDirectory;
     
-    public String saveGeoJSONFile(MultipartFile file) {
+    public void saveGeoJSONFile(MultipartFile file) {
         try {
             File directory = createGeoJsonFile();
             file.transferTo(directory);
 
-            return directory.getAbsolutePath();
         } catch (IOException exp) {
-            throw new GeoJsonFileOperationException("Problem in save geoJson", exp);
+            throw new GeoJsonFileOperationException("geoJsonSaveError", exp);
         }
     }
 
@@ -38,7 +37,7 @@ public class GeoSpatialDataService {
                 fileToDelete.delete();
             }
         } catch (IOException exp) {
-            throw new GeoJsonFileOperationException("Problem in Delete geoJson.", exp);
+            throw new GeoJsonFileOperationException("geoJsonDeleteError", exp);
         }
     }
 
@@ -52,7 +51,7 @@ public class GeoSpatialDataService {
 
             return resource;
         } catch (IOException exp) {
-            throw new GeoJsonFileOperationException("Problem in fetch geoJson", exp);
+            throw new GeoJsonFileOperationException("geoJsonFetchError", exp);
         }
     }
     private File createGeoJsonFile() throws IOException {
