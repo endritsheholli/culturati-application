@@ -1,12 +1,12 @@
 package com.iotiq.application.messages.navpoint;
 
-import com.iotiq.application.messages.location.LocationDto;
+import com.iotiq.application.messages.location.LocationRequest;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 import java.util.UUID;
 
-public record NavPointUpdateRequest(LocationDto location,
+public record NavPointUpdateRequest(LocationRequest location,
                                     @NotNull List<UUID> facilityIds,
                                     @NotNull List<UUID> exhibitionItemIds,
                                     @NotNull List<UUID> exhibitIds,

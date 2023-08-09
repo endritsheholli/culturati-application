@@ -1,6 +1,7 @@
 package com.iotiq.application.service;
 
 import com.iotiq.application.domain.*;
+import com.iotiq.application.messages.location.LocationRequest;
 import com.iotiq.application.messages.navpoint.NavPointCreateRequest;
 import com.iotiq.application.messages.navpoint.NavPointUpdateRequest;
 import com.iotiq.application.repository.ExhibitRepository;
@@ -50,10 +51,7 @@ public class NavPointService {
         }
 
         NavPoint navPoint = new NavPoint();
-        Location location = new Location();
-        location.setLongitude(request.location().longitude());
-        location.setLatitude(request.location().latitude());
-        navPoint.setLocation(location);
+        navPoint.setLocation(LocationRequest.from(request.location()));
         navPoint.setExhibits(exhibits);
         navPoint.setFacilities(facility);
         navPoint.setExhibitionItems(exhibitionItems);
@@ -82,11 +80,8 @@ public class NavPointService {
     public void update(UUID id, NavPointUpdateRequest request) {
 
         NavPoint existingNavPoint = getOne(id);
-
-        Location location = new Location();
-        location.setLongitude(request.location().longitude());
-        location.setLatitude(request.location().latitude());
-        existingNavPoint.setLocation(location);
+        
+        existingNavPoint.setLocation(LocationRequest.from(request.location()));
 
         // Find the Facility objects related to the ID list from the FacilityIds and associate them with the NavPoint
         Set<Facility> facilities = facilityRepository.findAllByIdIn(request.facilityIds());
