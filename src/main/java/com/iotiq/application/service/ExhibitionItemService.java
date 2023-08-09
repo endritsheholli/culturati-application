@@ -1,6 +1,7 @@
 package com.iotiq.application.service;
 
 import com.iotiq.application.domain.ExhibitionItem;
+import com.iotiq.application.domain.Location;
 import com.iotiq.application.messages.exhibitionItem.ExhibitionItemCreateRequest;
 import com.iotiq.application.messages.exhibitionItem.ExhibitionItemFilter;
 import com.iotiq.application.messages.exhibitionItem.ExhibitionItemUpdateRequest;
@@ -47,7 +48,11 @@ public class ExhibitionItemService {
         exhibitionItem.setPath(pageDto.path());
         exhibitionItem.setWikiId(String.valueOf(pageDto.id()));
         exhibitionItem.setTitle(pageDto.title());
-        exhibitionItem.setLocation(request.location());
+        
+        Location location = new Location();
+        location.setLatitude(request.location().latitude());
+        location.setLongitude(request.location().longitude());
+        exhibitionItem.setLocation(location);
 
         exhibitionItemRepository.save(exhibitionItem);
     }
@@ -57,7 +62,11 @@ public class ExhibitionItemService {
         ExhibitionItem exhibitionItem = getOne(id);
 
         exhibitionItem.setTitle(request.title());
-        exhibitionItem.setLocation(request.location());
+
+        Location location = new Location();
+        location.setLatitude(request.location().latitude());
+        location.setLongitude(request.location().longitude());
+        exhibitionItem.setLocation(location);
         
         exhibitionItemRepository.save(exhibitionItem);
     }
