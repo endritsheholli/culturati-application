@@ -17,7 +17,7 @@ public class GeoSpatialDataService {
 
     @Value("${mapFileDirectory}")
     private Resource fileDirectory;
-    
+
     public void saveGeoJSONFile(MultipartFile file) {
         try {
             File directory = createGeoJsonFile();
@@ -36,25 +36,17 @@ public class GeoSpatialDataService {
             if (fileToDelete.exists()) {
                 fileToDelete.delete();
             }
-        } catch (IOException exp) {
+        } catch (Exception exp) {
             throw new GeoJsonFileOperationException("geoJsonDeleteError", exp);
         }
     }
 
     public Resource getGeoJSONFile() {
-        try {
-            File file = getGeoJsonFile();
-            Resource resource = new FileSystemResource(file);
-            if (!resource.exists()) {
-                throw new EntityNotFoundException("geoJsonNotFound");
-            }
-
-            return resource;
-        } catch (IOException exp) {
-            throw new GeoJsonFileOperationException("geoJsonFetchError", exp);
-        }
+        File file = getGeoJsonFile();
+        return new FileSystemResource(file);
     }
-    private File createGeoJsonFile() throws IOException {
+
+    private File createGeoJsonFile() {
         File directory = getGeoJsonFile();
         if (!directory.exists()) {
             directory.mkdirs();
@@ -62,9 +54,13 @@ public class GeoSpatialDataService {
         return directory;
     }
 
-    private File getGeoJsonFile() throws IOException {
-        String tenantName = TenantContext.getCurrentTenant();
-        String fileName = tenantName + ".geojson";
-        return new File(fileDirectory.getFile().getAbsolutePath(), fileName);
+    private File getGeoJsonFile() {
+        try {
+            String tenantName = TenantContext.getCurrentTenant();
+            String fileName = tenantName + ".geojson";
+            return new File(fileDirectory.getFile().getAbsolutePath(), fileName);
+        } catch (IOException exp) {
+            throw new EntityNotFoundException("geoJsonNotFound");
+        }
     }
 }
