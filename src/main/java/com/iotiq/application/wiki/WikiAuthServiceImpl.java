@@ -2,7 +2,7 @@ package com.iotiq.application.wiki;
 
 import com.iotiq.application.wiki.domain.WikiAuth;
 import com.iotiq.application.wiki.exception.AuthenticationException;
-import com.iotiq.application.wiki.exception.WikiNoResponseException;
+import com.iotiq.commons.exceptions.WikiNoResponseException;
 import com.iotiq.application.wiki.exception.WikiAuthFailException;
 import com.iotiq.application.wiki.messages.WikiAuthResponse;
 import org.slf4j.Logger;
