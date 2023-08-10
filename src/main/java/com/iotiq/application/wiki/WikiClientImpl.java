@@ -2,6 +2,7 @@ package com.iotiq.application.wiki;
 
 import com.iotiq.application.wiki.annotation.WikiAuthenticatedRequest;
 import com.iotiq.application.wiki.domain.PageDto;
+import com.iotiq.application.wiki.exception.WikiNoResponseException;
 import com.iotiq.application.wiki.messages.PageCreateResponse;
 import com.iotiq.application.wiki.messages.ItemFilter;
 import com.iotiq.application.wiki.messages.PageCreateRequest;
@@ -10,6 +11,7 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.graphql.client.HttpGraphQlClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -36,6 +38,7 @@ public class WikiClientImpl implements WikiClient {
                 .documentName("getPages")
                 .retrieve("pages.list")
                 .toEntityList(PageDto.class)
+                .onErrorResume(throwable -> Mono.error(new WikiNoResponseException()))
                 .block();
     }
 
@@ -46,6 +49,7 @@ public class WikiClientImpl implements WikiClient {
                 .variable("id", id)
                 .retrieve("pages.single")
                 .toEntity(PageDto.class)
+                .onErrorResume(throwable -> Mono.error(new WikiNoResponseException()))
                 .blockOptional();
     }
 
@@ -64,6 +68,7 @@ public class WikiClientImpl implements WikiClient {
                 .variable("title", request.title())
                 .retrieve("pages.create")
                 .toEntity(PageCreateResponse.class)
+                .onErrorResume(throwable -> Mono.error(new WikiNoResponseException()))
                 .block();
     }
 
@@ -78,6 +83,7 @@ public class WikiClientImpl implements WikiClient {
                 .documentName("deletePage")
                 .retrieve("pages.delete.responseResult")
                 .toEntity(ResponseResult.class)
+                .onErrorResume(throwable -> Mono.error(new WikiNoResponseException()))
                 .block();
     }
 }
