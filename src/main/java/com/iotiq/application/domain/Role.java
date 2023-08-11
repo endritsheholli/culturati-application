@@ -1,9 +1,6 @@
 package com.iotiq.application.domain;
 
-import com.iotiq.application.domain.authority.ExhibitionAuthority;
-import com.iotiq.application.domain.authority.FacilityAuthority;
-import com.iotiq.application.domain.authority.NavPointAuthority;
-import com.iotiq.application.domain.authority.GeoSpatialDataAuthority;
+import com.iotiq.application.domain.authority.MuseumManagementAuthority;
 import com.iotiq.user.domain.authorities.UserManagementAuthority;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,24 +22,11 @@ public enum Role implements com.iotiq.user.domain.authorities.Role {
             UserManagementAuthority.DELETE,
             UserManagementAuthority.CHANGE_PASSWORD,
 
-            ExhibitionAuthority.VIEW,
-            ExhibitionAuthority.CREATE,
-            ExhibitionAuthority.UPDATE,
-            ExhibitionAuthority.DELETE,
+            MuseumManagementAuthority.VIEW,
+            MuseumManagementAuthority.CREATE,
+            MuseumManagementAuthority.UPDATE,
+            MuseumManagementAuthority.DELETE
 
-            FacilityAuthority.VIEW,
-            FacilityAuthority.CREATE,
-            FacilityAuthority.UPDATE,
-            FacilityAuthority.DELETE,
-
-            NavPointAuthority.VIEW,
-            NavPointAuthority.CREATE,
-            NavPointAuthority.UPDATE,
-            NavPointAuthority.DELETE,
-
-            GeoSpatialDataAuthority.VIEW,
-            GeoSpatialDataAuthority.CREATE,
-            GeoSpatialDataAuthority.DELETE
             
     ),
     CURATOR(),
