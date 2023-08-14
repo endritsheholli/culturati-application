@@ -1,6 +1,7 @@
 package com.iotiq.application.service;
 
 import com.iotiq.application.config.TenantContext;
+import com.iotiq.application.exception.FileFormatNotSupportedException;
 import com.iotiq.application.exception.GeoJsonFileOperationException;
 import com.iotiq.commons.exceptions.EntityNotFoundException;
 import com.iotiq.application.util.FileUtil;
@@ -29,7 +30,7 @@ public class GeoSpatialDataService {
             if (filename != null) {
                 String fileExtension = FileUtil.getFileExtension(filename);
                 if (!allowedExtensions.contains(fileExtension)) {
-                    throw new RequiredFieldMissingException("allowedExtensions");
+                    throw new FileFormatNotSupportedException("allowedExtensions");
                 }
             }
             File directory = createGeoJsonFile();
