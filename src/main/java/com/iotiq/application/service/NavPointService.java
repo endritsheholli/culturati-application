@@ -1,13 +1,16 @@
 package com.iotiq.application.service;
 
-import com.iotiq.application.domain.*;
-import com.iotiq.application.messages.location.LocationRequest;
+import com.iotiq.application.domain.Exhibit;
+import com.iotiq.application.domain.ExhibitionItem;
+import com.iotiq.application.domain.Facility;
+import com.iotiq.application.domain.NavPoint;
 import com.iotiq.application.messages.navpoint.NavPointCreateRequest;
 import com.iotiq.application.messages.navpoint.NavPointUpdateRequest;
 import com.iotiq.application.repository.ExhibitRepository;
 import com.iotiq.application.repository.ExhibitionItemRepository;
 import com.iotiq.application.repository.FacilityRepository;
 import com.iotiq.application.repository.NavPointRepository;
+import com.iotiq.application.service.converter.LocationConverter;
 import com.iotiq.commons.exceptions.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -51,7 +54,7 @@ public class NavPointService {
         }
 
         NavPoint navPoint = new NavPoint();
-        navPoint.setLocation(LocationRequest.from(request.location()));
+        navPoint.setLocation(LocationConverter.convertToLocation(request.location()));
         navPoint.setExhibits(exhibits);
         navPoint.setFacilities(facility);
         navPoint.setExhibitionItems(exhibitionItems);
@@ -81,7 +84,7 @@ public class NavPointService {
 
         NavPoint existingNavPoint = getOne(id);
         
-        existingNavPoint.setLocation(LocationRequest.from(request.location()));
+        existingNavPoint.setLocation(LocationConverter.convertToLocation(request.location()));
 
         // Find the Facility objects related to the ID list from the FacilityIds and associate them with the NavPoint
         Set<Facility> facilities = facilityRepository.findAllByIdIn(request.facilityIds());
