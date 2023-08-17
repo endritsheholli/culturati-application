@@ -7,3 +7,7 @@ app:
       expirationMinutes: 360
     access:
       expirationMinutes: 60
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
