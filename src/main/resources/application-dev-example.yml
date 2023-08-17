@@ -12,11 +12,10 @@ app:
       expirationMinutes: 60
 
   wiki:
-    username: <wiki email>
-    password: <wiki password>
+    username: info@iotiq.net
+    password: iotiqWiki1
     strategy: local
-    baseUrl: http://localhost/graphql/
-
+    baseUrl: https://dev-wiki.culturati.app/graphql/
 defaultTenant: tenant_1
 tenantPropertiesPath: application/src/main/resources/tenants
 spring:

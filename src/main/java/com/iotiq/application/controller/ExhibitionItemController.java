@@ -29,7 +29,7 @@ public class ExhibitionItemController {
     private final ExhibitionItemService exhibitionItemService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority(@ExhibitionAuth.VIEW)")
+    @PreAuthorize("hasAuthority(@MuseumManagementAuth.VIEW)")
     public PagedResponse<ExhibitionItemDto> getAll(ExhibitionItemFilter filter, Sort sort) {
         Page<ExhibitionItem> page = exhibitionItemService.getAll(filter, sort);
         List<ExhibitionItemDto> dtos = page.getContent().stream().map(ExhibitionItemDto::of).toList();
@@ -38,7 +38,7 @@ public class ExhibitionItemController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority(@ExhibitionAuth.VIEW)")
+    @PreAuthorize("hasAuthority(@MuseumManagementAuth.VIEW)")
     public ExhibitionItemDto getOne(@PathVariable UUID id) {
         ExhibitionItem exhibitionItem = exhibitionItemService.getOne(id);
         return ExhibitionItemDto.of(exhibitionItem);
@@ -46,19 +46,19 @@ public class ExhibitionItemController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAuthority(@ExhibitionAuth.CREATE)")
+    @PreAuthorize("hasAuthority(@MuseumManagementAuth.CREATE)")
     public void create(@RequestBody @Valid ExhibitionItemCreateRequest request) throws Exception {
         exhibitionItemService.create(request);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority(@ExhibitionAuth.UPDATE)")
+    @PreAuthorize("hasAuthority(@MuseumManagementAuth.UPDATE)")
     public void update(@PathVariable UUID id, @RequestBody @Valid ExhibitionItemUpdateRequest request) {
         exhibitionItemService.update(id, request);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority(@ExhibitionAuth.DELETE)")
+    @PreAuthorize("hasAuthority(@MuseumManagementAuth.DELETE)")
     public void delete(@PathVariable UUID id) {
         exhibitionItemService.delete(id);
     }
