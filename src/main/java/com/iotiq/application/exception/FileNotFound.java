@@ -7,13 +7,13 @@ import org.springframework.http.HttpStatus;
 
 import java.util.Collections;
 
-public class GeoJsonFileOperationException extends ApplicationException {
+public class FileNotFound extends ApplicationException {
 
     private final transient Logger log = LoggerFactory.getLogger(TenantDataSourceConnectionException.class);
 
-    public GeoJsonFileOperationException(String message, Throwable cause) {
-        super(HttpStatus.INTERNAL_SERVER_ERROR, "geoJsonException", Collections.singletonList(message));
-        
-        log.error("geoJsonException" , cause);
+    public FileNotFound(String filename) {
+        super(HttpStatus.NOT_FOUND, "fileNotFound", Collections.emptyList());
+
+        log.error("Could not find file " + filename);
     }
 }
