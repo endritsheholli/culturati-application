@@ -1,4 +1,4 @@
-package com.iotiq.application.service.integration;
+package com.iotiq.application.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iotiq.application.config.ContainersEnvironment;
@@ -85,7 +85,7 @@ public class NavPointTests extends ContainersEnvironment {
 
     @Test
     @Order(2)
-    @WithMockUser(authorities = "NAV_POINT_CREATE")
+    @WithMockUser(authorities = "MUSEUM_MANAGEMENT_CREATE")
     public void testCreateNavPoint_InvalidData() throws Exception {
         // Test creation of NavPoint with invalid data
         //arrange
@@ -105,7 +105,7 @@ public class NavPointTests extends ContainersEnvironment {
 
     @Test
     @Order(3)
-    @WithMockUser(authorities = "NAV_POINT_CREATE")
+    @WithMockUser(authorities = "MUSEUM_MANAGEMENT_CREATE")
     public void testCreateNavPoint_Success() throws Exception {
         // Test successful creation of NavPoint
         //arrange
@@ -135,7 +135,7 @@ public class NavPointTests extends ContainersEnvironment {
 
     @Test
     @Order(4)
-    @WithMockUser(authorities = "NAV_POINT_CREATE")
+    @WithMockUser(authorities = "MUSEUM_MANAGEMENT_CREATE")
     @Transactional
     @Rollback(value = false)
     public void testCreateNavPointWithEdge() throws Exception {
@@ -187,7 +187,7 @@ public class NavPointTests extends ContainersEnvironment {
 
     @Test
     @Order(5)
-    @WithMockUser(authorities = "NAV_POINT_UPDATE")
+    @WithMockUser(authorities = "MUSEUM_MANAGEMENT_UPDATE")
     @Transactional
     @Rollback(value = false)
     public void testUpdateNavPointWithRemoveEdge() throws Exception {
