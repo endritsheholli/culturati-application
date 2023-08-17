@@ -63,6 +63,10 @@ public class WikiAuthServiceImpl implements WikiAuthService {
             logger.error("auth response was null");
             throw new WikiException();
         }
+        else if (!authResponse.responseResult().succeeded()) {
+            logger.error("Authentication failed: " + authResponse.responseResult());
+            throw new WikiException();
+        }
         auth = WikiAuth.from(authResponse);
     }
 
