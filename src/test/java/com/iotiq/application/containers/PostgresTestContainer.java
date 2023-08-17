@@ -11,6 +11,7 @@ public class PostgresTestContainer extends PostgreSQLContainer<PostgresTestConta
     public static final String IMAGE_VERSION = "postgres:11.1";
     public static final String USERNAME = "postgres";
     public static final String PASSWORD = "postgres";
+    public static final String DATABASE_NAME = "tenant1";
     public static final int CONTAINER_PORT = 5432;
     public static final int LOCAL_PORT = 5435;
     public static PostgreSQLContainer container;
@@ -22,7 +23,7 @@ public class PostgresTestContainer extends PostgreSQLContainer<PostgresTestConta
     public static PostgreSQLContainer getInstance() {
         if (container == null) {
             container = new PostgresTestContainer()
-                    .withInitScript("init.sql")
+                    .withDatabaseName(DATABASE_NAME)
                     .withUsername(USERNAME)
                     .withPassword(PASSWORD)
                     .withExposedPorts(CONTAINER_PORT)
