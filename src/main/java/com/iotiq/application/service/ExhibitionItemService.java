@@ -20,8 +20,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
-import static com.iotiq.commons.util.NullHandlerUtil.setIfNotNull;
-
 @Service
 @RequiredArgsConstructor
 public class ExhibitionItemService {
@@ -51,7 +49,7 @@ public class ExhibitionItemService {
         exhibitionItem.setPath(pageDto.path());
         exhibitionItem.setWikiId(String.valueOf(pageDto.id()));
         exhibitionItem.setTitle(pageDto.title());
-        setIfNotNull(exhibitionItem::setLocation, () -> converter.convert(request.location()), request.location());
+        exhibitionItem.setLocation(converter.convert(request.location()));
 
         exhibitionItemRepository.save(exhibitionItem);
     }

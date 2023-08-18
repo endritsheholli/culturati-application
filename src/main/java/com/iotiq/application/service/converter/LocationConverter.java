@@ -9,14 +9,17 @@ import org.springframework.stereotype.Component;
 public class LocationConverter implements Converter<LocationRequest, Location> {
 
     @Override
-    public void convert(@NotNull LocationRequest source, @NotNull Location target) {
+    public void convert(LocationRequest source, Location target) {
+        if (source == null) {
+            return;
+        }
         target.setLatitude(source.latitude());
         target.setLongitude(source.longitude());
     }
 
     @Override
     @NotNull
-    public Location convert(@NotNull LocationRequest source) {
+    public Location convert(LocationRequest source) {
         Location target = new Location();
         convert(source, target);
         return target;
