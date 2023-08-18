@@ -28,8 +28,6 @@ spring:
     hibernate:
       ddl-auto: update
 
-mapFileDirectory: file:./application/src/main/resources/files/
-
 #logging:
 #  level:
 #    com:

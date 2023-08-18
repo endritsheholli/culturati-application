@@ -6,8 +6,8 @@ import org.springframework.http.HttpStatus;
 import java.util.Collections;
 
 public class FileFormatNotSupportedException extends ApplicationException {
-    
-    public FileFormatNotSupportedException(String message) {
-        super(HttpStatus.BAD_REQUEST, "allowedExtensions", Collections.singletonList(message));
+
+    public FileFormatNotSupportedException(String fileExtension) {
+        super(HttpStatus.BAD_REQUEST, "fileFormatNotSupported", Collections.emptyList(), new String[]{fileExtension});
     }
 }

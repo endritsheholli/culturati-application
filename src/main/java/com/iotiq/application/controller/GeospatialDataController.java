@@ -15,29 +15,29 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "Geospatial Data", description = "Geospatial Data API")
 @RestController
-@RequestMapping("/api/v1/geospatial")
+@RequestMapping("/api/v1/geospatial_data")
 @RequiredArgsConstructor
-public class GeoSpatialDataController {
+public class GeospatialDataController {
 
     private final GeoSpatialDataService geoSpatialDataService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority(@GeoSpatialDataAuth.CREATE)")
-    public void uploadGeoJSON(@RequestParam("file") MultipartFile file) throws Exception {
-        geoSpatialDataService.saveGeoJSONFile(file);
+    public void uploadGeoJSON(@RequestParam("file") MultipartFile file) {
+        geoSpatialDataService.save(file);
     }
 
     @DeleteMapping
     @PreAuthorize("hasAuthority(@GeoSpatialDataAuth.DELETE)")
     public void deleteGeoJSON() {
-        geoSpatialDataService.deleteGeoJSONFile();
+        geoSpatialDataService.delete();
     }
 
     @GetMapping
     @PreAuthorize("hasAuthority(@GeoSpatialDataAuth.VIEW)")
-    public ResponseEntity<Resource> getGeoJSON() {
-        Resource resource = geoSpatialDataService.getGeoJSONFile();
+    public ResponseEntity<Resource> getGeospatialData() {
+        Resource resource = geoSpatialDataService.get();
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + TenantContext.getCurrentTenant() + ".json\"")
