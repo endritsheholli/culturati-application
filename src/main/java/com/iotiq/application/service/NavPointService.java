@@ -21,8 +21,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import static com.iotiq.commons.util.NullHandlerUtil.setIfNotNull;
-
 @Service
 @RequiredArgsConstructor
 public class NavPointService {
@@ -58,7 +56,7 @@ public class NavPointService {
         }
 
         NavPoint navPoint = new NavPoint();
-        setIfNotNull(navPoint::setLocation, () -> converter.convert(request.location()), request.location());
+        navPoint.setLocation(converter.convert(request.location()));
         navPoint.setExhibits(exhibits);
         navPoint.setFacilities(facility);
         navPoint.setExhibitionItems(exhibitionItems);
