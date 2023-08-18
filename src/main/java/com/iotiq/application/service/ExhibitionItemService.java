@@ -20,12 +20,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+import static com.iotiq.commons.util.NullHandlerUtil.setIfNotNull;
+
 @Service
 @RequiredArgsConstructor
 public class ExhibitionItemService {
 
     private final ExhibitionItemRepository exhibitionItemRepository;
     private final WikiClient wikiClient;
+    private final LocationConverter converter;
 
     public Page<ExhibitionItem> getAll(ExhibitionItemFilter filter, Sort sort) {
         return exhibitionItemRepository.findAll(filter.buildSpecification(), filter.buildPageable(sort));
@@ -38,7 +41,7 @@ public class ExhibitionItemService {
 
     @Transactional
     public void create(ExhibitionItemCreateRequest request) throws Exception {
-        PageCreateResponse response = wikiClient.createPage(new PageCreateRequest(request.path(), "-", "-",request.title() ));
+        PageCreateResponse response = wikiClient.createPage(new PageCreateRequest(request.path(), "-", "-", request.title()));
 
         if (!response.responseResult().succeeded()) {
             throw new CreatePageException();
@@ -48,7 +51,7 @@ public class ExhibitionItemService {
         exhibitionItem.setPath(pageDto.path());
         exhibitionItem.setWikiId(String.valueOf(pageDto.id()));
         exhibitionItem.setTitle(pageDto.title());
-        exhibitionItem.setLocation(LocationConverter.convertToLocation(request.location()));
+        setIfNotNull(exhibitionItem::setLocation, () -> converter.convert(request.location()), request.location());
 
         exhibitionItemRepository.save(exhibitionItem);
     }
@@ -58,13 +61,13 @@ public class ExhibitionItemService {
         ExhibitionItem exhibitionItem = getOne(id);
 
         exhibitionItem.setTitle(request.title());
-        exhibitionItem.setLocation(LocationConverter.convertToLocation(request.location()));
-        
+        exhibitionItem.setLocation(converter.convert(request.location()));
+
         exhibitionItemRepository.save(exhibitionItem);
     }
 
     public void delete(UUID id) {
         exhibitionItemRepository.deleteById(id);
     }
-    
+
 }

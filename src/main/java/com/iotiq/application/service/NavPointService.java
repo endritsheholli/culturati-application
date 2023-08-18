@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import static com.iotiq.commons.util.NullHandlerUtil.setIfNotNull;
+
 @Service
 @RequiredArgsConstructor
 public class NavPointService {
@@ -29,6 +31,8 @@ public class NavPointService {
     private final ExhibitionItemRepository exhibitionItemRepository;
     private final ExhibitRepository exhibitRepository;
     private final FacilityRepository facilityRepository;
+    private final LocationConverter converter;
+
 
     @Transactional
     public void create(NavPointCreateRequest request) {
@@ -54,7 +58,7 @@ public class NavPointService {
         }
 
         NavPoint navPoint = new NavPoint();
-        navPoint.setLocation(LocationConverter.convertToLocation(request.location()));
+        setIfNotNull(navPoint::setLocation, () -> converter.convert(request.location()), request.location());
         navPoint.setExhibits(exhibits);
         navPoint.setFacilities(facility);
         navPoint.setExhibitionItems(exhibitionItems);
@@ -83,8 +87,8 @@ public class NavPointService {
     public void update(UUID id, NavPointUpdateRequest request) {
 
         NavPoint existingNavPoint = getOne(id);
-        
-        existingNavPoint.setLocation(LocationConverter.convertToLocation(request.location()));
+
+        existingNavPoint.setLocation(converter.convert(request.location()));
 
         // Find the Facility objects related to the ID list from the FacilityIds and associate them with the NavPoint
         Set<Facility> facilities = facilityRepository.findAllByIdIn(request.facilityIds());
@@ -122,7 +126,7 @@ public class NavPointService {
         for (NavPoint edge : edges) {
             existingNavPoint.addEdge(edge);
         }
-        
+
         navPointRepository.save(existingNavPoint);
     }
 }
