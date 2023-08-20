@@ -29,13 +29,13 @@ public class ExhibitController {
     
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAuthority(@ExhibitionAuth.CREATE)")
+    @PreAuthorize("hasAuthority(@MuseumManagementAuth.CREATE)")
     public void create(@RequestBody @Valid ExhibitCreateRequest request) {
         exhibitService.create(request);
     }
     
     @GetMapping
-    @PreAuthorize("hasAuthority(@ExhibitionAuth.VIEW)")
+    @PreAuthorize("hasAuthority(@MuseumManagementAuth.VIEW)")
     public PagedResponse<ExhibitDto> getAll(ExhibitFilter filter, Sort sort) {
         Page<Exhibit> page = exhibitService.getAll(filter, sort);
         List<ExhibitDto> dtos = page.getContent().stream().map(ExhibitDto::of).toList();
@@ -43,21 +43,21 @@ public class ExhibitController {
     }
     
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority(@ExhibitionAuth.VIEW)")
+    @PreAuthorize("hasAuthority(@MuseumManagementAuth.VIEW)")
     public ExhibitDto getOne(@PathVariable UUID id) {
         return ExhibitDto.of(exhibitService.getOne(id));
     }
     
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAuthority(@ExhibitionAuth.UPDATE)")
+    @PreAuthorize("hasAuthority(@MuseumManagementAuth.UPDATE)")
     public void update(@PathVariable UUID id, @RequestBody @Valid ExhibitUpdateRequest request) {
         exhibitService.update(id, request);
     }
     
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAuthority(@ExhibitionAuth.DELETE)")
+    @PreAuthorize("hasAuthority(@MuseumManagementAuth.DELETE)")
     public void delete(@PathVariable UUID id) {
         exhibitService.delete(id);
     }
