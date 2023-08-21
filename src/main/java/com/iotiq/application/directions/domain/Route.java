@@ -1,14 +1,9 @@
 package com.iotiq.application.directions.domain;
 
-import lombok.Value;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-@Value
-public class Route {
-    List<Leg> legs;
-    String weightName;
-    Double weight;
-    Double duration;
-    Double distance;
+public record Route(List<Leg> legs, Summary summary, List<Segment> segments, BBox bbox, String geometry,
+                    @JsonProperty("way_points") List<Integer> waypoints) {
 }

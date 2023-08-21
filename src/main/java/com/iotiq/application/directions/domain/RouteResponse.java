@@ -1,6 +1,12 @@
 package com.iotiq.application.directions.domain;
 
+import lombok.Data;
+
 import java.util.List;
 
-public record RouteResponse(String code, List<Route> routes, List<Waypoint> waypoints) {
+@Data
+public class RouteResponse {
+    BBox bbox;
+    Metadata metadata;
+    List<Route> routes;
 }
