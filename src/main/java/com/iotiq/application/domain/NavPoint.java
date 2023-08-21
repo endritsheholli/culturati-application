@@ -13,7 +13,8 @@ import java.util.UUID;
 @Setter
 @Getter
 public class NavPoint extends AbstractPersistable<UUID> {
-    private String mapId;
+    @Embedded
+    private Location location;
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {

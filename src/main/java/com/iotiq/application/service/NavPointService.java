@@ -10,6 +10,7 @@ import com.iotiq.application.repository.ExhibitRepository;
 import com.iotiq.application.repository.ExhibitionItemRepository;
 import com.iotiq.application.repository.FacilityRepository;
 import com.iotiq.application.repository.NavPointRepository;
+import com.iotiq.application.service.converter.LocationConverter;
 import com.iotiq.commons.exceptions.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,8 @@ public class NavPointService {
     private final ExhibitionItemRepository exhibitionItemRepository;
     private final ExhibitRepository exhibitRepository;
     private final FacilityRepository facilityRepository;
+    private final LocationConverter converter;
+
 
     @Transactional
     public void create(NavPointCreateRequest request) {
@@ -53,7 +56,7 @@ public class NavPointService {
         }
 
         NavPoint navPoint = new NavPoint();
-        navPoint.setMapId(request.mapId());
+        navPoint.setLocation(converter.convert(request.location()));
         navPoint.setExhibits(exhibits);
         navPoint.setFacilities(facility);
         navPoint.setExhibitionItems(exhibitionItems);
@@ -83,7 +86,7 @@ public class NavPointService {
 
         NavPoint existingNavPoint = getOne(id);
 
-        existingNavPoint.setMapId(request.mapId());
+        existingNavPoint.setLocation(converter.convert(request.location()));
 
         // Find the Facility objects related to the ID list from the FacilityIds and associate them with the NavPoint
         Set<Facility> facilities = facilityRepository.findAllByIdIn(request.facilityIds());
@@ -121,7 +124,7 @@ public class NavPointService {
         for (NavPoint edge : edges) {
             existingNavPoint.addEdge(edge);
         }
-        
+
         navPointRepository.save(existingNavPoint);
     }
 }
