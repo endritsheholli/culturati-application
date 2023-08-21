@@ -1,5 +1,6 @@
 package com.iotiq.application.domain;
 
+import com.iotiq.application.domain.authority.GeoSpatialDataAuthority;
 import com.iotiq.application.domain.authority.MuseumManagementAuthority;
 import com.iotiq.user.domain.authorities.UserManagementAuthority;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,7 +26,11 @@ public enum Role implements com.iotiq.user.domain.authorities.Role {
             MuseumManagementAuthority.VIEW,
             MuseumManagementAuthority.CREATE,
             MuseumManagementAuthority.UPDATE,
-            MuseumManagementAuthority.DELETE
+            MuseumManagementAuthority.DELETE,
+
+            GeoSpatialDataAuthority.VIEW,
+            GeoSpatialDataAuthority.CREATE,
+            GeoSpatialDataAuthority.DELETE
 
             
     ),
