@@ -26,7 +26,7 @@ public class SecurityConfiguration {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/swagger-ui/*", "/v3/api-docs", "/v3/api-docs/*").permitAll()
-                        .requestMatchers("/api/v1/auth/*").permitAll()
+                        .requestMatchers("/api/v1/auth/*", "/api/v1/register").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .apply(new JWTConfigurer(tokenProvider));
