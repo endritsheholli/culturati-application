@@ -1,9 +1,8 @@
 package com.iotiq.application.directions.services;
 
-import org.springframework.data.geo.Point;
-
-import java.util.List;
+import com.iotiq.application.directions.domain.Coordinates;
+import com.iotiq.application.directions.domain.RouteResponse;
 
 public interface DirectionsService {
-    List<Point> findRoute(Point start, Point end);
+    RouteResponse findRoute(Coordinates start, Coordinates end);
 }
