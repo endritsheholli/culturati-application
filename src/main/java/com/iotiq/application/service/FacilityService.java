@@ -4,6 +4,7 @@ import com.iotiq.application.domain.Facility;
 import com.iotiq.application.messages.facility.FacilityCreateRequest;
 import com.iotiq.application.messages.facility.FacilityUpdateRequest;
 import com.iotiq.application.repository.FacilityRepository;
+import com.iotiq.application.service.converter.LocationConverter;
 import com.iotiq.commons.exceptions.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class FacilityService {
     private final FacilityRepository facilityRepository;
+    private final LocationConverter converter;
 
     public List<Facility> getAll() {
         return facilityRepository.findAll();
@@ -30,6 +32,7 @@ public class FacilityService {
         Facility facility = new Facility();
         facility.setOpeningTime(request.openingTime());
         facility.setClosingTime(request.closingTime());
+        facility.setLocation(converter.convert(request.location()));
         facilityRepository.save(facility);
     }
 
@@ -38,6 +41,7 @@ public class FacilityService {
         Facility facility = getOne(id);
         facility.setOpeningTime(request.openingTime());
         facility.setClosingTime(request.closingTime());
+        facility.setLocation(converter.convert(request.location()));
         facilityRepository.save(facility);
     }
 
