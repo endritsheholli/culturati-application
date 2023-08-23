@@ -1,24 +1,19 @@
 package com.iotiq.application;
 
+import com.iotiq.application.config.ContainersEnvironment;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.devtools.restart.RestartScope;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
-import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
+@AutoConfigureMockMvc
 @SpringBootTest
-class ApplicationTests {
-    @Bean
-    @ServiceConnection
-    @RestartScope
-    public PostgreSQLContainer<?> postgreSQLContainer() {
-        return new PostgreSQLContainer<>("postgres:15.2-alpine").withDatabaseName("tenant1");
-    }
+@Testcontainers
+class ApplicationTests extends ContainersEnvironment {
 
     @Test
     void contextLoads() {
