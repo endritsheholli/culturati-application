@@ -60,9 +60,4 @@ public class FacilityController {
         facilityService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-    @GetMapping("/test")
-    @ResponseStatus(HttpStatus.OK)
-    public void test() {
-    }
 }
