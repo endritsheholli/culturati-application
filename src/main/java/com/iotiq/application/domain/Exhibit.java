@@ -12,6 +12,8 @@ import java.util.*;
 @Getter
 public class Exhibit extends AbstractPersistable<UUID> {
     private String name;
+    @Embedded
+    private Location location;
     @OneToMany
     @JoinColumn(name = "exhibit_id")
     private List<ExhibitionItem> exhibitionItems = new ArrayList<>();

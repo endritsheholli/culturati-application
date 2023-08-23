@@ -7,6 +7,7 @@ import com.iotiq.application.messages.exhibit.ExhibitCreateRequest;
 import com.iotiq.application.messages.exhibit.ExhibitUpdateRequest;
 import com.iotiq.application.repository.ExhibitRepository;
 import com.iotiq.application.repository.ExhibitionItemRepository;
+import com.iotiq.application.service.converter.LocationConverter;
 import com.iotiq.commons.exceptions.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ import java.util.UUID;
 public class ExhibitService {
     private final ExhibitRepository exhibitRepository;
     private final ExhibitionItemRepository exhibitionItemRepository;
-    private final ExhibitionItemService exhibitionItemService;
+    private final LocationConverter converter;
 
     @Transactional
     public void create(ExhibitCreateRequest request) {
@@ -34,6 +35,7 @@ public class ExhibitService {
         Exhibit exhibit = new Exhibit();
         exhibit.setName(request.name());
         exhibit.setExhibitionItems(exhibitionItems);
+        exhibit.setLocation(converter.convert(request.location()));
 
         exhibitRepository.save(exhibit);
     }
@@ -55,6 +57,7 @@ public class ExhibitService {
 
         Exhibit exhibit = getOne(exhibitId);
         exhibit.setName(request.name());
+        exhibit.setLocation(converter.convert(request.location()));
         
         // Set the updated ExhibitionItems for the Exhibit
         for (ExhibitionItem item : exhibitionItems) {
