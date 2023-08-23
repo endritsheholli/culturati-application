@@ -1,5 +1,5 @@
 defaultTenant: tenant_1
-tenantPropertiesPath: src/test/resources/tenants
+tenantPropertiesPath: tenants
 app:
   jwt:
     secret: doSCf7QzUN8XxRr9eTGaLAOPOb4yWq1NMFDUV5MhH39MbDZJbaLarAie42MleAlFdoSCf7QzUN8XxRr9eTGaLAOPOb4yWq1NMFDUV5MhH39MbDZJbaLarAie42MleAlF
