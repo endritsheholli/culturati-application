@@ -1,12 +1,8 @@
 pipeline {
     agent any
 
-    environment {
-        DEPLOYMENT_BRANCH          = "master"
-    }
-
     stages {
-        stage("Set Stages") {
+        stage("Run Main Project Job") {
             steps {
                 sh 'printenv'
             }
