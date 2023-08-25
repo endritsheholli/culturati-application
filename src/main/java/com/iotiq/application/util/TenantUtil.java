@@ -1,7 +1,7 @@
 package com.iotiq.application.util;
 
 import com.iotiq.application.domain.Tenant;
-import com.iotiq.commons.exceptions.EntityNotFoundException;
+import com.iotiq.application.exception.TenantException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -38,24 +38,15 @@ public class TenantUtil {
             return tenants;
         }
 
-        processUtil.killIf(() -> tenantPropertiesPath == null || tenantPropertiesPath.isBlank(),
+        processUtil.killIf(tenantPropertiesPath == null || tenantPropertiesPath.isBlank(),
                 "Exiting because tenant folder path is not configured");
 
         File[] files = getFiles();
-        processUtil.killIf(() -> files == null || files.length == 0,
-                "Exiting because tenant folder is missing. Put the tenant files in a tenant folder on the classpath. Classpath is " +
-                        tenantPropertiesPath
-        );
-
-        List<Tenant> tenants = new ArrayList<>();
+        List<Tenant> foundTenants = new ArrayList<>();
 
         for (File file : files) {
             Properties tenantProperties = new Properties();
-            try (FileInputStream inStream = new FileInputStream(file)) {
-                tenantProperties.load(inStream);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            loadPropertiesFromFile(file, tenantProperties);
 
             Tenant tenant = Tenant.builder()
                     .name(tenantProperties.getProperty("datasource.name"))
@@ -65,19 +56,29 @@ public class TenantUtil {
                     .datasourceDriverClassName(tenantProperties.getProperty("datasource.driver-class-name"))
                     .build();
 
-            tenants.add(tenant);
+            foundTenants.add(tenant);
         }
 
-        return tenants;
+        return foundTenants;
+    }
+
+    private static void loadPropertiesFromFile(File file, Properties tenantProperties) {
+        try (FileInputStream inStream = new FileInputStream(file)) {
+            tenantProperties.load(inStream);
+        } catch (IOException e) {
+            throw new TenantException("Tenant file is malformed: " + file.getName());
+        }
     }
 
     private File[] getFiles() {
-        File folder;
         try {
-            folder = new ClassPathResource(tenantPropertiesPath).getFile();
+            File folder = new ClassPathResource(tenantPropertiesPath).getFile();
+            return folder.listFiles();
         } catch (IOException e) {
-            throw new EntityNotFoundException("files");
+            throw new TenantException(
+                    "Exiting because tenant folder is missing. Put the tenant folder and files on the classpath. Classpath is " +
+                            tenantPropertiesPath
+            );
         }
-        return folder.listFiles();
     }
 }

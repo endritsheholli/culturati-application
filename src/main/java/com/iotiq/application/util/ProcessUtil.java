@@ -1,31 +1,37 @@
 package com.iotiq.application.util;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-
-import java.util.function.Supplier;
 
 @Component
 @RequiredArgsConstructor
 public class ProcessUtil {
 
+    private final Logger log = LoggerFactory.getLogger(ProcessUtil.class);
+
     private final ApplicationContext applicationContext;
 
-    public void killIf(@NotNull Supplier<Boolean> condition) {
-        if (condition.get()) {
-            System.out.println("Killing application");
+    public void killIf(boolean condition) {
+        if (condition) {
+            log.error("Killing application");
             kill();
         }
     }
 
-    public void killIf(@NotNull Supplier<Boolean> condition, String message) {
-        if (condition.get()) {
-            System.out.println(message);
+    public void killIf(boolean condition, String message) {
+        if (condition) {
+            log.error(message);
             kill();
         }
+    }
+
+    public void kill(String message) {
+        log.error(message);
+        kill();
     }
 
     private void kill() {
