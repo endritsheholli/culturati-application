@@ -2,7 +2,7 @@ package com.iotiq.application.service;
 
 import com.iotiq.application.config.TenantContext;
 import com.iotiq.application.exception.FileFormatNotSupportedException;
-import com.iotiq.application.exception.FileNotFound;
+import com.iotiq.application.exception.FileNotFoundException;
 import com.iotiq.application.exception.FileTransferException;
 import com.iotiq.application.util.FileUtil;
 import com.iotiq.commons.exceptions.RequiredFieldMissingException;
@@ -55,7 +55,7 @@ public class GeoSpatialDataService {
         File file = getGeoJSONFile();
 
         if (!file.exists()) {
-            throw new FileNotFound(file.getName());
+            throw new FileNotFoundException(file.getName());
         }
 
         return new FileSystemResource(file);
@@ -76,7 +76,7 @@ public class GeoSpatialDataService {
         try {
             directoryFolder = fileDirectory.getFile();
         } catch (IOException exp) {
-            throw new FileNotFound(filename);
+            throw new FileNotFoundException(filename);
         }
         String absolutePathOfFolder = directoryFolder.getAbsolutePath();
 

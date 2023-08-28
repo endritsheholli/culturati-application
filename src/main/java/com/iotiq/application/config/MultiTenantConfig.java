@@ -1,5 +1,6 @@
 package com.iotiq.application.config;
 
+import com.iotiq.application.exception.FileNotFoundException;
 import com.iotiq.application.exception.TenantDataSourceConnectionException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -29,7 +30,14 @@ public class MultiTenantConfig {
     @Bean
     @ConfigurationProperties(prefix = "tenants")
     public DataSource dataSource() throws IOException {
-        File[] files = new ClassPathResource(tenantPropertiesPath).getFile().listFiles();
+        File[] files;
+
+        try {
+            files = new ClassPathResource(tenantPropertiesPath).getFile().listFiles();
+        }
+        catch (IOException e) {
+            throw new FileNotFoundException(tenantPropertiesPath, e);
+        }
         Map<Object, Object> resolvedDataSources = new HashMap<>();
 
         for (File propertyFile : files) {
