@@ -1,7 +1,16 @@
+app:
+  jwt:
+    secret: doSCf7QzUN8XxRr9eTGaLAOPOb4yWq1NMFDUV5MhH39MbDZJbaLarAie42MleAlFdoSCf7QzUN8XxRr9eTGaLAOPOb4yWq1NMFDUV5MhH39MbDZJbaLarAie42MleAlF
+    refresh:
+      expirationMinutes: 360
+    access:
+      expirationMinutes: 60
 spring:
   profiles:
     active: dev
 mapFileDirectory: file:./files/
+
+tenantPropertiesPath: tenants
 
 security:
   allowed-public-apis:
