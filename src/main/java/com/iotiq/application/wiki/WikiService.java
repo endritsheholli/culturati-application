@@ -1,5 +1,7 @@
 package com.iotiq.application.wiki;
 
+import com.iotiq.application.domain.QuestionType;
+import com.iotiq.application.wiki.domain.QuestionDto;
 import com.iotiq.application.wiki.messages.CategoryResponse;
 import com.iotiq.application.wiki.messages.DifficultyLevelResponse;
 import com.iotiq.application.wiki.messages.ThemeResponse;
@@ -26,4 +28,28 @@ public class WikiService {
                 new ThemeResponse("Blue Theme", "#4285F4", "#FFFFFF", ""));
     }
 
+    public List<QuestionDto> getQuestions(String category, String difficultyLevel, int numberOfQuestions) {
+        return List.of(
+                new QuestionDto("Ankara Castle History 1", "Option 1","Hint for the basic question.", QuestionType.MULTIPLE_CHOICE,
+                        "10", "%30", "https://en.wikipedia.org/wiki/Ankara_Castle",
+                        List.of("Option 1", "Option 2", "Option 3", "Option 4")
+                ),
+                new QuestionDto("Ankara Castle History 2", "Option 2","Hint for the basic question.", QuestionType.MULTIPLE_CHOICE,
+                        "10", "%30", "https://en.wikipedia.org/wiki/Ankara_Castle",
+                        List.of("Option 1", "Option 2", "Option 3", "Option 4")
+                ),
+                new QuestionDto("Ankara Castle History 3", "Option 3","Hint for the basic question.", QuestionType.MULTIPLE_CHOICE,
+                        "10", "%30", "https://en.wikipedia.org/wiki/Ankara_Castle",
+                        List.of("Option 1", "Option 2", "Option 3", "Option 4")
+                ),
+                new QuestionDto("Ankara Castle History 4", "Option 4","Hint for the basic question.", QuestionType.MULTIPLE_CHOICE,
+                        "10", "%30", "https://en.wikipedia.org/wiki/Ankara_Castle",
+                        List.of("Option 1", "Option 2", "Option 3", "Option 4")
+                ),
+                new QuestionDto("Ankara Castle History 5", "Option 5","Hint for the basic question.", QuestionType.MULTIPLE_CHOICE,
+                        "10", "%30", "https://en.wikipedia.org/wiki/Ankara_Castle",
+                        List.of("Option 1", "Option 2", "Option 3", "Option 4")
+                )
+        );
+    }
 }
