@@ -1,4 +1,4 @@
-package com.iotiq.application.service;
+package com.iotiq.application.service.wikiDataService;
 
 import com.iotiq.application.wiki.WikiService;
 import com.iotiq.application.wiki.messages.ThemeResponse;
@@ -10,11 +10,12 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ThemeService {
-    List<ThemeResponse> themes = new ArrayList<>();
+public class ThemeService implements WikiDataService<ThemeResponse> {
     private final WikiService wikiService;
+    private List<ThemeResponse> themes = new ArrayList<>();
 
-    public List<ThemeResponse> getThemes(){
+    @Override
+    public List<ThemeResponse> getData() {
         if (themes.isEmpty()) {
             this.themes = wikiService.getThemes();
         }
