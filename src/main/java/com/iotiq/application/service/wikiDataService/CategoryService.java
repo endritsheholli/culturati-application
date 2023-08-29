@@ -5,20 +5,15 @@ import com.iotiq.application.wiki.messages.CategoryResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CategoryService implements WikiDataService<CategoryResponse> {
-    private final WikiService wikiService;
-    private List<CategoryResponse> categories = new ArrayList<>();
+public class CategoryService extends WikiDataService<CategoryResponse> {
 
-    @Override
-    public List<CategoryResponse> getData() {
-        if (categories.isEmpty()) {
-            this.categories = wikiService.getCategories();
-        }
-        return this.categories;
+    private final WikiService wikiService;
+
+    public List<CategoryResponse> getCategories() {
+        return getEntities(wikiService.getCategories());
     }
 }
