@@ -1,12 +1,4 @@
 defaultTenant: tenant_1
-tenantPropertiesPath: src/test/resources/tenants
-app:
-  jwt:
-    secret: doSCf7QzUN8XxRr9eTGaLAOPOb4yWq1NMFDUV5MhH39MbDZJbaLarAie42MleAlFdoSCf7QzUN8XxRr9eTGaLAOPOb4yWq1NMFDUV5MhH39MbDZJbaLarAie42MleAlF
-    refresh:
-      expirationMinutes: 360
-    access:
-      expirationMinutes: 60
 spring:
   jpa:
     hibernate:
@@ -19,3 +11,8 @@ security:
     - /v3/api-docs/*
     - /api/v1/auth/*
     - /api/v1/test/*
+seed:
+  users:
+    admin:
+      username: admin
+      password: admin123
