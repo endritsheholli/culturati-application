@@ -32,10 +32,15 @@ public enum Role implements com.iotiq.user.domain.authorities.Role {
             GeoSpatialDataAuthority.CREATE,
             GeoSpatialDataAuthority.DELETE
 
-            
+
     ),
     CURATOR(),
-    VISITOR();
+    VISITOR(),
+    AI_MODULE(
+            new SimpleGrantedAuthority("AI_MODULE")
+    );
+
+    // info: add new roles to the converter: RoleConverterImpl
 
     final List<GrantedAuthority> authorities;
 
