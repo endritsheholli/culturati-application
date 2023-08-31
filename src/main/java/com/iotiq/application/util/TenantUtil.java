@@ -62,6 +62,10 @@ public class TenantUtil {
         return foundTenants;
     }
 
+    public boolean existsByName(String tenantName) {
+        return this.tenants.stream().anyMatch(tenant -> tenant.getName().equals(tenantName));
+    }
+
     private static void loadPropertiesFromFile(File file, Properties tenantProperties) {
         try (FileInputStream inStream = new FileInputStream(file)) {
             tenantProperties.load(inStream);
