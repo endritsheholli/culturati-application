@@ -1,10 +1,11 @@
 package com.iotiq.application.service;
 
 import com.iotiq.application.domain.ExhibitionItem;
-import com.iotiq.application.messages.ExhibitionItemCreateRequest;
-import com.iotiq.application.messages.ExhibitionItemFilter;
-import com.iotiq.application.messages.ExhibitionItemUpdateRequest;
+import com.iotiq.application.messages.exhibitionItem.ExhibitionItemCreateRequest;
+import com.iotiq.application.messages.exhibitionItem.ExhibitionItemFilter;
+import com.iotiq.application.messages.exhibitionItem.ExhibitionItemUpdateRequest;
 import com.iotiq.application.repository.ExhibitionItemRepository;
+import com.iotiq.application.service.converter.LocationConverter;
 import com.iotiq.application.wiki.WikiClient;
 import com.iotiq.application.wiki.domain.PageDto;
 import com.iotiq.application.wiki.exception.CreatePageException;
@@ -17,7 +18,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -26,6 +26,7 @@ public class ExhibitionItemService {
 
     private final ExhibitionItemRepository exhibitionItemRepository;
     private final WikiClient wikiClient;
+    private final LocationConverter converter;
 
     public Page<ExhibitionItem> getAll(ExhibitionItemFilter filter, Sort sort) {
         return exhibitionItemRepository.findAll(filter.buildSpecification(), filter.buildPageable(sort));
@@ -38,7 +39,7 @@ public class ExhibitionItemService {
 
     @Transactional
     public void create(ExhibitionItemCreateRequest request) throws Exception {
-        PageCreateResponse response = wikiClient.createPage(new PageCreateRequest(request.path(), "-", "-",request.title() ));
+        PageCreateResponse response = wikiClient.createPage(new PageCreateRequest(request.path(), "-", "-", request.title()));
 
         if (!response.responseResult().succeeded()) {
             throw new CreatePageException();
@@ -48,6 +49,7 @@ public class ExhibitionItemService {
         exhibitionItem.setPath(pageDto.path());
         exhibitionItem.setWikiId(String.valueOf(pageDto.id()));
         exhibitionItem.setTitle(pageDto.title());
+        exhibitionItem.setLocation(converter.convert(request.location()));
 
         exhibitionItemRepository.save(exhibitionItem);
     }
@@ -57,10 +59,13 @@ public class ExhibitionItemService {
         ExhibitionItem exhibitionItem = getOne(id);
 
         exhibitionItem.setTitle(request.title());
+        exhibitionItem.setLocation(converter.convert(request.location()));
+
+        exhibitionItemRepository.save(exhibitionItem);
     }
 
     public void delete(UUID id) {
         exhibitionItemRepository.deleteById(id);
     }
-    
+
 }

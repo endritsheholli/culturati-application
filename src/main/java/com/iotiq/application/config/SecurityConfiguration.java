@@ -21,17 +21,20 @@ public class SecurityConfiguration {
 
     private final TokenProvider tokenProvider;
 
+    private final SecurityProperties securityProperties;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(request -> request
-                        .requestMatchers("/swagger-ui/*", "/v3/api-docs", "/v3/api-docs/*").permitAll()
-                        .requestMatchers("/api/v1/auth/*", "/api/v1/register").permitAll()
-                        .anyRequest().authenticated())
+                .authorizeHttpRequests(request ->
+                        request.requestMatchers(securityProperties.getPublicApis())
+                                .permitAll()
+                                .anyRequest()
+                                .authenticated()
+                )
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .apply(new JWTConfigurer(tokenProvider));
         return http.build();
-
     }
 
 }

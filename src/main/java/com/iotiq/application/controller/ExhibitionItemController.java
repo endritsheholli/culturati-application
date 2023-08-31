@@ -1,10 +1,10 @@
 package com.iotiq.application.controller;
 
 import com.iotiq.application.domain.ExhibitionItem;
-import com.iotiq.application.messages.ExhibitionItemCreateRequest;
-import com.iotiq.application.messages.ExhibitionItemDto;
-import com.iotiq.application.messages.ExhibitionItemFilter;
-import com.iotiq.application.messages.ExhibitionItemUpdateRequest;
+import com.iotiq.application.messages.exhibitionItem.ExhibitionItemCreateRequest;
+import com.iotiq.application.messages.exhibitionItem.ExhibitionItemDto;
+import com.iotiq.application.messages.exhibitionItem.ExhibitionItemFilter;
+import com.iotiq.application.messages.exhibitionItem.ExhibitionItemUpdateRequest;
 import com.iotiq.application.service.ExhibitionItemService;
 import com.iotiq.commons.message.response.PagedResponse;
 import com.iotiq.commons.message.response.PagedResponseBuilder;

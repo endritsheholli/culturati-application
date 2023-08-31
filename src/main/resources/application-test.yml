@@ -1,2 +1,18 @@
 defaultTenant: tenant_1
-tenantPropertiesPath: src/main/resources/tenants
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+security:
+  allowed-public-apis:
+    - /swagger-ui/*
+    - /v3/api-docs
+    - /v3/api-docs/*
+    - /api/v1/auth/*
+    - /api/v1/test/*
+seed:
+  users:
+    admin:
+      username: admin
+      password: admin123
