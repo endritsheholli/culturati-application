@@ -1,6 +1,8 @@
 package com.iotiq.application.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.AbstractPersistable;
@@ -12,6 +14,7 @@ import java.util.UUID;
 @Entity
 @Setter
 @Getter
+@EqualsAndHashCode(callSuper = true)
 public class NavPoint extends AbstractPersistable<UUID> {
     @Embedded
     private Location location;
@@ -26,8 +29,8 @@ public class NavPoint extends AbstractPersistable<UUID> {
             joinColumns = @JoinColumn(name = "navpoint_id"),
             inverseJoinColumns = @JoinColumn(name = "edge_id")
     )
+    @JsonIgnore
     private Set<NavPoint> edges = new HashSet<>();
-    
 
     // Many-to-many relationship with FacilityOrEstablishment entity
     @ManyToMany(fetch = FetchType.LAZY,
@@ -40,6 +43,7 @@ public class NavPoint extends AbstractPersistable<UUID> {
             joinColumns = @JoinColumn(name = "navpoint_id"),
             inverseJoinColumns = @JoinColumn(name = "facility_id")
     )
+    @JsonIgnore
     private Set<Facility> facilities = new HashSet<>();
 
     // Many-to-many relationship with ExhibitionItem entity
@@ -53,6 +57,8 @@ public class NavPoint extends AbstractPersistable<UUID> {
             joinColumns = @JoinColumn(name = "navpoint_id"),
             inverseJoinColumns = @JoinColumn(name = "exhibitionItem_id")
     )
+    @JsonIgnore
+
     private Set<ExhibitionItem> exhibitionItems = new HashSet<>();
 
     // Many-to-many relationship with Exhibit entity
@@ -66,6 +72,7 @@ public class NavPoint extends AbstractPersistable<UUID> {
             joinColumns = @JoinColumn(name = "navpoint_id"),
             inverseJoinColumns = @JoinColumn(name = "exhibit_id")
     )
+    @JsonIgnore
     private Set<Exhibit> exhibits = new HashSet<>();
 
     public void addEdge(NavPoint edge) {
