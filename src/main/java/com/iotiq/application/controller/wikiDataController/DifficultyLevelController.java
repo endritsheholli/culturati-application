@@ -20,7 +20,7 @@ public class DifficultyLevelController {
     private final DifficultyLevelService difficultyLevelService;
     
     @GetMapping("/{categoryName}")
-    @PreAuthorize("hasAuthority(@Game.VIEW)")
+    @PreAuthorize("hasAuthority(@GameAuth.VIEW)")
     public ResponseEntity<List<DifficultyLevelResponse>> getAll(@PathVariable String categoryName){
         return new ResponseEntity<>(difficultyLevelService.getDifficultyLevels(categoryName), HttpStatus.OK);
     } 
