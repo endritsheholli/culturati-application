@@ -12,7 +12,7 @@ import java.util.List;
 public class DifficultyLevelService extends WikiDataService<DifficultyLevelResponse> {
     private final WikiService wikiService;
 
-    public List<DifficultyLevelResponse> getDifficultyLevels() {
-        return getEntities(wikiService.getDifficultyLevels());
+    public List<DifficultyLevelResponse> getDifficultyLevels(String categoryName) {
+        return getEntities(wikiService.getDifficultyLevels(categoryName));
     }
 }

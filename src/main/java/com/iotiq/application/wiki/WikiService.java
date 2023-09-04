@@ -15,7 +15,7 @@ public class WikiService {
         return List.of(new CategoryResponse("Art"), new CategoryResponse("History"));
     }
 
-    public List<DifficultyLevelResponse> getDifficultyLevels() {
+    public List<DifficultyLevelResponse> getDifficultyLevels(String categoryName) {
         return List.of(new DifficultyLevelResponse("child"),
                 new DifficultyLevelResponse("basic"),
                 new DifficultyLevelResponse("intermediate"),
