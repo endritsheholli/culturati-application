@@ -1,5 +1,6 @@
 package com.iotiq.application.domain;
 
+import com.iotiq.application.domain.authority.GameAuthority;
 import com.iotiq.application.domain.authority.GeoSpatialDataAuthority;
 import com.iotiq.application.domain.authority.MuseumManagementAuthority;
 import com.iotiq.user.domain.authorities.UserManagementAuthority;
@@ -30,12 +31,22 @@ public enum Role implements com.iotiq.user.domain.authorities.Role {
 
             GeoSpatialDataAuthority.VIEW,
             GeoSpatialDataAuthority.CREATE,
-            GeoSpatialDataAuthority.DELETE
+            GeoSpatialDataAuthority.DELETE,
 
-            
+            GameAuthority.VIEW,
+            GameAuthority.CREATE,
+            GameAuthority.UPDATE
     ),
-    CURATOR(),
-    VISITOR();
+    CURATOR(
+            GameAuthority.VIEW,
+            GameAuthority.CREATE,
+            GameAuthority.UPDATE
+    ),
+    VISITOR(
+            GameAuthority.VIEW,
+            GameAuthority.CREATE,
+            GameAuthority.UPDATE
+    );
 
     final List<GrantedAuthority> authorities;
 

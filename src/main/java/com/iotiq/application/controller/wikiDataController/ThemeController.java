@@ -18,7 +18,7 @@ import java.util.List;
 public class ThemeController {
     private final ThemeService themeService;
     @GetMapping
-    @PreAuthorize("hasAuthority(@MuseumManagementAuth.VIEW)")
+    @PreAuthorize("hasAuthority(@Game.VIEW)")
     public ResponseEntity<List<ThemeResponse>> getAll(){
         return new ResponseEntity<>(themeService.getThemes(), HttpStatus.OK);
     }

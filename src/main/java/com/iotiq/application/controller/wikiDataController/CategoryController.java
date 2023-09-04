@@ -18,7 +18,7 @@ import java.util.List;
 public class CategoryController {
     private final CategoryService categoryService;
     @GetMapping
-    @PreAuthorize("hasAuthority(@MuseumManagementAuth.VIEW)")
+    @PreAuthorize("hasAuthority(@Game.VIEW)")
     public ResponseEntity<List<CategoryResponse>> getAll(){
         return new ResponseEntity<>(categoryService.getCategories(), HttpStatus.OK);
     }
