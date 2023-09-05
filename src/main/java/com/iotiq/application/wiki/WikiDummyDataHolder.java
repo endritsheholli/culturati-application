@@ -10,26 +10,23 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class WikiService {
-    public List<CategoryResponse> getCategories() {
-        return List.of(new CategoryResponse("Art"), new CategoryResponse("History"));
-    }
+public class WikiDummyDataHolder {
+    public static List<CategoryResponse> categories =
+         List.of(new CategoryResponse("Art"), new CategoryResponse("History"));
 
-    public List<DifficultyLevelResponse> getDifficultyLevels(String categoryName) {
-        return List.of(new DifficultyLevelResponse("child"),
+    public static List<DifficultyLevelResponse> difficultyLevels =
+         List.of(new DifficultyLevelResponse("child"),
                 new DifficultyLevelResponse("basic"),
                 new DifficultyLevelResponse("intermediate"),
                 new DifficultyLevelResponse("expert"));
-    }
 
-    public List<ThemeResponse> getThemes() {
-        return List.of(new ThemeResponse("Default", "#FFFFFF", "#000000", ""),
+    public static List<ThemeResponse> themes =
+         List.of(new ThemeResponse("Default", "#FFFFFF", "#000000", ""),
                 new ThemeResponse("Dark Mode", "#1E1E1E", "#FFFFFF", ""),
                 new ThemeResponse("Blue Theme", "#4285F4", "#FFFFFF", ""));
-    }
 
-    public List<QuestionDto> getQuestions(String category, String difficultyLevel, int numberOfQuestions) {
-        return List.of(
+    public static List<QuestionDto> questions =
+         List.of(
                 new QuestionDto("Ankara Castle History 1", "Option 1","Hint for the basic question.", QuestionType.MULTIPLE_CHOICE,
                         "10", "%30", "https://en.wikipedia.org/wiki/Ankara_Castle",
                         List.of("Option 1", "Option 2", "Option 3", "Option 4")
@@ -51,5 +48,4 @@ public class WikiService {
                         List.of("Option 1", "Option 2", "Option 3", "Option 4")
                 )
         );
-    }
 }
