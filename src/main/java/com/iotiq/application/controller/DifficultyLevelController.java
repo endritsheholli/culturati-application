@@ -1,4 +1,4 @@
-package com.iotiq.application.controller.wikiDataController;
+package com.iotiq.application.controller;
 
 import com.iotiq.application.service.wikiDataService.DifficultyLevelService;
 import com.iotiq.application.wiki.messages.DifficultyLevelResponse;
