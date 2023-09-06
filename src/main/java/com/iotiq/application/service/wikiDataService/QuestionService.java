@@ -19,20 +19,22 @@ public class QuestionService {
 
     public List<Question> convertQuestionDtosToQuestions(List<QuestionDto> questionDtos) {
         return questionDtos.stream()
-                .map(dto -> {
-                    Question question = new Question();
-                    question.setTitle(dto.title());
-                    question.setHint(dto.hint());
-                    question.setQuestionType(dto.questionType());
-                    question.setOptions(dto.options());
-                    question.setRightAnswer(dto.rightAnswer());
-                    question.setPointAnswer(dto.pointAnswer());
-                    question.setPenalty(dto.penalty());
-                    question.setMoreInformationUrl(dto.moreInformationUrl());
-
-                    return question;
-                })
+                .map(this::convertQuestionDtoToQuestion)
                 .collect(Collectors.toList());
+    }
+
+    public Question convertQuestionDtoToQuestion(QuestionDto dto) {
+        Question question = new Question();
+        question.setTitle(dto.title());
+        question.setHint(dto.hint());
+        question.setQuestionType(dto.questionType());
+        question.setOptions(dto.options());
+        question.setRightAnswer(dto.rightAnswer());
+        question.setCorrectAnswerPoints(dto.correctAnswerPoints());
+        question.setPenalty(dto.penalty());
+        question.setMoreInformationUrl(dto.moreInformationUrl());
+
+        return question;
     }
     
 }

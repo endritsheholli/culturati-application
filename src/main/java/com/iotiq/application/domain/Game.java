@@ -17,8 +17,9 @@ public class Game extends AbstractPersistable<UUID> {
     private GameType gameType;
     private String audioFileUrl;
     private Date startTime;
-    private boolean isPaused;
+    @Enumerated(EnumType.STRING)
+    private GameStatus status;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "game_id")
-    private Set<GamerGameDetails> gamerGameDetails = new HashSet<>();
+    private Set<GamerGame> gamerGame = new HashSet<>();
 }
