@@ -22,7 +22,7 @@ public class Question extends AbstractPersistable<UUID> {
     @JoinColumn(name = "question_id")
     private List<Option> options = new ArrayList<>();;
     private String rightAnswer;
-    private String pointAnswer;
+    private String correctAnswerPoints;
     private String penalty;
     private String moreInformationUrl;
     
