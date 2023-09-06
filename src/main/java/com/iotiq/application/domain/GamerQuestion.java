@@ -10,10 +10,10 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-public class GamerQuestionDetails extends AbstractPersistable<UUID> {
+public class GamerQuestion extends AbstractPersistable<UUID> {
     @ManyToOne
     @JoinColumn(name = "gamer_game_id")
-    private GamerGameDetails gamerGameDetails;
+    private GamerGame gamerGame;
     @ManyToOne
     @JoinColumn(name = "question_id")
     private Question question;

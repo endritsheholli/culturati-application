@@ -29,7 +29,7 @@ public class Question extends AbstractPersistable<UUID> {
     private String moreInformationUrl;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "question_id")
-    private Set<GamerQuestionDetails> gamerQuestionDetails = new HashSet<>();
+    private Set<GamerQuestion> gamerQuestion = new HashSet<>();
     
     // Convert the list of option texts to a list of Option entities
     public void setOptions(List<String> options){
