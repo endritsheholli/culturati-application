@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -17,11 +18,11 @@ public class Question extends AbstractPersistable<UUID> {
     private String hint;
     @Enumerated(EnumType.STRING)
     private QuestionType questionType;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "question_id")
-    private List<Option> options;
+    private List<Option> options = new ArrayList<>();;
     private String rightAnswer;
-    private String pointAnswer;
+    private String correctAnswerPoints;
     private String penalty;
     private String moreInformationUrl;
     
