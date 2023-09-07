@@ -13,6 +13,6 @@ public class ArtWorkService {
 
 
     public List<ArtWorkResponse> getArtWorks() {
-        return WikiDummyDataHolder.artWorks;
+        return WikiDummyDataHolder.DUMMY_ARTWORKS;
     }
 }

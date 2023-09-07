@@ -11,6 +11,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ThemeService {
     public List<ThemeResponse> getThemes() {
-        return WikiDummyDataHolder.themes;
+        return WikiDummyDataHolder.DUMMY_THEMES;
     }
 }
