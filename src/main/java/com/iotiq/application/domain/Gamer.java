@@ -6,11 +6,16 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 @Entity
 @Setter
 @Getter
 public class Gamer extends AbstractPersistable<UUID> {
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "gamer_id")
+    private Set<GamerGame> gamerGame = new HashSet<>();
 
     @OneToOne
     @MapsId
