@@ -30,6 +30,8 @@ public class GameService {
         // Retrieve the currently logged-in user
         User user = userService.getCurrentUser();
 
+        // TODO: Check Eligibility Before Creating a Game issue #82
+        
         // Get or create a Gamer entity associated with the user
         Gamer gamer = gamerService.getOrCreateGamerForUser(user);
 
