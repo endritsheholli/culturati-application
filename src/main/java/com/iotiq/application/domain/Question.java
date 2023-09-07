@@ -6,7 +6,9 @@ import lombok.Setter;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -25,6 +27,9 @@ public class Question extends AbstractPersistable<UUID> {
     private String correctAnswerPoints;
     private String penalty;
     private String moreInformationUrl;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "question_id")
+    private Set<GamerQuestion> gamerQuestion = new HashSet<>();
     
     // Convert the list of option texts to a list of Option entities
     public void setOptions(List<String> options){
