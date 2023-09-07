@@ -38,7 +38,7 @@ public class GameService {
         questionRepository.saveAll(questions);
         
         // Create a Game entity
-        Game game = createGameEntity(request);
+        Game game = mapRequestToEntity(request);
 
         // Create GamerGame for the gamer as CREATOR
         GamerGame gamerGame = gamerGameService.createGamerGame(gamer, game);
@@ -56,7 +56,7 @@ public class GameService {
         return gameRepository.save(game);
     }
 
-    private Game createGameEntity(CreateGameRequest request) {
+    private Game mapRequestToEntity(CreateGameRequest request) {
         Game game = new Game();
         game.setName(request.name());
         game.setGameType(request.gameType());
