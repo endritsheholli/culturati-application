@@ -6,25 +6,19 @@ import com.iotiq.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class GamerService {
     private final GamerRepository gamerRepository;
 
     public Gamer getOrCreateGamerForUser(User user) {
-        Optional<Gamer> optionalGamer = gamerRepository.findById(user.getId());
-        Gamer gamer;
+        return gamerRepository.findById(user.getId()).orElseGet(() -> createNewGamer(user));
+    }
 
-        if (optionalGamer.isPresent()) {
-            gamer = optionalGamer.get();
-        } else {
-            gamer = new Gamer();
-            gamer.setUser(user);
-            gamerRepository.save(gamer);
-        }
-
+    private Gamer createNewGamer(User user) {
+        Gamer gamer = new Gamer();
+        gamer.setUser(user);
+        gamerRepository.save(gamer);
         return gamer;
     }
 }
