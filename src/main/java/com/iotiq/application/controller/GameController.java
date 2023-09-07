@@ -1,6 +1,6 @@
 package com.iotiq.application.controller;
 
-import com.iotiq.application.messages.game.GameRequest;
+import com.iotiq.application.messages.game.CreateGameRequest;
 import com.iotiq.application.service.GameService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class GameController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority(@GameAuth.CREATE)")
-    public UUID createGame(@RequestBody GameRequest request) {
+    public UUID createGame(@RequestBody CreateGameRequest request) {
         return gameService.createGame(request).getId();
     }
 }

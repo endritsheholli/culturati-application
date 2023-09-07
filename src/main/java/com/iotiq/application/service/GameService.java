@@ -1,7 +1,7 @@
 package com.iotiq.application.service;
 
 import com.iotiq.application.domain.*;
-import com.iotiq.application.messages.game.GameRequest;
+import com.iotiq.application.messages.game.CreateGameRequest;
 import com.iotiq.application.repository.GameRepository;
 import com.iotiq.application.repository.QuestionRepository;
 import com.iotiq.application.service.wikiDataService.QuestionService;
@@ -26,7 +26,7 @@ public class GameService {
     private final GamerQuestionService gamerQuestionService;
 
     @Transactional
-    public Game createGame(GameRequest request) {
+    public Game createGame(CreateGameRequest request) {
         // Retrieve the currently logged-in user
         User user = userService.getCurrentUser();
 
@@ -56,7 +56,7 @@ public class GameService {
         return gameRepository.save(game);
     }
 
-    private Game createGameEntity(GameRequest request) {
+    private Game createGameEntity(CreateGameRequest request) {
         Game game = new Game();
         game.setName(request.name());
         game.setGameType(request.gameType());
