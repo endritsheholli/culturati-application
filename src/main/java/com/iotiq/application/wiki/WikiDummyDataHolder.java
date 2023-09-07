@@ -12,21 +12,21 @@ import java.util.List;
 
 @Service
 public class WikiDummyDataHolder {
-    public static List<CategoryResponse> categories =
+    public static List<CategoryResponse> DUMMY_CATEGORIES =
             List.of(new CategoryResponse("Art"), new CategoryResponse("History"));
 
-    public static List<DifficultyLevelResponse> difficultyLevels =
+    public static List<DifficultyLevelResponse> DUMMY_DIFFICULTY_LEVEL =
             List.of(new DifficultyLevelResponse("child"),
                     new DifficultyLevelResponse("basic"),
                     new DifficultyLevelResponse("intermediate"),
                     new DifficultyLevelResponse("expert"));
 
-    public static List<ThemeResponse> themes =
+    public static List<ThemeResponse> DUMMY_THEMES =
             List.of(new ThemeResponse("Default", "#FFFFFF", "#000000", ""),
                     new ThemeResponse("Dark Mode", "#1E1E1E", "#FFFFFF", ""),
                     new ThemeResponse("Blue Theme", "#4285F4", "#FFFFFF", ""));
 
-    public static List<QuestionDto> questions =
+    public static List<QuestionDto> DUMMY_QUESTIONS =
             List.of(
                     new QuestionDto("Ankara Castle History 1", "Option 1", "Hint for the basic question.", QuestionType.MULTIPLE_CHOICE,
                             "10", "%30", "https://en.wikipedia.org/wiki/Ankara_Castle",
@@ -49,7 +49,7 @@ public class WikiDummyDataHolder {
                             List.of("Option 1", "Option 2", "Option 3", "Option 4")
                     )
             );
-    public static List<ArtWorkResponse> artWorks =
+    public static List<ArtWorkResponse> DUMMY_ARTWORKS =
             List.of(
                     new ArtWorkResponse("Mystic Sunset", "Alicia Williams", "Painting",
                             List.of("landscape", "nature", "impressionism"), "Gallery A", 7),
