@@ -19,6 +19,6 @@ public class GamerQuestion extends AbstractPersistable<UUID> {
     private Question question;
     @Enumerated(EnumType.STRING)
     private QuestionStatus status;
-    private boolean isCorrect;
+    private Boolean isCorrect;
     private int score;
 }
