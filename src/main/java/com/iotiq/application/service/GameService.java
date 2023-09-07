@@ -3,6 +3,7 @@ package com.iotiq.application.service;
 import com.iotiq.application.domain.*;
 import com.iotiq.application.messages.game.GameRequest;
 import com.iotiq.application.repository.GameRepository;
+import com.iotiq.application.repository.QuestionRepository;
 import com.iotiq.application.service.wikiDataService.QuestionService;
 import com.iotiq.user.domain.User;
 import com.iotiq.user.internal.UserService;
@@ -18,6 +19,7 @@ import java.util.List;
 public class GameService {
     private final GameRepository gameRepository;
     private final QuestionService questionService;
+    private final QuestionRepository questionRepository;
     private final UserService userService;
     private final GamerService gamerService;
     private final GamerGameService gamerGameService;
@@ -33,7 +35,8 @@ public class GameService {
 
         // Retrieve a list of questions based on the request parameters
         List<Question> questions = questionService.getQuestions(request.category(), request.difficultyLevel(), request.numberOfQuestions());
-
+        questionRepository.saveAll(questions);
+        
         // Create a Game entity
         Game game = createGameEntity(request);
 
