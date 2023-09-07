@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-@Tag(name = "Game", description = "Games API")
+@Tag(name = "Games", description = "Games API")
 @RestController
-@RequestMapping("/api/v1/game")
+@RequestMapping("/api/v1/games")
 @RequiredArgsConstructor
 public class GameController {
     private final GameService gameService;
