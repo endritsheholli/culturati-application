@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class QuestionService {
     public List<Question> getQuestions(String categoryName, String difficultyLevel, int numberOfQuestions) {
-        List<QuestionDto> questionDtos = WikiDummyDataHolder.questions;
+        List<QuestionDto> questionDtos = WikiDummyDataHolder.DUMMY_QUESTIONS;
         return convertQuestionDtosToQuestions(questionDtos);
     }
 
