@@ -45,7 +45,7 @@ public class GameService {
         // Create GamerGame for the gamer as CREATOR and establish bidirectional associations
         GamerGame gamerGame = gamerGameService.createGamerGameAndAssociateWithGameAndGamer(gamer, game);
 
-        // Create GamerQuestion for each question and establish bidirectional associations
+        // Create GamerQuestion for each question as PENDING and establish bidirectional associations
         List<GamerQuestion> gamerQuestion = gamerQuestionService.createGamerQuestionListAndAssociateWithQuestions(questions, gamerGame);
 
         // Save the game
