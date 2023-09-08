@@ -42,11 +42,8 @@ public class GameService {
         // Create a Game entity
         Game game = mapRequestToEntity(request);
 
-        // Create GamerGame for the gamer as CREATOR
-        GamerGame gamerGame = gamerGameService.createGamerGame(gamer, game);
-
-        // Establish bidirectional associations
-        gamerGameService.associateGameWithGamer(gamer, game, gamerGame);
+        // Create GamerGame for the gamer as CREATOR and establish bidirectional associations
+        GamerGame gamerGame = gamerGameService.createGamerGameAndAssociateWithGameAndGamer(gamer, game);
 
         // Create GamerQuestion for each question and establish bidirectional associations
         List<GamerQuestion> gamerQuestion = gamerQuestionService.createGamerQuestionListAndAssociateWithQuestions(questions, gamerGame);
