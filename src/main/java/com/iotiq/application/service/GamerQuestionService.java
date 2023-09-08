@@ -28,4 +28,18 @@ public class GamerQuestionService {
             gamerGame.getGamerQuestion().add(gamerQuestion.get(i));
         }
     }
+    public List<GamerQuestion> createGamerQuestionListAndAssociateWithQuestions(List<Question> questions, GamerGame gamerGame) {
+        List<GamerQuestion> gamerQuestions = new ArrayList<>(questions.size());
+        for (int i = 0; i < questions.size(); i++) {
+            GamerQuestion gamerQuestion = new GamerQuestion();
+            gamerQuestion.setStatus(QuestionStatus.CREATED);
+            gamerQuestions.add(gamerQuestion);
+
+            // Establish bidirectional associations
+            questions.get(i).getGamerQuestion().add(gamerQuestion);
+            gamerGame.getGamerQuestion().add(gamerQuestion);
+        }
+
+        return gamerQuestions;
+    }
 }

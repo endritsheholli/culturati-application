@@ -48,11 +48,8 @@ public class GameService {
         // Establish bidirectional associations
         gamerGameService.associateGameWithGamer(gamer, game, gamerGame);
 
-        // Create GamerQuestion for each question
-        List<GamerQuestion> gamerQuestion = gamerQuestionService.createGamerQuestionList(questions);
-
-        // Establish bidirectional associations for questions
-        gamerQuestionService.associateQuestionsWithGamer(questions, gamerQuestion, gamerGame);
+        // Create GamerQuestion for each question and establish bidirectional associations
+        List<GamerQuestion> gamerQuestion = gamerQuestionService.createGamerQuestionListAndAssociateWithQuestions(questions, gamerGame);
 
         // Save the game
         return gameRepository.save(game);
