@@ -3,7 +3,6 @@ package com.iotiq.application.service;
 import com.iotiq.application.domain.Game;
 import com.iotiq.application.domain.GameStatus;
 import com.iotiq.application.domain.Gamer;
-import com.iotiq.application.domain.GamerGame;
 import com.iotiq.application.messages.game.CreateGameRequest;
 import com.iotiq.application.repository.GameRepository;
 import com.iotiq.user.domain.User;
@@ -20,7 +19,7 @@ public class GameService {
     private final GameRepository gameRepository;
     private final UserService userService;
     private final GamerService gamerService;
-    private final GamerGameService gamerGameService;
+    private final GameGamerService gameGamerService;
 
     @Transactional
     public Game createGame(CreateGameRequest request) {
@@ -35,8 +34,8 @@ public class GameService {
         // Create a Game entity
         Game game = mapRequestToEntity(request);
 
-        // Create GamerGame for the gamer as CREATOR and establish bidirectional associations
-        GamerGame gamerGame = gamerGameService.createGamerGameAndAssociateWithGameAndGamer(gamer, game);
+        // Create GameGamer for the gamer as CREATOR and establish bidirectional associations
+        gameGamerService.createGameGamerAndAssociateWithGameAndGamer(gamer, game);
 
         // Save the game
         return gameRepository.save(game);

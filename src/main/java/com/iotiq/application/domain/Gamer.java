@@ -15,7 +15,7 @@ import java.util.UUID;
 public class Gamer extends AbstractPersistable<UUID> {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "gamer_id")
-    private Set<GamerGame> gamerGame = new HashSet<>();
+    private Set<GameGamer> gameGamer = new HashSet<>();
 
     @OneToOne
     @MapsId

@@ -22,5 +22,5 @@ public class Game extends AbstractPersistable<UUID> {
     private GameStatus status;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "game_id")
-    private Set<GamerGame> gamerGame = new HashSet<>();
+    private Set<GameGamer> gameGamer = new HashSet<>();
 }
