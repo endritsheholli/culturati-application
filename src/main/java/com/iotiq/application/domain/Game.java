@@ -15,6 +15,7 @@ public class Game extends AbstractPersistable<UUID> {
     private String name;
     @Enumerated(EnumType.STRING)
     private GameType gameType;
+    private String difficultyLevel;
     private String audioFileUrl;
     private Date startTime;
     @Enumerated(EnumType.STRING)
