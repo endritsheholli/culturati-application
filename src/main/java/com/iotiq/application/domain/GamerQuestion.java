@@ -14,11 +14,7 @@ public class GamerQuestion extends AbstractPersistable<UUID> {
     @ManyToOne
     @JoinColumn(name = "gamer_game_id")
     private GamerGame gamerGame;
-    @ManyToOne
-    @JoinColumn(name = "question_id")
-    private Question question;
-    @Enumerated(EnumType.STRING)
-    private QuestionStatus status;
+    private String questionId;
     private Boolean isCorrect;
     private int score;
 }
