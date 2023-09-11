@@ -4,7 +4,8 @@ import com.iotiq.application.domain.QuestionType;
 
 import java.util.List;
 
-public record QuestionDto(String title,
+public record QuestionDto(String id,
+                          String title,
                           String rightAnswer,
                           String hint,
                           QuestionType questionType,
