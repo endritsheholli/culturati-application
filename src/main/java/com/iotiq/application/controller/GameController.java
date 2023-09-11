@@ -1,9 +1,11 @@
 package com.iotiq.application.controller;
 
 import com.iotiq.application.messages.game.CreateGameRequest;
+import com.iotiq.application.messages.game.QuestionResponse;
 import com.iotiq.application.messages.game.UpdateGameStatusRequest;
 import com.iotiq.application.service.GameService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,5 +31,10 @@ public class GameController {
     @PreAuthorize("hasAuthority(@GameAuth.UPDATE)")
     public void updateGameStatus(@PathVariable UUID gameId, @RequestBody UpdateGameStatusRequest request) {
         gameService.updateGameStatus(gameId, request);
+    }
+    @GetMapping("/{gameId}/question")
+    @PreAuthorize("hasAuthority(@GameAuth.VIEW)")
+    public QuestionResponse getQuestion(@PathVariable @Valid UUID gameId) {
+        return gameService.getNextQuestion(gameId);
     }
 }

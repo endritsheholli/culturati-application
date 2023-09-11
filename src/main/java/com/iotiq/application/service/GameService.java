@@ -1,11 +1,12 @@
 package com.iotiq.application.service;
 
-import com.iotiq.application.domain.Game;
-import com.iotiq.application.domain.GameStatus;
-import com.iotiq.application.domain.Gamer;
+import com.iotiq.application.domain.*;
+import com.iotiq.application.exception.GameException;
 import com.iotiq.application.messages.game.CreateGameRequest;
+import com.iotiq.application.messages.game.QuestionResponse;
 import com.iotiq.application.messages.game.UpdateGameStatusRequest;
 import com.iotiq.application.repository.GameRepository;
+import com.iotiq.application.wiki.domain.QuestionDto;
 import com.iotiq.commons.exceptions.EntityNotFoundException;
 import com.iotiq.user.domain.User;
 import com.iotiq.user.internal.UserService;
@@ -23,7 +24,8 @@ public class GameService {
     private final UserService userService;
     private final GamerService gamerService;
     private final GameGamerService gameGamerService;
-
+    private final QuestionService questionService;
+    private final GamerQuestionService gamerQuestionService;
     @Transactional
     public Game createGame(CreateGameRequest request) {
         // Retrieve the currently logged-in user
@@ -61,5 +63,30 @@ public class GameService {
         // TODO: Calculate game time if status transitions from PAUSED to IN_PROGRESS.
         game.setStatus(request.status());
         gameRepository.save(game);
+    }
+    public QuestionResponse getNextQuestion(UUID gameId) {
+        // Retrieve the currently logged-in user
+        User user = userService.getCurrentUser();
+        // Get or create a Gamer entity associated with the user
+        Gamer gamer = gamerService.getOrCreateGamerForUser(user);
+
+        // Validation checks
+        Game game = gameRepository.findById(gameId).orElseThrow(() -> new EntityNotFoundException("game"));
+        validateGameInProgress(game);
+
+        // Create GamerQuestion
+        QuestionDto questionDto = questionService.getNextQuestion();
+        GamerQuestion gamerQuestion = gamerQuestionService.createGamerQuestion(questionDto);
+
+        // Update GameGamer with GamerQuestion
+        GameGamer gameGamer = gameGamerService.getGamerGameByGamerIdAndGameId(gameId, gamer.getId());
+        gameGamerService.updateGameGamerWithQuestion(gameGamer, gamerQuestion);
+
+        return QuestionResponse.of(questionDto);
+    }
+    public void validateGameInProgress(Game game) {
+        if (game.getStatus() != GameStatus.IN_PROGRESS) {
+            throw new GameException("gameNotProgress");
+        }
     }
 }
