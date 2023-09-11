@@ -34,8 +34,8 @@ public class GameService {
         // Create a Game entity
         Game game = mapRequestToEntity(request);
 
-        // Create GameGamer for the gamer as CREATOR and establish bidirectional associations
-        gameGamerService.createGameGamerAndAssociateWithGameAndGamer(gamer, game);
+        // Create GameGamer for the gamer as CREATOR
+        gameGamerService.createGameGamer(gamer, game);
 
         // Save the game
         return gameRepository.save(game);

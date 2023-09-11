@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class GameGamerService {
 
-    public GameGamer createGameGamerAndAssociateWithGameAndGamer(Gamer gamer, Game game) {
+    public GameGamer createGameGamer(Gamer gamer, Game game) {
         GameGamer gameGamer = new GameGamer();
         gameGamer.setGame(game);
         gameGamer.setGamer(gamer);
