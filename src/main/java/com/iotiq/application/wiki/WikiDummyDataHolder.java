@@ -15,18 +15,19 @@ import java.util.Random;
 @Service
 public class WikiDummyDataHolder {
     private static final List<String> usedItems = new ArrayList<>(); // List to keep track of previously used "item" values
+
     public static String suggestNextItem() {
         if (usedItems.size() >= 5) {
             // If all items have been used, reset the list
             usedItems.clear();
             return "GameOver";
         }
-        
+
         String newItem;
         Random random = new Random();
 
         do {
-            int randomNumber = random.nextInt(5) +1;
+            int randomNumber = random.nextInt(5) + 1;
             newItem = String.valueOf(randomNumber);
         } while (usedItems.contains(newItem));
 
@@ -34,6 +35,7 @@ public class WikiDummyDataHolder {
 
         return newItem;
     }
+
     public static List<CategoryResponse> DUMMY_CATEGORIES =
             List.of(new CategoryResponse("Art"), new CategoryResponse("History"));
 
@@ -48,41 +50,43 @@ public class WikiDummyDataHolder {
                     new ThemeResponse("Dark Mode", "#1E1E1E", "#FFFFFF", ""),
                     new ThemeResponse("Blue Theme", "#4285F4", "#FFFFFF", ""));
 
-    public static QuestionDto DUMMY_QUESTIONS(String item) {
+    public static List<QuestionDto> DUMMY_QUESTIONS =
+            List.of(
+                    new QuestionDto("1", "Ankara Castle History 1", "Option 1", "Hint for the basic question.", QuestionType.MULTIPLE_CHOICE,
+                            "10", "%30", "https://en.wikipedia.org/wiki/Ankara_Castle",
+                            List.of("Option 1", "Option 2", "Option 3", "Option 4")
+                    ),
+                    new QuestionDto("2", "Ankara Castle History 2", "Option 2", "Hint for the basic question.", QuestionType.MULTIPLE_CHOICE,
+                            "10", "%30", "https://en.wikipedia.org/wiki/Ankara_Castle",
+                            List.of("Option 1", "Option 2", "Option 3", "Option 4")
+                    ),
+                    new QuestionDto("3", "Ankara Castle History 3", "Option 3", "Hint for the basic question.", QuestionType.MULTIPLE_CHOICE,
+                            "10", "%30", "https://en.wikipedia.org/wiki/Ankara_Castle",
+                            List.of("Option 1", "Option 2", "Option 3", "Option 4")
+                    ),
+                    new QuestionDto("4", "Ankara Castle History 4", "Option 4", "Hint for the basic question.", QuestionType.MULTIPLE_CHOICE,
+                            "10", "%30", "https://en.wikipedia.org/wiki/Ankara_Castle",
+                            List.of("Option 1", "Option 2", "Option 3", "Option 4")
+                    ),
+                    new QuestionDto("5", "Ankara Castle History 5", "Option 5", "Hint for the basic question.", QuestionType.MULTIPLE_CHOICE,
+                            "10", "%30", "https://en.wikipedia.org/wiki/Ankara_Castle",
+                            List.of("Option 1", "Option 2", "Option 3", "Option 4")
+                    )
+            );
 
-        List<QuestionDto> questionDtos = List.of(
-                new QuestionDto("1", "Ankara Castle History 1", "Option 1", "Hint for the basic question.", QuestionType.MULTIPLE_CHOICE,
-                        "10", "%30", "https://en.wikipedia.org/wiki/Ankara_Castle",
-                        List.of("Option 1", "Option 2", "Option 3", "Option 4")
-                ),
-                new QuestionDto("2", "Ankara Castle History 2", "Option 2", "Hint for the basic question.", QuestionType.MULTIPLE_CHOICE,
-                        "10", "%30", "https://en.wikipedia.org/wiki/Ankara_Castle",
-                        List.of("Option 1", "Option 2", "Option 3", "Option 4")
-                ),
-                new QuestionDto("3", "Ankara Castle History 3", "Option 3", "Hint for the basic question.", QuestionType.MULTIPLE_CHOICE,
-                        "10", "%30", "https://en.wikipedia.org/wiki/Ankara_Castle",
-                        List.of("Option 1", "Option 2", "Option 3", "Option 4")
-                ),
-                new QuestionDto("4", "Ankara Castle History 4", "Option 4", "Hint for the basic question.", QuestionType.MULTIPLE_CHOICE,
-                        "10", "%30", "https://en.wikipedia.org/wiki/Ankara_Castle",
-                        List.of("Option 1", "Option 2", "Option 3", "Option 4")
-                ),
-                new QuestionDto("5", "Ankara Castle History 5", "Option 5", "Hint for the basic question.", QuestionType.MULTIPLE_CHOICE,
-                        "10", "%30", "https://en.wikipedia.org/wiki/Ankara_Castle",
-                        List.of("Option 1", "Option 2", "Option 3", "Option 4")
-                )
-        );
+    public static QuestionDto DUMMY_NEXT_QUESTION(String item) {
+
         switch (item) {
             case "1":
-                return questionDtos.get(0);
+                return DUMMY_QUESTIONS.get(0);
             case "2":
-                return questionDtos.get(1);
+                return DUMMY_QUESTIONS.get(1);
             case "3":
-                return questionDtos.get(2);
+                return DUMMY_QUESTIONS.get(2);
             case "4":
-                return questionDtos.get(3);
+                return DUMMY_QUESTIONS.get(3);
             case "5":
-                return questionDtos.get(4);
+                return DUMMY_QUESTIONS.get(4);
             default:
                 return null;
         }

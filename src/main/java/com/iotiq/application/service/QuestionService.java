@@ -19,6 +19,6 @@ public class QuestionService {
          * @return A suggested item for retrieving a question.
          */
         String item = WikiDummyDataHolder.suggestNextItem();
-        return WikiDummyDataHolder.DUMMY_QUESTIONS(item);
+        return WikiDummyDataHolder.DUMMY_NEXT_QUESTION(item);
     }
 }
