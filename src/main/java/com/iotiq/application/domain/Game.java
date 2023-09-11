@@ -15,11 +15,12 @@ public class Game extends AbstractPersistable<UUID> {
     private String name;
     @Enumerated(EnumType.STRING)
     private GameType gameType;
+    private String difficultyLevel;
     private String audioFileUrl;
     private Date startTime;
     @Enumerated(EnumType.STRING)
     private GameStatus status;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "game_id")
-    private Set<GamerGame> gamerGame = new HashSet<>();
+    private Set<GameGamer> gameGamers = new HashSet<>();
 }

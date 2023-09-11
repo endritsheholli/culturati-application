@@ -12,7 +12,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-public class GamerGame extends AbstractPersistable<UUID> {
+public class GameGamer extends AbstractPersistable<UUID> {
     @ManyToOne
     @JoinColumn(name = "game_id")
     private Game game;
@@ -23,6 +23,6 @@ public class GamerGame extends AbstractPersistable<UUID> {
     private GamerRole gamerRole;
     private int totalScore;
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "gamer_game_id")
+    @JoinColumn(name = "game_gamer_id")
     private Set<GamerQuestion> gamerQuestion = new HashSet<>();
 }
