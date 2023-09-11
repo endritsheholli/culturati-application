@@ -4,7 +4,9 @@ import com.iotiq.application.domain.Game;
 import com.iotiq.application.domain.GameStatus;
 import com.iotiq.application.domain.Gamer;
 import com.iotiq.application.messages.game.CreateGameRequest;
+import com.iotiq.application.messages.game.UpdateGameStatusRequest;
 import com.iotiq.application.repository.GameRepository;
+import com.iotiq.commons.exceptions.EntityNotFoundException;
 import com.iotiq.user.domain.User;
 import com.iotiq.user.internal.UserService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -51,5 +54,12 @@ public class GameService {
         // You can uncomment the line below when the audioFileUrl feature is available
         // game.setAudioFileUrl(audioFileUrl());
         return game;
+    }
+    public void updateGameStatus(UUID id, UpdateGameStatusRequest request) {
+        Game game = gameRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("game"));
+
+        // TODO: Calculate game time if status transitions from PAUSED to IN_PROGRESS.
+        game.setStatus(request.status());
+        gameRepository.save(game);
     }
 }
