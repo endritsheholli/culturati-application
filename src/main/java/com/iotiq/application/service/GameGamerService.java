@@ -19,7 +19,7 @@ public class GameGamerService {
         gameGamer.setTotalScore(0);
 
         // Establish bidirectional associations
-        game.getGameGamer().add(gameGamer);
+        game.getGameGamers().add(gameGamer);
         gamer.getGameGamer().add(gameGamer);
         
         return gameGamer;
