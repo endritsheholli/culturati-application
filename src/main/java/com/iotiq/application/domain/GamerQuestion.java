@@ -11,9 +11,6 @@ import java.util.UUID;
 @Getter
 @Setter
 public class GamerQuestion extends AbstractPersistable<UUID> {
-    @ManyToOne
-    @JoinColumn(name = "game_gamer_id")
-    private GameGamer gameGamer;
     private String questionId;
     private Boolean isCorrect;
     private int score;
