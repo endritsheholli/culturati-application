@@ -20,7 +20,7 @@ public class GameGamerService {
 
         // Establish bidirectional associations
         game.getGameGamers().add(gameGamer);
-        gamer.getGameGamer().add(gameGamer);
+        gamer.getGamerGames().add(gameGamer);
         
         return gameGamer;
     }
