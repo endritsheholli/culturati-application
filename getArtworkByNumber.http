@@ -18,4 +18,19 @@ GET http://localhost:8080/api/v1/artwork/{{artWorkNumber}}
 Authorization: Bearer {{auth_token}}
 Accept: application/json
 
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+
+    client.test("Response content-type is json", function() {
+        var type = response.contentType.mimeType;
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'");
+    });
+
+    client.test("Art number is 345", function () {
+        var number = response.body.number;
+        client.assert(number === "345", "Expected 345 but received '" + number + "'");
+    })
+%}
 ###
