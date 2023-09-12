@@ -12,21 +12,23 @@ import java.util.List;
 
 @Service
 public class WikiDummyDataHolder {
-    public static List<CategoryResponse> categories =
+
+    private WikiDummyDataHolder(){}
+    public static final List<CategoryResponse> categories =
             List.of(new CategoryResponse("Art"), new CategoryResponse("History"));
 
-    public static List<DifficultyLevelResponse> difficultyLevels =
+    public static final List<DifficultyLevelResponse> difficultyLevels =
             List.of(new DifficultyLevelResponse("child"),
                     new DifficultyLevelResponse("basic"),
                     new DifficultyLevelResponse("intermediate"),
                     new DifficultyLevelResponse("expert"));
 
-    public static List<ThemeResponse> themes =
+    public static final List<ThemeResponse> themes =
             List.of(new ThemeResponse("Default", "#FFFFFF", "#000000", ""),
                     new ThemeResponse("Dark Mode", "#1E1E1E", "#FFFFFF", ""),
                     new ThemeResponse("Blue Theme", "#4285F4", "#FFFFFF", ""));
 
-    public static List<QuestionDto> questions =
+    public static final List<QuestionDto> questions =
             List.of(
                     new QuestionDto("Ankara Castle History 1", "Option 1", "Hint for the basic question.", QuestionType.MULTIPLE_CHOICE,
                             "10", "%30", "https://en.wikipedia.org/wiki/Ankara_Castle",
@@ -49,17 +51,17 @@ public class WikiDummyDataHolder {
                             List.of("Option 1", "Option 2", "Option 3", "Option 4")
                     )
             );
-    public static List<ArtWorkResponse> artWorks =
+    public static final List<ArtWorkResponse> artWorks =
             List.of(
-                    new ArtWorkResponse("345", "Mystic Sunset", "Alicia Williams", "Painting",
+                    new ArtWorkResponse("345", "Mystic Sunset", "Alicia Williams", "A very good piece of art 1","Painting",
                             List.of("landscape", "nature", "impressionism"), "Gallery A", 7),
-                    new ArtWorkResponse("346", "Sculpted Elegance", "Michael Rodriguez", "Sculpture",
+                    new ArtWorkResponse("346", "Sculpted Elegance", "Michael Rodriguez", "A very good piece of art 2","Sculpture",
                             List.of("abstract", "modern", "metal"), "Gallery B", 4),
-                    new ArtWorkResponse("347", "Harmony in Chaos", "Sophie Chen", "Mixed Media",
+                    new ArtWorkResponse("347", "Harmony in Chaos", "Sophie Chen", "A very good piece of art 3","Mixed Media",
                             List.of("contemporary", "colorful", "experimental"), "Gallery C", 9)
             );
 
-    public static ArtWorkResponse ARTWORK_BY_NUMBER =
-            new ArtWorkResponse("345", "Mystic Sunset", "Alicia Williams", "Painting",
+    public static final ArtWorkResponse ARTWORK_BY_NUMBER =
+            new ArtWorkResponse("345", "Mystic Sunset", "Alicia Williams", "A very good piece of art 1","Painting",
                     List.of("landscape", "nature", "impressionism"), "Gallery A", 7);
 }
