@@ -15,4 +15,7 @@ public class ArtWorkService {
     public List<ArtWorkResponse> getArtWorks() {
         return WikiDummyDataHolder.artWorks;
     }
+    public ArtWorkResponse getArtWorkByNumber() {
+        return WikiDummyDataHolder.ARTWORK_BY_NUMBER;
+    }
 }

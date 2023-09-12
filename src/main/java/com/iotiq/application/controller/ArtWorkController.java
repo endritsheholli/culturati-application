@@ -22,4 +22,10 @@ public class ArtWorkController {
     public ResponseEntity<List<ArtWorkResponse>> getAll(){
         return new ResponseEntity<>(artWorkService.getArtWorks(), HttpStatus.OK);
     }
+
+    @GetMapping("/{artWorkNumber}")
+    public ResponseEntity<ArtWorkResponse> getOneByNumber(){
+        return new ResponseEntity<>(artWorkService.getArtWorkByNumber(), HttpStatus.OK);
+    }
+
 }

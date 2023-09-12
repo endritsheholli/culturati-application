@@ -51,11 +51,15 @@ public class WikiDummyDataHolder {
             );
     public static List<ArtWorkResponse> artWorks =
             List.of(
-                    new ArtWorkResponse("Mystic Sunset", "Alicia Williams", "Painting",
+                    new ArtWorkResponse("345", "Mystic Sunset", "Alicia Williams", "Painting",
                             List.of("landscape", "nature", "impressionism"), "Gallery A", 7),
-                    new ArtWorkResponse("Sculpted Elegance", "Michael Rodriguez", "Sculpture",
+                    new ArtWorkResponse("346", "Sculpted Elegance", "Michael Rodriguez", "Sculpture",
                             List.of("abstract", "modern", "metal"), "Gallery B", 4),
-                    new ArtWorkResponse("Harmony in Chaos", "Sophie Chen", "Mixed Media",
+                    new ArtWorkResponse("347", "Harmony in Chaos", "Sophie Chen", "Mixed Media",
                             List.of("contemporary", "colorful", "experimental"), "Gallery C", 9)
             );
+
+    public static ArtWorkResponse ARTWORK_BY_NUMBER =
+            new ArtWorkResponse("345", "Mystic Sunset", "Alicia Williams", "Painting",
+                    List.of("landscape", "nature", "impressionism"), "Gallery A", 7);
 }
