@@ -10,14 +10,12 @@ app:
       expirationMinutes: 360
     access:
       expirationMinutes: 60
-
   wiki:
     username: info@iotiq.net
     password: iotiqWiki1
     strategy: local
     baseUrl: https://dev-wiki.culturati.app/graphql/
 defaultTenant: tenant_1
-tenantPropertiesPath: application/src/main/resources/tenants
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
@@ -26,6 +24,22 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+
+security:
+  allowed-public-apis:
+    - /swagger-ui/*
+    - /actuator/**
+    - /v3/api-docs
+    - /v3/api-docs/*
+    - /api/v1/auth/*
+    - /api/v1/test/*
+    - /api/v1/register
+    - /api/v1/common/*
+seed:
+  users:
+    admin:
+      username: admin
+      password: admin123
 
 #logging:
 #  level:
