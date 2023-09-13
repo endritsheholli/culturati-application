@@ -11,4 +11,5 @@ public interface ExhibitionItemRepository extends JpaRepository<ExhibitionItem, 
     List<ExhibitionItem> findAllByIdIn(List<UUID> ids);
     List<ExhibitionItem> findByExhibitId(UUID exhibitId);
 
+    boolean existsByPath(String path);
 }
