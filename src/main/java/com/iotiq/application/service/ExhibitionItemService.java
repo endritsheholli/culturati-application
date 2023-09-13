@@ -39,6 +39,9 @@ public class ExhibitionItemService {
 
     @Transactional
     public void create(ExhibitionItemCreateRequest request) throws Exception {
+        if(exhibitionItemRepository.existsByPath(request.path()))
+            throw new CreatePageException();
+
         PageCreateResponse response = wikiClient.createPage(new PageCreateRequest(request.path(), "-", "-", request.title()));
 
         if (!response.responseResult().succeeded()) {
