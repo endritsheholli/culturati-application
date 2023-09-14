@@ -6,8 +6,9 @@ import com.iotiq.application.wiki.domain.QuestionDto;
 import java.util.List;
 
 public record QuestionResponse(String id,
-                               String title, 
-                               QuestionType questionType, 
+                               String title,
+                               String hint,
+                               QuestionType questionType,
                                String correctAnswerPoints,
                                String penalty,
                                String moreInformationUrl,
@@ -19,6 +20,7 @@ public record QuestionResponse(String id,
         return new QuestionResponse(
                 question.id(),
                 question.title(),
+                question.hint(),
                 question.questionType(),
                 question.correctAnswerPoints(),
                 question.penalty(),
