@@ -78,7 +78,7 @@ public class GameService {
 
         // Get the next question
         QuestionDto questionDto = questionService.getNextQuestion();
-        
+
         // If there are no more questions, end the game
         if (questionDto == null) {
             game.setStatus(GameStatus.ENDED);
@@ -99,5 +99,52 @@ public class GameService {
         if (game.getStatus() != GameStatus.IN_PROGRESS) {
             throw new GameException("gameNotProgress");
         }
+    }
+
+    @Transactional
+    public UserAnswerResponse checkAnswer(UUID gameId, String questionId, UserAnswerRequest request) {
+        // Retrieve the currently logged-in user
+        User user = userService.getCurrentUser();
+
+        // Get the Gamer entity associated with the user
+        Gamer gamer = gamerService.getOrCreateGamerForUser(user);
+
+        // Validation checks
+        Game game = gameRepository.findById(gameId).orElseThrow(() -> new EntityNotFoundException("game"));
+        validateGameInProgress(game);
+
+        // Find the GameGamer entity for the gameId and gamerId
+        GameGamer gameGamer = gameGamerService.getGamerGameByGamerIdAndGameId(gameId, gamer.getId());
+
+        // Find the GamerQuestion by gameGamer
+        GamerQuestion gamerQuestion = gamerQuestionService.findGamerQuestion(gameGamer, questionId);
+        checkIfQuestionIsAnswered(gamerQuestion);
+
+        UserAnswerResponse answerResponse = questionService.checkAnswer(questionId, request);
+        String totalScore = calculateTotalScore(gameGamer, answerResponse);
+
+        updateGamerQuestionAndGameGamer(gamerQuestion, gameGamer, answerResponse, totalScore);
+
+        return new UserAnswerResponse(answerResponse.isCorrect(), totalScore);
+    }
+
+    private void checkIfQuestionIsAnswered(GamerQuestion gamerQuestion) {
+        if (gamerQuestion.getScore() != null) {
+            throw new GameException("questionAnswered");
+        }
+    }
+
+    private String calculateTotalScore(GameGamer gameGamer, UserAnswerResponse answerResponse) {
+        double currentTotalScore = Double.parseDouble(gameGamer.getTotalScore());
+        double answerScore = Double.parseDouble(answerResponse.totalScore());
+        return String.valueOf(currentTotalScore + answerScore);
+    }
+
+    private void updateGamerQuestionAndGameGamer(
+            GamerQuestion gamerQuestion, GameGamer gameGamer, UserAnswerResponse answerResponse, String totalScore) {
+
+        gamerQuestion.setIsCorrect(answerResponse.isCorrect());
+        gamerQuestion.setScore(answerResponse.totalScore());
+        gameGamer.setTotalScore(totalScore);
     }
 }

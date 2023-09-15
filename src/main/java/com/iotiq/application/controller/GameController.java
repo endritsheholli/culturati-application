@@ -1,8 +1,6 @@
 package com.iotiq.application.controller;
 
-import com.iotiq.application.messages.game.CreateGameRequest;
-import com.iotiq.application.messages.game.QuestionResponse;
-import com.iotiq.application.messages.game.UpdateGameStatusRequest;
+import com.iotiq.application.messages.game.*;
 import com.iotiq.application.service.GameService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -32,9 +30,16 @@ public class GameController {
     public void updateGameStatus(@PathVariable UUID gameId, @RequestBody UpdateGameStatusRequest request) {
         gameService.updateGameStatus(gameId, request);
     }
+
     @GetMapping("/{gameId}/question")
     @PreAuthorize("hasAuthority(@GameAuth.VIEW)")
     public QuestionResponse getQuestion(@PathVariable @Valid UUID gameId) {
         return gameService.getNextQuestion(gameId);
+    }
+
+    @GetMapping("/{gameId}/question/{questionId}/check-answer")
+    @PreAuthorize("hasAuthority(@GameAuth.VIEW)")
+    public UserAnswerResponse checkAnswer(@PathVariable @Valid UUID gameId, @PathVariable String questionId, @RequestBody UserAnswerRequest request) {
+        return gameService.checkAnswer(gameId, questionId, request);
     }
 }
