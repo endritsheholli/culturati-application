@@ -2,9 +2,7 @@ package com.iotiq.application.service;
 
 import com.iotiq.application.domain.*;
 import com.iotiq.application.exception.GameException;
-import com.iotiq.application.messages.game.CreateGameRequest;
-import com.iotiq.application.messages.game.QuestionResponse;
-import com.iotiq.application.messages.game.UpdateGameStatusRequest;
+import com.iotiq.application.messages.game.*;
 import com.iotiq.application.repository.GameRepository;
 import com.iotiq.application.wiki.domain.QuestionDto;
 import com.iotiq.commons.exceptions.EntityNotFoundException;
@@ -26,6 +24,7 @@ public class GameService {
     private final GameGamerService gameGamerService;
     private final QuestionService questionService;
     private final GamerQuestionService gamerQuestionService;
+
     @Transactional
     public Game createGame(CreateGameRequest request) {
         // Retrieve the currently logged-in user
@@ -57,6 +56,7 @@ public class GameService {
         // game.setAudioFileUrl(audioFileUrl());
         return game;
     }
+
     public void updateGameStatus(UUID id, UpdateGameStatusRequest request) {
         Game game = gameRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("game"));
 
@@ -64,6 +64,8 @@ public class GameService {
         game.setStatus(request.status());
         gameRepository.save(game);
     }
+
+    @Transactional
     public QuestionResponse getNextQuestion(UUID gameId) {
         // Retrieve the currently logged-in user
         User user = userService.getCurrentUser();
@@ -74,8 +76,16 @@ public class GameService {
         Game game = gameRepository.findById(gameId).orElseThrow(() -> new EntityNotFoundException("game"));
         validateGameInProgress(game);
 
-        // Create GamerQuestion
+        // Get the next question
         QuestionDto questionDto = questionService.getNextQuestion();
+        
+        // If there are no more questions, end the game
+        if (questionDto == null) {
+            game.setStatus(GameStatus.ENDED);
+            return null;
+        }
+
+        // Create GamerQuestion
         GamerQuestion gamerQuestion = gamerQuestionService.createGamerQuestion(questionDto);
 
         // Update GameGamer with GamerQuestion
@@ -84,6 +94,7 @@ public class GameService {
 
         return QuestionResponse.of(questionDto);
     }
+
     public void validateGameInProgress(Game game) {
         if (game.getStatus() != GameStatus.IN_PROGRESS) {
             throw new GameException("gameNotProgress");
