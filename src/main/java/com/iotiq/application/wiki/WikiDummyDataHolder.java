@@ -53,23 +53,23 @@ public class WikiDummyDataHolder {
     public static List<QuestionDto> DUMMY_QUESTIONS =
             List.of(
                     new QuestionDto("1", "Ankara Castle History 1", "Option 1", "Hint for the basic question.", QuestionType.MULTIPLE_CHOICE,
-                            "10", "%30", "https://en.wikipedia.org/wiki/Ankara_Castle",
+                            "10", "0.3", "https://en.wikipedia.org/wiki/Ankara_Castle",
                             List.of("Option 1", "Option 2", "Option 3", "Option 4")
                     ),
                     new QuestionDto("2", "Ankara Castle History 2", "Option 2", "Hint for the basic question.", QuestionType.MULTIPLE_CHOICE,
-                            "10", "%30", "https://en.wikipedia.org/wiki/Ankara_Castle",
+                            "10", "0.3", "https://en.wikipedia.org/wiki/Ankara_Castle",
                             List.of("Option 1", "Option 2", "Option 3", "Option 4")
                     ),
                     new QuestionDto("3", "Ankara Castle History 3", "Option 3", "Hint for the basic question.", QuestionType.MULTIPLE_CHOICE,
-                            "10", "%30", "https://en.wikipedia.org/wiki/Ankara_Castle",
+                            "10", "0.3", "https://en.wikipedia.org/wiki/Ankara_Castle",
                             List.of("Option 1", "Option 2", "Option 3", "Option 4")
                     ),
                     new QuestionDto("4", "Ankara Castle History 4", "Option 4", "Hint for the basic question.", QuestionType.MULTIPLE_CHOICE,
-                            "10", "%30", "https://en.wikipedia.org/wiki/Ankara_Castle",
+                            "10", "0.3", "https://en.wikipedia.org/wiki/Ankara_Castle",
                             List.of("Option 1", "Option 2", "Option 3", "Option 4")
                     ),
                     new QuestionDto("5", "Ankara Castle History 5", "Option 5", "Hint for the basic question.", QuestionType.MULTIPLE_CHOICE,
-                            "10", "%30", "https://en.wikipedia.org/wiki/Ankara_Castle",
+                            "10", "0.3", "https://en.wikipedia.org/wiki/Ankara_Castle",
                             List.of("Option 1", "Option 2", "Option 3", "Option 4")
                     )
             );
@@ -101,4 +101,8 @@ public class WikiDummyDataHolder {
                     new ArtWorkResponse("Harmony in Chaos", "Sophie Chen", "Mixed Media",
                             List.of("contemporary", "colorful", "experimental"), "Gallery C", 9)
             );
+
+    public static QuestionDto DUMMY_GET_QUESTION_BY_ID(String questionID) {
+        return DUMMY_NEXT_QUESTION(questionID);
+    }
 }
