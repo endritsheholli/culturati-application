@@ -21,7 +21,7 @@ public class GameGamer extends AbstractPersistable<UUID> {
     private Gamer gamer;
     @Enumerated(EnumType.STRING)
     private GamerRole gamerRole;
-    private int totalScore;
+    private String totalScore;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "game_gamer_id")
     private Set<GamerQuestion> gamerQuestion = new HashSet<>();

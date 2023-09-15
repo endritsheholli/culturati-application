@@ -13,5 +13,5 @@ import java.util.UUID;
 public class GamerQuestion extends AbstractPersistable<UUID> {
     private String questionId;
     private Boolean isCorrect;
-    private int score;
+    private String score;
 }

@@ -18,7 +18,7 @@ public class GameGamerService {
         gameGamer.setGame(game);
         gameGamer.setGamer(gamer);
         gameGamer.setGamerRole(GamerRole.CREATOR);
-        gameGamer.setTotalScore(0);
+        gameGamer.setTotalScore("0");
 
         // Establish bidirectional associations
         game.getGameGamers().add(gameGamer);
