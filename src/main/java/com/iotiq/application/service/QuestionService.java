@@ -1,5 +1,7 @@
 package com.iotiq.application.service;
 
+import com.iotiq.application.messages.game.UserAnswerRequest;
+import com.iotiq.application.messages.game.UserAnswerResponse;
 import com.iotiq.application.wiki.WikiDummyDataHolder;
 import com.iotiq.application.wiki.domain.QuestionDto;
 import lombok.RequiredArgsConstructor;
@@ -21,4 +23,27 @@ public class QuestionService {
         String item = WikiDummyDataHolder.suggestNextItem();
         return WikiDummyDataHolder.DUMMY_NEXT_QUESTION(item);
     }
+
+    public QuestionDto getQuestionById(String questionId) {
+        return WikiDummyDataHolder.DUMMY_GET_QUESTION_BY_ID(questionId);
+    }
+
+    public UserAnswerResponse checkAnswer(String questionId, UserAnswerRequest request) {
+        // Find the question by questionId
+        QuestionDto question = getQuestionById(questionId);
+
+        // Check if the user's answer is correct
+        boolean isCorrect = question.rightAnswer().equals(request.userAnswer());
+
+        double score = 0.0;
+
+        if (isCorrect) {
+            score = Double.parseDouble(question.correctAnswerPoints());
+            if (request.hintWasUsed() && question.penalty() != null) {
+                score *= Double.parseDouble(question.penalty());
+            }
+        }
+        return new UserAnswerResponse(isCorrect, String.valueOf(score));
+    }
+
 }
