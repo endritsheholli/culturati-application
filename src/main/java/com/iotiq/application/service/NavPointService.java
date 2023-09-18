@@ -17,10 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -64,25 +61,17 @@ public class NavPointService {
     private void setPropertiesAndSave(NavPoint navPoint, LocationRequest location, List<UUID> facilityIds, List<UUID> exhibitionItemIds, List<UUID> exhibitIds, List<UUID> edgeIds) {
         navPoint.setLocation(converter.convert(location));
 
-        if(facilityIds != null) {
-            Set<Facility> facility = getFacilities(facilityIds);
-            navPoint.setFacilities(facility);
-        }
+        Set<Facility> facility = getFacilities(facilityIds);
+        navPoint.setFacilities(facility);
+        
+        Set<ExhibitionItem> exhibitionItems = getExhibitionItems(exhibitionItemIds);
+        navPoint.setExhibitionItems(exhibitionItems);
 
-        if(exhibitionItemIds != null) {
-            Set<ExhibitionItem> exhibitionItems = getExhibitionItems(exhibitionItemIds);
-            navPoint.setExhibitionItems(exhibitionItems);
-        }
+        Set<Exhibit> exhibits = getExhibits(exhibitIds);
+        navPoint.setExhibits(exhibits);
 
-        if(exhibitIds != null) {
-            Set<Exhibit> exhibits = getExhibits(exhibitIds);
-            navPoint.setExhibits(exhibits);
-        }
-
-        if(edgeIds != null) {
-            Set<NavPoint> edges = getEdges(edgeIds);
-            resetEdgesOfNavPoint(navPoint, edges);
-        }
+        Set<NavPoint> edges = getEdges(edgeIds);
+        resetEdgesOfNavPoint(navPoint, edges);
 
         navPointRepository.save(navPoint);
     }
@@ -101,6 +90,9 @@ public class NavPointService {
     }
 
     private Set<NavPoint> getEdges(List<UUID> request) {
+        if (request == null) {
+            return Collections.emptySet();
+        }
         // Find the NavPoint objects related to the ID list from edgeIds and associate them with the NavPoint
         Set<NavPoint> edges = navPointRepository.findAllByIdIn(request);
         if (edges.size() != request.size()) {
@@ -110,6 +102,9 @@ public class NavPointService {
     }
 
     private Set<Exhibit> getExhibits(List<UUID> request) {
+        if (request == null) {
+            return Collections.emptySet();
+        }
         // Find the Exhibit objects related to the ID list from the ExhibitIds and associate them with the NavPoint
         Set<Exhibit> exhibits = exhibitRepository.findAllByIdIn(request);
         if (exhibits.size() != request.size()) {
@@ -119,6 +114,9 @@ public class NavPointService {
     }
 
     private Set<ExhibitionItem> getExhibitionItems(List<UUID> request) {
+        if (request == null) {
+            return Collections.emptySet();
+        }
         // Find the ExhibitionItem objects related to the ID list from the ExhibitionItemIds and associate them with the NavPoint
         Set<ExhibitionItem> exhibitionItems = new HashSet<>(exhibitionItemRepository.findAllByIdIn(request));
         if (exhibitionItems.size() != request.size()) {
@@ -128,6 +126,9 @@ public class NavPointService {
     }
 
     private Set<Facility> getFacilities(List<UUID> request) {
+        if (request == null) {
+            return Collections.emptySet();
+        }
         // Find the Facility objects related to the ID list from the FacilityIds and associate them with the NavPoint
         Set<Facility> facilities = facilityRepository.findAllByIdIn(request);
         if (facilities.size() != request.size()) {

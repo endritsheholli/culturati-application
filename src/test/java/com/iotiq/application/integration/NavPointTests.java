@@ -70,10 +70,10 @@ public class NavPointTests extends ContainersEnvironment {
         //arrange
         NavPointCreateRequest request = new NavPointCreateRequest(
                 null, // location
-                Collections.emptyList(), // facilityIds
-                Collections.emptyList(), // exhibitionItemIds
-                Collections.emptyList(), // exhibitIds
-                Collections.emptyList()// edgeIds
+                null, // facilityIds
+                null, // exhibitionItemIds
+                null, // exhibitIds
+                null  // edgeIds
         );
         //act
         mockMvc.perform(
@@ -112,10 +112,10 @@ public class NavPointTests extends ContainersEnvironment {
         int databaseSizeBeforeCreate = navPointRepository.findAll().size();
         NavPointCreateRequest request = new NavPointCreateRequest(
                 null, // location
-                Collections.emptyList(), // facilityIds
-                Collections.emptyList(), // exhibitionItemIds
-                Collections.emptyList(), // exhibitIds
-                Collections.emptyList()// edgeIds
+                null, // facilityIds
+                null, // exhibitionItemIds
+                null, // exhibitIds
+                null  // edgeIds
         );
 
         //act
@@ -145,9 +145,9 @@ public class NavPointTests extends ContainersEnvironment {
         edgeId = navPointRepository.findAll().get(0).getId();
         NavPointCreateRequest request = new NavPointCreateRequest(
                 null, // location
-                Collections.emptyList(), // facilityIds
-                Collections.emptyList(), // exhibitionItemIds
-                Collections.emptyList(), // exhibitIds
+                null, // facilityIds
+                null, // exhibitionItemIds
+                null, // exhibitIds
                 Collections.singletonList(edgeId) // edgeIds
         );
 
@@ -195,10 +195,10 @@ public class NavPointTests extends ContainersEnvironment {
         // Arrange
         NavPointUpdateRequest request = new NavPointUpdateRequest(
                 null, // location
-                Collections.emptyList(), // facilityIds
-                Collections.emptyList(), // exhibitionItemIds
-                Collections.emptyList(), // exhibitIds
-                Collections.emptyList() // edgeIds
+                null, // facilityIds
+                null, // exhibitionItemIds
+                null, // exhibitIds
+                null  // edgeIds
         );
 
         // Act
