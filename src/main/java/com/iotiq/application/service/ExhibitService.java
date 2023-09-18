@@ -26,7 +26,7 @@ public class ExhibitService {
     private final LocationConverter converter;
 
     @Transactional
-    public void create(ExhibitCreateRequest request) {
+    public UUID create(ExhibitCreateRequest request) {
         List<ExhibitionItem> exhibitionItems = exhibitionItemRepository.findAllByIdIn(request.exhibitionItemIds());
         if (exhibitionItems.size() != request.exhibitionItemIds().size()) {
             throw new EntityNotFoundException("One or more ExhibitionItems not found.");
@@ -37,7 +37,8 @@ public class ExhibitService {
         exhibit.setExhibitionItems(exhibitionItems);
         exhibit.setLocation(converter.convert(request.location()));
 
-        exhibitRepository.save(exhibit);
+        Exhibit saved = exhibitRepository.save(exhibit);
+        return saved.getId();
     }
 
     public Page<Exhibit> getAll(ExhibitFilter filter, Sort sort) {

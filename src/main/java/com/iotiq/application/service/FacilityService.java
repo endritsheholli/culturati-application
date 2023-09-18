@@ -28,12 +28,13 @@ public class FacilityService {
     }
 
     @Transactional
-    public void create(FacilityCreateRequest request) {
+    public UUID create(FacilityCreateRequest request) {
         Facility facility = new Facility();
         facility.setOpeningTime(request.openingTime());
         facility.setClosingTime(request.closingTime());
         facility.setLocation(converter.convert(request.location()));
-        facilityRepository.save(facility);
+        Facility saved = facilityRepository.save(facility);
+        return saved.getId();
     }
 
     @Transactional

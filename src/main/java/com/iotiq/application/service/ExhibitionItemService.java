@@ -38,7 +38,7 @@ public class ExhibitionItemService {
     }
 
     @Transactional
-    public void create(ExhibitionItemCreateRequest request) throws Exception {
+    public UUID create(ExhibitionItemCreateRequest request) throws Exception {
         if(exhibitionItemRepository.existsByPath(request.path()))
             throw new CreatePageException();
 
@@ -54,7 +54,8 @@ public class ExhibitionItemService {
         exhibitionItem.setTitle(pageDto.title());
         exhibitionItem.setLocation(converter.convert(request.location()));
 
-        exhibitionItemRepository.save(exhibitionItem);
+        ExhibitionItem saved = exhibitionItemRepository.save(exhibitionItem);
+        return saved.getId();
     }
 
     @Transactional
