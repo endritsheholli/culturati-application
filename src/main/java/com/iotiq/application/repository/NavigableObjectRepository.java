@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public interface NavigableEntityRepository extends JpaRepository<NavigableObject, UUID> {
+public interface NavigableObjectRepository extends JpaRepository<NavigableObject, UUID> {
 }
