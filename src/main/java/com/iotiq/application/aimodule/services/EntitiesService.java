@@ -1,26 +1,26 @@
 package com.iotiq.application.aimodule.services;
 
 import com.iotiq.application.config.TenantContext;
+import com.iotiq.application.domain.NavEdge;
 import com.iotiq.application.domain.NavPoint;
-import com.iotiq.application.domain.NavigableObject;
+import com.iotiq.application.messages.navpoint.NavEdgeDto;
+import com.iotiq.application.messages.navpoint.NavPointDto;
+import com.iotiq.application.repository.NavEdgeRepository;
 import com.iotiq.application.repository.NavPointRepository;
-import com.iotiq.application.repository.NavigableEntityRepository;
 import com.iotiq.application.util.TenantUtil;
 import com.iotiq.commons.exceptions.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class EntitiesService {
 
     private final TenantUtil tenantUtil;
-    private final NavigableEntityRepository repository;
     private final NavPointRepository navPointRepository;
+    private final NavEdgeRepository navEdgeRepository;
 
     public EntitiesResponse get() {
         String tenantName = TenantContext.getCurrentTenant();
@@ -29,29 +29,15 @@ public class EntitiesService {
         }
 
         List<NavPoint> navPoints = navPointRepository.findAll();
-        List<NavigableObject> navigableObjects = repository.findAll();
 
         EntitiesResponse entitiesResponse = new EntitiesResponse();
-        entitiesResponse.setNavPoints(navPoints);
-        entitiesResponse.setNavigableObjects(navigableObjects);
+        entitiesResponse.setNavPoints(navPoints.stream().map(NavPointDto::of).toList());
 
-        Map<UUID, List<UUID>> collect = navPoints.stream()
-                .collect(Collectors.toMap(NavPoint::getId, navPoint -> {
-                    ArrayList<UUID> objects = new ArrayList<>();
-                    objects.addAll(collectIds(navPoint.getEdges()));
-                    objects.addAll(collectIds(navPoint.getExhibits()));
-                    objects.addAll(collectIds(navPoint.getExhibitionItems()));
-                    objects.addAll(collectIds(navPoint.getFacilities()));
-                    return objects;
-                }));
-
-        entitiesResponse.setEdges(collect);
+        List<NavEdge> navEdges = navEdgeRepository.findAll();
+        entitiesResponse.setEdges(navEdges.stream().map(NavEdgeDto::of).toList());
         return entitiesResponse;
     }
 
-    private List<UUID> collectIds(Collection<? extends AbstractPersistable<UUID>> objects) {
-        return objects.stream().map(AbstractPersistable::getId).toList();
-    }
 }
 
 
