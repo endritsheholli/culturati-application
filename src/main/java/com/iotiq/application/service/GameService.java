@@ -118,7 +118,7 @@ public class GameService {
 
         // Find the GamerQuestion by gameGamer
         GamerQuestion gamerQuestion = gamerQuestionService.findGamerQuestion(gameGamer, questionId);
-        checkIfQuestionIsAnswered(gamerQuestion);
+        checkIfQuestionAnswerIsIncorrect(gamerQuestion);
 
         UserAnswerResponse answerResponse = questionService.checkAnswer(questionId, request);
         String totalScore = calculateTotalScore(gameGamer, answerResponse);
@@ -128,9 +128,16 @@ public class GameService {
         return new UserAnswerResponse(answerResponse.isCorrect(), totalScore);
     }
 
-    private void checkIfQuestionIsAnswered(GamerQuestion gamerQuestion) {
-        if (gamerQuestion.getScore() != null) {
-            throw new GameException("questionAnswered");
+    private void checkIfQuestionAnswerIsIncorrect(GamerQuestion gamerQuestion) {
+        String scoreStr = gamerQuestion.getScore();
+
+        // Check if "scoreStr" is not null, indicating that the question has been attempted.
+        if (scoreStr != null) {
+
+            // Check whether "isCorrect" is false, indicating that the player answered incorrectly.
+            if (!gamerQuestion.getIsCorrect()) {
+                throw new GameException("questionAnswered");
+            }
         }
     }
 
