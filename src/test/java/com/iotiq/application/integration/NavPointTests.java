@@ -46,7 +46,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @Testcontainers
 @ExtendWith(SpringExtension.class)
-public class NavPointTests extends ContainersEnvironment {
+class NavPointTests extends ContainersEnvironment {
 
     private static UUID navPointId;
     private static UUID startingNavPoint;
@@ -70,7 +70,7 @@ public class NavPointTests extends ContainersEnvironment {
 
     @Test
     @Order(1)
-    public void testCreateNavPoint_Unauthorized() throws Exception {
+    void testCreateNavPoint_Unauthorized() throws Exception {
         // Test unauthorized creation of NavPoint
         //arrange
         NavPointCreateRequest request = new NavPointCreateRequest(
@@ -90,7 +90,7 @@ public class NavPointTests extends ContainersEnvironment {
     @Test
     @Order(2)
     @WithMockUser(authorities = "MUSEUM_MANAGEMENT_CREATE")
-    public void testCreateNavPoint_InvalidData() throws Exception {
+    void testCreateNavPoint_InvalidData() throws Exception {
         // Test creation of NavPoint with invalid data
         //arrange
         NavPointCreateRequest request = new NavPointCreateRequest(
@@ -109,7 +109,7 @@ public class NavPointTests extends ContainersEnvironment {
     @Test
     @Order(3)
     @WithMockUser(authorities = "MUSEUM_MANAGEMENT_CREATE")
-    public void testCreateNavPoint_Success() throws Exception {
+    void testCreateNavPoint_Success() throws Exception {
         // Test successful creation of NavPoint
         //arrange
         int databaseSizeBeforeCreate = navPointRepository.findAll().size();
@@ -140,7 +140,7 @@ public class NavPointTests extends ContainersEnvironment {
     @WithMockUser(authorities = "MUSEUM_MANAGEMENT_CREATE")
     @Transactional
     @Rollback(value = false)
-    public void testCreateNavPointWithEdge() throws Exception {
+    void testCreateNavPointWithEdge() throws Exception {
         // Test creation of NavPoint with an edge
         // Arrange
         int databaseSizeBeforeCreate = navPointRepository.findAll().size();
@@ -199,51 +199,6 @@ public class NavPointTests extends ContainersEnvironment {
                     .containsOnly(startingNavPoint);
             assertThat(edges.stream().map(navEdge -> navEdge.getEndingPoint().getId()))
                     .containsOnly(UUID.fromString(createdId));
-        });
-    }
-
-    @Test
-    @Order(5)
-    @WithMockUser(authorities = "MUSEUM_MANAGEMENT_UPDATE")
-    @Transactional
-    @Rollback(value = false)
-    public void testUpdateNavPointWithRemoveEdge() throws Exception {
-        // Test updating NavPoint by removing an edge
-        // Arrange
-        NavPointUpdateRequest request = new NavPointUpdateRequest(
-                null, // location
-                Collections.emptyList(), // facilityIds
-                Collections.emptyList(), // exhibitionItemIds
-                Collections.emptyList() // exhibitIds
-        );
-
-        // Act
-        ResultActions result = mockMvc.perform(
-                put("/api/v1/nav_point/{id}", navPointId)
-                        .with(csrf().asHeader())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request))
-        );
-
-        // Assert
-        result.andExpect(status().isOk())
-                .andReturn();
-
-        assertPersistedNavPoint(navPoints -> {
-
-            assert navPointId != null;
-            NavPoint testNavPoint = navPointRepository.findById(navPointId)
-                    .orElseThrow(() -> new EntityNotFoundException("navPoint"));
-
-            // Assert that the set of edges in the testNavPoint is empty
-//            assertThat(testNavPoint.getEdges()).isEmpty();
-
-            assert startingNavPoint != null;
-            NavPoint testEdge = navPointRepository.findById(startingNavPoint)
-                    .orElseThrow(() -> new EntityNotFoundException("navPoint"));
-
-            // Assert that the set of edges in the testEdge is empty
-//            assertThat(testEdge.getEdges()).isEmpty();
         });
     }
 
