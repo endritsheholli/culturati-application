@@ -6,7 +6,6 @@ import com.iotiq.application.domain.NavEdge;
 import com.iotiq.application.domain.NavPoint;
 import com.iotiq.application.messages.navpoint.NavEdgeDto;
 import com.iotiq.application.messages.navpoint.NavPointCreateRequest;
-import com.iotiq.application.messages.navpoint.NavPointUpdateRequest;
 import com.iotiq.application.repository.NavEdgeRepository;
 import com.iotiq.application.repository.NavPointRepository;
 import com.iotiq.commons.exceptions.EntityNotFoundException;
@@ -21,7 +20,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +35,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ActiveProfiles("test")
@@ -183,7 +180,7 @@ class NavPointTests extends ContainersEnvironment {
             navPointId = navPoints.get(navPoints.size() - 1).getId();
 
             assert navPointId != null;
-            NavPoint testNavPoint = navPointRepository.findById(navPointId)
+            navPointRepository.findById(navPointId)
                     .orElseThrow(() -> new EntityNotFoundException("navPoint"));
 
             // Assert that the set of edge IDs contains only the specified edgeId
@@ -191,7 +188,7 @@ class NavPointTests extends ContainersEnvironment {
             assertThat(edges).hasSize(1);
 
             assert startingNavPoint != null;
-            NavPoint testEdge = navPointRepository.findById(startingNavPoint)
+            navPointRepository.findById(startingNavPoint)
                     .orElseThrow(() -> new EntityNotFoundException("navPoint"));
 
             // Assert that the set of edge IDs in the testEdge contains only the navPointId
