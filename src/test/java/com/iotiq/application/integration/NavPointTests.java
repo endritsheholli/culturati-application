@@ -2,9 +2,12 @@ package com.iotiq.application.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iotiq.application.config.ContainersEnvironment;
+import com.iotiq.application.domain.NavEdge;
 import com.iotiq.application.domain.NavPoint;
+import com.iotiq.application.messages.navpoint.NavEdgeDto;
 import com.iotiq.application.messages.navpoint.NavPointCreateRequest;
 import com.iotiq.application.messages.navpoint.NavPointUpdateRequest;
+import com.iotiq.application.repository.NavEdgeRepository;
 import com.iotiq.application.repository.NavPointRepository;
 import com.iotiq.commons.exceptions.EntityNotFoundException;
 import org.junit.jupiter.api.*;
@@ -12,13 +15,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,7 +49,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class NavPointTests extends ContainersEnvironment {
 
     private static UUID navPointId;
-    private static UUID edgeId;
+    private static UUID startingNavPoint;
     @Autowired
     WebApplicationContext webApplicationContext;
     @Autowired
@@ -55,6 +58,8 @@ public class NavPointTests extends ContainersEnvironment {
     ObjectMapper objectMapper;
     @Autowired
     NavPointRepository navPointRepository;
+    @Autowired
+    NavEdgeRepository navEdgeRepository;
 
     @BeforeEach
     public void init() {
@@ -72,8 +77,7 @@ public class NavPointTests extends ContainersEnvironment {
                 null, // location
                 Collections.emptyList(), // facilityIds
                 Collections.emptyList(), // exhibitionItemIds
-                Collections.emptyList(), // exhibitIds
-                Collections.emptyList()// edgeIds
+                Collections.emptyList() // exhibitIds
         );
         //act
         mockMvc.perform(
@@ -93,8 +97,7 @@ public class NavPointTests extends ContainersEnvironment {
                 null, // location
                 List.of(UUID.randomUUID()), // facilityIds
                 List.of(UUID.randomUUID()), // exhibitionItemIds
-                List.of(UUID.randomUUID()), // exhibitIds
-                List.of(UUID.randomUUID())// edgeIds
+                List.of(UUID.randomUUID()) // exhibitIds
         );
         //act
         mockMvc.perform(post("/api/v1/nav_point")
@@ -114,8 +117,7 @@ public class NavPointTests extends ContainersEnvironment {
                 null, // location
                 Collections.emptyList(), // facilityIds
                 Collections.emptyList(), // exhibitionItemIds
-                Collections.emptyList(), // exhibitIds
-                Collections.emptyList()// edgeIds
+                Collections.emptyList() // exhibitIds
         );
 
         //act
@@ -142,13 +144,12 @@ public class NavPointTests extends ContainersEnvironment {
         // Test creation of NavPoint with an edge
         // Arrange
         int databaseSizeBeforeCreate = navPointRepository.findAll().size();
-        edgeId = navPointRepository.findAll().get(0).getId();
+        startingNavPoint = navPointRepository.findAll().get(0).getId();
         NavPointCreateRequest request = new NavPointCreateRequest(
                 null, // location
                 Collections.emptyList(), // facilityIds
                 Collections.emptyList(), // exhibitionItemIds
-                Collections.emptyList(), // exhibitIds
-                Collections.singletonList(edgeId) // edgeIds
+                Collections.emptyList() // exhibitIds
         );
 
         // Act
@@ -159,8 +160,22 @@ public class NavPointTests extends ContainersEnvironment {
                         .content(objectMapper.writeValueAsString(request))
         );
 
-        // Assert
-        result.andExpect(status().isCreated())
+        // Assert and get the id.
+        String createdId = result.andExpect(status().isCreated())
+                .andReturn()
+                .getResponse().getContentAsString().replaceAll("\"", "");
+
+        // Act
+        ResultActions resultCreateEdge = mockMvc.perform(
+                post("/api/v1/edges")
+                        .with(csrf().asHeader())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(
+                                new NavEdgeDto(startingNavPoint,  UUID.fromString(createdId), Boolean.FALSE)
+                        ))
+        );
+
+        resultCreateEdge.andExpect(status().isCreated())
                 .andReturn();
 
         assertPersistedNavPoint(navPoints -> {
@@ -172,16 +187,18 @@ public class NavPointTests extends ContainersEnvironment {
                     .orElseThrow(() -> new EntityNotFoundException("navPoint"));
 
             // Assert that the set of edge IDs contains only the specified edgeId
-            assertThat(testNavPoint.getEdges().stream().map(AbstractPersistable::getId))
-                    .containsOnly(edgeId);
+            List<NavEdge> edges = navEdgeRepository.findAll();
+            assertThat(edges).hasSize(1);
 
-            assert edgeId != null;
-            NavPoint testEdge = navPointRepository.findById(edgeId)
+            assert startingNavPoint != null;
+            NavPoint testEdge = navPointRepository.findById(startingNavPoint)
                     .orElseThrow(() -> new EntityNotFoundException("navPoint"));
 
             // Assert that the set of edge IDs in the testEdge contains only the navPointId
-            assertThat(testEdge.getEdges().stream().map(AbstractPersistable::getId))
-                    .containsOnly(navPointId);
+            assertThat(edges.stream().map(navEdge -> navEdge.getStartingPoint().getId()))
+                    .containsOnly(startingNavPoint);
+            assertThat(edges.stream().map(navEdge -> navEdge.getEndingPoint().getId()))
+                    .containsOnly(UUID.fromString(createdId));
         });
     }
 
@@ -197,8 +214,7 @@ public class NavPointTests extends ContainersEnvironment {
                 null, // location
                 Collections.emptyList(), // facilityIds
                 Collections.emptyList(), // exhibitionItemIds
-                Collections.emptyList(), // exhibitIds
-                Collections.emptyList() // edgeIds
+                Collections.emptyList() // exhibitIds
         );
 
         // Act
@@ -220,14 +236,14 @@ public class NavPointTests extends ContainersEnvironment {
                     .orElseThrow(() -> new EntityNotFoundException("navPoint"));
 
             // Assert that the set of edges in the testNavPoint is empty
-            assertThat(testNavPoint.getEdges()).isEmpty();
+//            assertThat(testNavPoint.getEdges()).isEmpty();
 
-            assert edgeId != null;
-            NavPoint testEdge = navPointRepository.findById(edgeId)
+            assert startingNavPoint != null;
+            NavPoint testEdge = navPointRepository.findById(startingNavPoint)
                     .orElseThrow(() -> new EntityNotFoundException("navPoint"));
 
             // Assert that the set of edges in the testEdge is empty
-            assertThat(testEdge.getEdges()).isEmpty();
+//            assertThat(testEdge.getEdges()).isEmpty();
         });
     }
 
