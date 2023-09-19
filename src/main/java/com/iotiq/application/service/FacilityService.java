@@ -30,6 +30,8 @@ public class FacilityService {
     @Transactional
     public void create(FacilityCreateRequest request) {
         Facility facility = new Facility();
+        facility.setName(request.name());
+        facility.setDescription(request.description());
         facility.setOpeningTime(request.openingTime());
         facility.setClosingTime(request.closingTime());
         facility.setLocation(converter.convert(request.location()));
@@ -39,6 +41,8 @@ public class FacilityService {
     @Transactional
     public void update(UUID id, FacilityUpdateRequest request) {
         Facility facility = getOne(id);
+        facility.setName(request.name());
+        facility.setDescription(request.description());
         facility.setOpeningTime(request.openingTime());
         facility.setClosingTime(request.closingTime());
         facility.setLocation(converter.convert(request.location()));

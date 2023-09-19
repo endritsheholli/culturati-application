@@ -1,6 +1,7 @@
 package com.iotiq.application.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.AbstractPersistable;
@@ -13,6 +14,9 @@ import java.util.UUID;
 @Setter
 @Getter
 public class Facility extends AbstractPersistable<UUID> {
+    @NotEmpty
+    private String name;
+    private String description;
     private LocalTime openingTime;
     private LocalTime closingTime;
     @Embedded

@@ -2,10 +2,14 @@ package com.iotiq.application.messages.facility;
 
 import com.iotiq.application.messages.location.LocationRequest;
 import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.NotEmpty;
 
 import java.time.LocalTime;
 
 public record FacilityUpdateRequest(
+        @NotEmpty
+        String name,
+        String description,
         LocalTime openingTime,
         LocalTime closingTime,
         LocationRequest location
