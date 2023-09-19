@@ -1,6 +1,6 @@
 package com.iotiq.application.aimodule.controllers;
 
-import com.iotiq.application.aimodule.services.EntitiesResponse;
+import com.iotiq.application.aimodule.messages.EntitiesResponse;
 import com.iotiq.application.aimodule.services.EntitiesService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Nav Point", description = "Nav Point API")
+@Tag(name = "Entities", description = "Entities API.")
 @RestController
 @RequestMapping("/api/v1/entities")
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package com.iotiq.application.aimodule.services;
+package com.iotiq.application.aimodule.messages;
 
 import com.iotiq.application.messages.navpoint.NavEdgeDto;
 import com.iotiq.application.messages.navpoint.NavPointDto;

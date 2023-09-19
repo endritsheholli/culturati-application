@@ -1,5 +1,6 @@
 package com.iotiq.application.aimodule.services;
 
+import com.iotiq.application.aimodule.messages.EntitiesResponse;
 import com.iotiq.application.config.TenantContext;
 import com.iotiq.application.domain.NavEdge;
 import com.iotiq.application.domain.NavPoint;
