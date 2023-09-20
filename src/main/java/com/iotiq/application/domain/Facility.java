@@ -1,29 +1,25 @@
 package com.iotiq.application.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
+
 @Entity
 @Setter
 @Getter
-public class Facility extends AbstractPersistable<UUID> {
+@EqualsAndHashCode(callSuper = true)
+public class Facility extends NavigableObject {
     private LocalTime openingTime;
     private LocalTime closingTime;
-    @Embedded
-    private Location location;
 
     // Many-to-many relationship with NavPoint entity
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            },
-            mappedBy = "facilities")
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "facilities")
+    @JsonIgnore
     private Set<NavPoint> navPoints = new HashSet<>();
 }

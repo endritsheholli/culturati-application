@@ -13,6 +13,7 @@ public class RoleConverterImpl implements RoleConverter {
             case "ADMIN" -> com.iotiq.application.domain.Role.ADMIN;
             case "CURATOR" -> com.iotiq.application.domain.Role.CURATOR;
             case "VISITOR" -> com.iotiq.application.domain.Role.VISITOR;
+            case "AI_MODULE" -> com.iotiq.application.domain.Role.AI_MODULE;
             default -> null;
         };
     }

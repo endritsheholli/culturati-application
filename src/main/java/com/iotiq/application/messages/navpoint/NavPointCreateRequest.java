@@ -8,6 +8,5 @@ import java.util.UUID;
 public record NavPointCreateRequest(LocationRequest location,
                                     List<UUID> facilityIds,
                                     List<UUID> exhibitionItemIds,
-                                    List<UUID> exhibitIds,
-                                    List<UUID> edgeIds) {
+                                    List<UUID> exhibitIds) {
 }

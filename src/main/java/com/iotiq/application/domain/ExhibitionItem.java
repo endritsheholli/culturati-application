@@ -1,22 +1,19 @@
 package com.iotiq.application.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
-public class ExhibitionItem extends AbstractPersistable<UUID> {
+public class ExhibitionItem extends NavigableObject {
     private String wikiId;
     private String title;
     private String path;
-    @Embedded
-    private Location location;
     @ManyToOne
     private Exhibit exhibit;
 
@@ -27,5 +24,6 @@ public class ExhibitionItem extends AbstractPersistable<UUID> {
                     CascadeType.MERGE
             },
             mappedBy = "exhibitionItems")
+    @JsonIgnore
     private Set<NavPoint> navPoints = new HashSet<>();
 }

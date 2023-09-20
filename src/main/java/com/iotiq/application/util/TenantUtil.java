@@ -46,7 +46,7 @@ public class TenantUtil {
             loadPropertiesFromFile(file, tenantProperties);
 
             Tenant tenant = Tenant.builder()
-                    .name(tenantProperties.getProperty("datasource.name"))
+                    .name(tenantProperties.getProperty("name"))
                     .datasourceUsername(tenantProperties.getProperty("datasource.username"))
                     .datasourcePassword(tenantProperties.getProperty("datasource.password"))
                     .datasourceUrl(tenantProperties.getProperty("datasource.url"))
@@ -57,6 +57,10 @@ public class TenantUtil {
         }
 
         return foundTenants;
+    }
+
+    public boolean existsByName(String tenantName) {
+        return this.tenants.stream().anyMatch(tenant -> tenant.getName().equals(tenantName));
     }
 
     private static void loadPropertiesFromFile(File file, Properties tenantProperties) {

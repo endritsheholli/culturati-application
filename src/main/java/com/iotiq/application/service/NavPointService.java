@@ -34,11 +34,11 @@ public class NavPointService {
 
 
     @Transactional
-    public void create(NavPointCreateRequest request) {
+    public UUID create(NavPointCreateRequest request) {
 
         NavPoint navPoint = new NavPoint();
 
-        setPropertiesAndSave(navPoint, request.location(), request.facilityIds(), request.exhibitionItemIds(), request.exhibitIds(), request.edgeIds());
+        return setPropertiesAndSave(navPoint, request.location(), request.facilityIds(), request.exhibitionItemIds(), request.exhibitIds());
     }
 
     public List<NavPoint> getAll() {
@@ -58,10 +58,10 @@ public class NavPointService {
 
         NavPoint navPoint = getOne(id);
 
-        setPropertiesAndSave(navPoint, request.location(), request.facilityIds(), request.exhibitionItemIds(), request.exhibitIds(), request.edgeIds());
+        setPropertiesAndSave(navPoint, request.location(), request.facilityIds(), request.exhibitionItemIds(), request.exhibitIds());
     }
 
-    private void setPropertiesAndSave(NavPoint navPoint, LocationRequest location, List<UUID> facilityIds, List<UUID> exhibitionItemIds, List<UUID> exhibitIds, List<UUID> edgeIds) {
+    private UUID setPropertiesAndSave(NavPoint navPoint, LocationRequest location, List<UUID> facilityIds, List<UUID> exhibitionItemIds, List<UUID> exhibitIds) {
         navPoint.setLocation(converter.convert(location));
 
         if(facilityIds != null) {
@@ -79,34 +79,8 @@ public class NavPointService {
             navPoint.setExhibits(exhibits);
         }
 
-        if(edgeIds != null) {
-            Set<NavPoint> edges = getEdges(edgeIds);
-            resetEdgesOfNavPoint(navPoint, edges);
-        }
-
-        navPointRepository.save(navPoint);
-    }
-
-    private static void resetEdgesOfNavPoint(NavPoint navPoint, Set<NavPoint> newEdges) {
-        // Remove existing edges
-        for (NavPoint edge : navPoint.getEdges()) {
-            edge.removeEdge(navPoint);
-        }
-        navPoint.getEdges().clear();
-
-        // Set the edges and add the new NavPoint to each edge's edges collection
-        for (NavPoint edge : newEdges) {
-            navPoint.addEdge(edge);
-        }
-    }
-
-    private Set<NavPoint> getEdges(List<UUID> request) {
-        // Find the NavPoint objects related to the ID list from edgeIds and associate them with the NavPoint
-        Set<NavPoint> edges = navPointRepository.findAllByIdIn(request);
-        if (edges.size() != request.size()) {
-            throw new EntityNotFoundException("navPoint");
-        }
-        return edges;
+        NavPoint saved = navPointRepository.save(navPoint);
+        return saved.getId();
     }
 
     private Set<Exhibit> getExhibits(List<UUID> request) {

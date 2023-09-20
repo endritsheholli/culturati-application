@@ -47,8 +47,8 @@ public class ExhibitionItemController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority(@MuseumManagementAuth.CREATE)")
-    public void create(@RequestBody @Valid ExhibitionItemCreateRequest request) throws Exception {
-        exhibitionItemService.create(request);
+    public UUID create(@RequestBody @Valid ExhibitionItemCreateRequest request) throws Exception {
+        return exhibitionItemService.create(request);
     }
 
     @PutMapping("/{id}")

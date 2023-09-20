@@ -26,8 +26,8 @@ public class NavPointController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority(@MuseumManagementAuth.CREATE)")
-    public void create(@RequestBody @Valid NavPointCreateRequest navPointCreateRequest) {
-        navPointService.create(navPointCreateRequest);
+    public UUID create(@RequestBody @Valid NavPointCreateRequest navPointCreateRequest) {
+        return navPointService.create(navPointCreateRequest);
     }
 
     @GetMapping

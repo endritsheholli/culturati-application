@@ -30,8 +30,8 @@ public class ExhibitController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority(@MuseumManagementAuth.CREATE)")
-    public void create(@RequestBody @Valid ExhibitCreateRequest request) {
-        exhibitService.create(request);
+    public UUID create(@RequestBody @Valid ExhibitCreateRequest request) {
+        return exhibitService.create(request);
     }
     
     @GetMapping

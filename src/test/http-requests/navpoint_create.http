@@ -1,0 +1,238 @@
+POST http://localhost:8080/api/v1/auth/authenticate
+Content-Type: application/json
+
+{
+  "password": "admin123",
+  "username": "admin",
+  "rememberMe": true
+}
+> {%
+    client.global.set("auth_token", response.body.idToken);
+%}
+###
+POST http://localhost:8080/api/v1/facility
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "openingTime": "08:00",
+  "closingTime": "18:00",
+  "location": {
+    "latitude": "15.00",
+    "longitude": "20.00"
+  }
+}
+> {%
+    client.global.set("facilityId1", response.body);
+%}
+###
+POST http://localhost:8080/api/v1/facility
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "openingTime": "09:00",
+  "closingTime": "19:00",
+  "location": {
+    "latitude": "16.00",
+    "longitude": "21.00"
+  }
+}
+> {%
+    client.global.set("facilityId2", response.body);
+%}
+###
+POST http://localhost:8080/api/v1/exhibition_items
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "title": "item 1",
+  "path": "{{$random.alphabetic(10)}}"
+}
+> {%
+    client.global.set("exhibitionItemId1", response.body);
+%}
+
+###
+POST http://localhost:8080/api/v1/exhibition_items
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "title": "item 2",
+  "path": "{{$random.alphabetic(10)}}"
+}
+> {%
+    client.global.set("exhibitionItemId2", response.body);
+%}
+###
+POST http://localhost:8080/api/v1/exhibition_items
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "title": "item 3",
+  "path": "{{$random.alphabetic(10)}}"
+}
+> {%
+    client.global.set("exhibitionItemId3", response.body);
+%}
+###
+POST http://localhost:8080/api/v1/exhibition_items
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "title": "item 4",
+  "path": "{{$random.alphabetic(10)}}"
+}
+> {%
+    client.global.set("exhibitionItemId4", response.body);
+%}
+###
+POST http://localhost:8080/api/v1/exhibition_items
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "title": "item 5",
+  "path": "{{$random.alphabetic(10)}}"
+}
+> {%
+    client.global.set("exhibitionItemId5", response.body);
+%}
+###
+POST http://localhost:8080/api/v1/exhibit
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "name": "exhibit 4",
+  "exhibitionItemIds": [
+    "{{exhibitionItemId4}}",
+    "{{exhibitionItemId5}}"
+  ]
+}
+> {%
+    client.global.set("exhibitId1", response.body);
+%}
+###
+POST http://localhost:8080/api/v1/nav_point
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "facilityIds": [
+    "{{facilityId1}}"
+  ]
+}
+> {%
+    client.global.set("navPointId1", response.body);
+%}
+###
+POST http://localhost:8080/api/v1/nav_point
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "facilityIds": [
+    "{{facilityId2}}"
+  ]
+}
+> {%
+    client.global.set("navPointId2", response.body);
+%}
+###
+POST http://localhost:8080/api/v1/nav_point
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "exhibitIds": [
+    "{{exhibitId1}}"
+  ]
+}
+> {%
+    client.global.set("navPointId3", response.body);
+%}
+###
+POST http://localhost:8080/api/v1/nav_point
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "exhibitionItemIds": [
+    "{{exhibitionItemId3}}"
+  ]
+}
+> {%
+    client.global.set("navPointId4", response.body);
+%}
+###
+POST http://localhost:8080/api/v1/nav_point
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "exhibitionItemIds": [
+    "{{exhibitionItemId4}}",
+    "{{exhibitionItemId5}}"
+  ]
+}
+> {%
+    client.global.set("navPointId5", response.body);
+%}
+###
+POST http://localhost:8080/api/v1/edges
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "startingPoint": "{{navPointId1}}",
+  "endingPoint": "{{navPointId2}}",
+  "directed": false
+}
+###
+POST http://localhost:8080/api/v1/edges
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "startingPoint": "{{navPointId1}}",
+  "endingPoint": "{{navPointId3}}",
+  "directed": false
+}
+###
+POST http://localhost:8080/api/v1/edges
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "startingPoint": "{{navPointId3}}",
+  "endingPoint": "{{navPointId4}}",
+  "directed": false
+}
+
+###
+POST http://localhost:8080/api/v1/edges
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "startingPoint": "{{navPointId3}}",
+  "endingPoint": "{{navPointId5}}",
+  "directed": false
+}
+
+###
+POST http://localhost:8080/api/v1/edges
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "startingPoint": "{{navPointId2}}",
+  "endingPoint": "{{navPointId5}}",
+  "directed": false
+}
+###

@@ -1,21 +1,22 @@
 package com.iotiq.application.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import java.util.*;
 
 @Entity
 @Setter
 @Getter
-public class Exhibit extends AbstractPersistable<UUID> {
+@EqualsAndHashCode(callSuper = true)
+public class Exhibit extends NavigableObject {
     private String name;
-    @Embedded
-    private Location location;
     @OneToMany
     @JoinColumn(name = "exhibit_id")
+    @JsonIgnore
     private List<ExhibitionItem> exhibitionItems = new ArrayList<>();
 
     // Many-to-many relationship with NavPoint entity
@@ -25,5 +26,6 @@ public class Exhibit extends AbstractPersistable<UUID> {
                     CascadeType.MERGE
             },
             mappedBy = "exhibits")
+    @JsonIgnore
     private Set<NavPoint> navPoints = new HashSet<>();
 }

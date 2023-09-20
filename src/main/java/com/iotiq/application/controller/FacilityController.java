@@ -42,9 +42,9 @@ public class FacilityController {
 
     @PostMapping
     @PreAuthorize("hasAuthority(@MuseumManagementAuth.CREATE)")
-    public ResponseEntity<Void> create(@RequestBody @Valid FacilityCreateRequest facility) {
-        facilityService.create(facility);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<UUID> create(@RequestBody @Valid FacilityCreateRequest facility) {
+        UUID id = facilityService.create(facility);
+        return new ResponseEntity<>(id, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
