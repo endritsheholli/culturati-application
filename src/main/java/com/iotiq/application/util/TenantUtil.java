@@ -2,6 +2,7 @@ package com.iotiq.application.util;
 
 import com.iotiq.application.domain.Tenant;
 import com.iotiq.application.exception.TenantException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -20,16 +21,12 @@ public class TenantUtil {
 
     private final String tenantPropertiesPath;
 
-    private final ProcessUtil processUtil;
-
     private final List<Tenant> tenants;
 
     public TenantUtil(
-            @Value("${tenantPropertiesPath}") String tenantPropertiesPath,
-            ProcessUtil processUtil
+            @Value("${tenantPropertiesPath}") String tenantPropertiesPath
     ) {
         this.tenantPropertiesPath = tenantPropertiesPath;
-        this.processUtil = processUtil;
         this.tenants = getTenants();
     }
 
@@ -38,8 +35,8 @@ public class TenantUtil {
             return tenants;
         }
 
-        processUtil.killIf(tenantPropertiesPath == null || tenantPropertiesPath.isBlank(),
-                "Exiting because tenant folder path is not configured");
+        if (StringUtils.isBlank(tenantPropertiesPath))
+            throw new TenantException("Exiting because tenant folder path is not configured");
 
         File[] files = getFiles();
         List<Tenant> foundTenants = new ArrayList<>();
