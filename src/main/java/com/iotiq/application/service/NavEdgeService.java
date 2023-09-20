@@ -42,18 +42,18 @@ public class NavEdgeService {
         return saved.getId();
     }
 
-    private boolean edgeAlreadyExists(UUID startingPointId, UUID endingPointId, Boolean directed) {
+    private boolean edgeAlreadyExists(UUID first, UUID second, Boolean directed) {
         if (Boolean.TRUE.equals(directed)) {
-            if (navEdgeRepository.existsByStartingPointIdAndEndingPointIdAndDirectedIsTrue(startingPointId, endingPointId)
-                    || navEdgeRepository.existsByStartingPointIdAndEndingPointIdAndDirectedIsFalse(startingPointId, endingPointId)
-                    || navEdgeRepository.existsByStartingPointIdAndEndingPointIdAndDirectedIsFalse(endingPointId, startingPointId))
-                return true;
-        } else {
-            if (navEdgeRepository.existsByStartingPointIdAndEndingPointId(startingPointId, endingPointId)
-                    || navEdgeRepository.existsByStartingPointIdAndEndingPointId(endingPointId, startingPointId))
-                return true;
-        }
-        return false;
-    }
+            boolean directedFromFirstToSecond = navEdgeRepository.existsByStartingPointIdAndEndingPointIdAndDirectedIsTrue(first, second);
+            boolean undirectedFromFirstToSecond = navEdgeRepository.existsByStartingPointIdAndEndingPointIdAndDirectedIsFalse(first, second);
+            boolean undirectedFromSecondToFirst = navEdgeRepository.existsByStartingPointIdAndEndingPointIdAndDirectedIsFalse(second, first);
 
+            return directedFromFirstToSecond || undirectedFromFirstToSecond || undirectedFromSecondToFirst;
+        } else {
+            boolean anyFromFirstToSecond = navEdgeRepository.existsByStartingPointIdAndEndingPointId(first, second);
+            boolean anyFromSecondToFirst = navEdgeRepository.existsByStartingPointIdAndEndingPointId(second, first);
+
+            return anyFromFirstToSecond || anyFromSecondToFirst;
+        }
+    }
 }
