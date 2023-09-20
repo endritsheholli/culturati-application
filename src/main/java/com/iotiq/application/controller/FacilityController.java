@@ -23,7 +23,6 @@ public class FacilityController {
     private final FacilityService facilityService;
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority(@MuseumManagementAuth.VIEW)")
     public List<FacilityDto> getAll() {
         List<Facility> facilities = facilityService.getAll();
@@ -31,7 +30,6 @@ public class FacilityController {
     }
 
     @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority(@MuseumManagementAuth.VIEW)")
     public FacilityDto getOne(@PathVariable UUID id) {
         Facility facility = facilityService.getOne(id);
@@ -46,14 +44,12 @@ public class FacilityController {
     }
 
     @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority(@MuseumManagementAuth.UPDATE)")
     public void update(@PathVariable UUID id, @RequestBody @Valid FacilityUpdateRequest facility) {
         facilityService.update(id, facility);
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority(@MuseumManagementAuth.DELETE)")
     public void delete(@PathVariable UUID id) {
         facilityService.delete(id);
