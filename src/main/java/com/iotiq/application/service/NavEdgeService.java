@@ -56,4 +56,36 @@ public class NavEdgeService {
             return anyFromFirstToSecond || anyFromSecondToFirst;
         }
     }
+
+    public void update(UUID id, NavEdgeDto request) {
+        NavEdge edge = navEdgeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("navEdge"));
+
+        if (!edge.getPointIds().contains(request.startingPoint())
+                || !edge.getPointIds().contains(request.endingPoint())
+                || request.startingPoint() == request.endingPoint())
+            throw new InvalidInputException("Can't update the the points of the edge.");
+
+        if (Boolean.FALSE.equals(edge.getDirected()) && Boolean.TRUE.equals(request.directed())) {
+            setUndirectedEdgeAsDirected(edge, request);
+        } else if (Boolean.TRUE.equals(edge.getDirected()) && Boolean.FALSE.equals(request.directed())) {
+            setDirectedEdgeAsUndirected(edge, request);
+        }
+    }
+
+    private void setDirectedEdgeAsUndirected(NavEdge edge, NavEdgeDto request) {
+        edge.setDirected(request.directed());
+
+        /* delete any other edges between the points. */
+        navEdgeRepository.deleteAllByStartingPointIdInAndEndingPointIdInAndIdIsNot(edge.getPointIds(), edge.getPointIds(), edge.getId());
+    }
+
+    private void setUndirectedEdgeAsDirected(NavEdge edge, NavEdgeDto request) {
+        /* update the undirected edge as directed */
+        NavPoint requestedStartingPoint = navPointRepository.findById(request.startingPoint()).orElseThrow(() -> new EntityNotFoundException("navPoint"));
+        NavPoint requestedEndingPoint = navPointRepository.findById(request.endingPoint()).orElseThrow(() -> new EntityNotFoundException("navPoint"));
+
+        edge.setStartingPoint(requestedStartingPoint);
+        edge.setEndingPoint(requestedEndingPoint);
+        edge.setDirected(request.directed());
+    }
 }
