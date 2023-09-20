@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -20,5 +21,9 @@ public class NavEdge extends AbstractPersistable<UUID> {
     @ManyToOne
     NavPoint endingPoint;
     Boolean directed;
+
+    public List<UUID> getPointIds(){
+        return List.of(startingPoint.getId(), endingPoint.getId());
+    }
 
 }
