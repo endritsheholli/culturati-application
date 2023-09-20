@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,32 +31,28 @@ public class NavPointController {
 
     @GetMapping
     @PreAuthorize("hasAuthority(@MuseumManagementAuth.VIEW)")
-    public ResponseEntity<List<NavPointDto>> getAll(){
+    public List<NavPointDto> getAll() {
         List<NavPoint> navPoints = navPointService.getAll();
-        return new ResponseEntity<>(navPoints.stream().map(NavPointDto::of).toList(), HttpStatus.OK);
+        return navPoints.stream().map(NavPointDto::of).toList();
     }
 
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority(@MuseumManagementAuth.VIEW)")
-    public ResponseEntity<NavPointDto> getOne(@PathVariable UUID id){
+    public NavPointDto getOne(@PathVariable UUID id) {
         NavPoint navPoint = navPointService.getOne(id);
-        if (navPoint != null){
-            return new ResponseEntity<>(NavPointDto.of(navPoint), HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return NavPointDto.of(navPoint);
     }
-    
+
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority(@MuseumManagementAuth.DELETE)")
-    public void delete(@PathVariable UUID id){
+    public void delete(@PathVariable UUID id) {
         navPointService.delete(id);
     }
-    
+
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority(@MuseumManagementAuth.UPDATE)")
-    public void update(@PathVariable UUID id ,
-                                       @RequestBody @Valid NavPointUpdateRequest request){
-        navPointService.update(id,request);
+    public void update(@PathVariable UUID id, @RequestBody @Valid NavPointUpdateRequest request) {
+        navPointService.update(id, request);
     }
 }
