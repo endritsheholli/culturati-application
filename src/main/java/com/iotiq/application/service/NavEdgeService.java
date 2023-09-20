@@ -27,14 +27,14 @@ public class NavEdgeService {
         UUID endingPointId = request.endingPoint();
         Boolean directed = Objects.requireNonNullElse(request.directed(), Boolean.FALSE);
 
-        if(startingPointId == endingPointId)
+        if (startingPointId == endingPointId)
             throw new InvalidInputException("Starting and ending points should not be the same.");
 
-        if(edgeAlreadyExists(startingPointId, endingPointId, directed))
+        if (edgeAlreadyExists(startingPointId, endingPointId, directed))
             throw new EntityAlreadyExistsException("navEdge");
 
-        NavPoint startingPoint = navPointRepository.findById(startingPointId).orElseThrow(()-> new EntityNotFoundException("NavPoint"));
-        NavPoint endingPoint = navPointRepository.findById(endingPointId).orElseThrow(()-> new EntityNotFoundException("NavPoint"));
+        NavPoint startingPoint = navPointRepository.findById(startingPointId).orElseThrow(() -> new EntityNotFoundException("NavPoint"));
+        NavPoint endingPoint = navPointRepository.findById(endingPointId).orElseThrow(() -> new EntityNotFoundException("NavPoint"));
 
         NavEdge edge = new NavEdge(startingPoint, endingPoint, directed);
         NavEdge saved = navEdgeRepository.save(edge);
@@ -43,15 +43,14 @@ public class NavEdgeService {
     }
 
     private boolean edgeAlreadyExists(UUID startingPointId, UUID endingPointId, Boolean directed) {
-        if(Boolean.TRUE.equals(directed)){
-            if(navEdgeRepository.existsByStartingPointIdAndEndingPointIdAndDirectedIsTrue(startingPointId, endingPointId)
+        if (Boolean.TRUE.equals(directed)) {
+            if (navEdgeRepository.existsByStartingPointIdAndEndingPointIdAndDirectedIsTrue(startingPointId, endingPointId)
                     || navEdgeRepository.existsByStartingPointIdAndEndingPointIdAndDirectedIsFalse(startingPointId, endingPointId)
                     || navEdgeRepository.existsByStartingPointIdAndEndingPointIdAndDirectedIsFalse(endingPointId, startingPointId))
                 return true;
-        }
-        else {
-            if(navEdgeRepository.existsByStartingPointIdAndEndingPointId(startingPointId, endingPointId)
-                    ||navEdgeRepository.existsByStartingPointIdAndEndingPointId(endingPointId, startingPointId))
+        } else {
+            if (navEdgeRepository.existsByStartingPointIdAndEndingPointId(startingPointId, endingPointId)
+                    || navEdgeRepository.existsByStartingPointIdAndEndingPointId(endingPointId, startingPointId))
                 return true;
         }
         return false;
