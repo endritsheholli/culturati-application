@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,40 +23,39 @@ public class FacilityController {
     private final FacilityService facilityService;
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority(@MuseumManagementAuth.VIEW)")
-    public ResponseEntity<List<FacilityDto>> getAll() {
+    public List<FacilityDto> getAll() {
         List<Facility> facilities = facilityService.getAll();
-        return new ResponseEntity<>(facilities.stream().map(FacilityDto::of).toList(), HttpStatus.OK);
+        return facilities.stream().map(FacilityDto::of).toList();
     }
 
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority(@MuseumManagementAuth.VIEW)")
-    public ResponseEntity<FacilityDto> getOne(@PathVariable UUID id) {
+    public FacilityDto getOne(@PathVariable UUID id) {
         Facility facility = facilityService.getOne(id);
-        if (facility != null) {
-            return new ResponseEntity<>(FacilityDto.of(facility), HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return FacilityDto.of(facility);
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority(@MuseumManagementAuth.CREATE)")
-    public ResponseEntity<UUID> create(@RequestBody @Valid FacilityCreateRequest facility) {
-        UUID id = facilityService.create(facility);
-        return new ResponseEntity<>(id, HttpStatus.CREATED);
+    public UUID create(@RequestBody @Valid FacilityCreateRequest facility) {
+        return facilityService.create(facility);
     }
 
     @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority(@MuseumManagementAuth.UPDATE)")
-    public ResponseEntity<Void> update(@PathVariable UUID id, @RequestBody @Valid FacilityUpdateRequest facility) {
+    public void update(@PathVariable UUID id, @RequestBody @Valid FacilityUpdateRequest facility) {
         facilityService.update(id, facility);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority(@MuseumManagementAuth.DELETE)")
-    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+    public void delete(@PathVariable UUID id) {
         facilityService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
