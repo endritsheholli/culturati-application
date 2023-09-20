@@ -140,8 +140,10 @@ class NavPointTests extends ContainersEnvironment {
     void testCreateNavPointWithEdge() throws Exception {
         // Test creation of NavPoint with an edge
         // Arrange
-        int databaseSizeBeforeCreate = navPointRepository.findAll().size();
-        startingNavPoint = navPointRepository.findAll().get(0).getId();
+        List<NavPoint> allNavPoints = navPointRepository.findAll();
+        int databaseSizeBeforeCreate = allNavPoints.size();
+        startingNavPoint = allNavPoints.get(0).getId();
+
         NavPointCreateRequest request = new NavPointCreateRequest(
                 null, // location
                 Collections.emptyList(), // facilityIds
@@ -199,7 +201,65 @@ class NavPointTests extends ContainersEnvironment {
         });
     }
 
-    private void assertPersistedNavPoint(Consumer<List<NavPoint>> navPointAssertion) {
+    @Test
+    @Order(5)
+    @WithMockUser(authorities = "MUSEUM_MANAGEMENT_CREATE")
+    @Transactional
+    @Rollback(value = false)
+    void testCreateExistingEdgeShouldReturnError() throws Exception {
+
+        List<NavEdge> allEdges = navEdgeRepository.findAll();
+        assertThat(allEdges).hasSizeGreaterThanOrEqualTo(1);
+        NavEdge existingEdge = allEdges.get(0);
+        NavPoint firstPoint = existingEdge.getStartingPoint();
+        NavPoint secondPoint = existingEdge.getEndingPoint();
+        Boolean directed = existingEdge.getDirected();
+
+        mockMvc.perform(
+                post("/api/v1/edges")
+                        .with(csrf().asHeader())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(
+                                new NavEdgeDto(firstPoint.getId(), secondPoint.getId(), Boolean.FALSE)
+                        ))
+        ).andExpect(status().isConflict())
+                .andReturn();
+
+        mockMvc.perform(
+                        post("/api/v1/edges")
+                                .with(csrf().asHeader())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(
+                                        new NavEdgeDto(secondPoint.getId(), firstPoint.getId(), Boolean.FALSE)
+                                ))
+                ).andExpect(status().isConflict())
+                .andReturn();
+
+        assertThat(directed).isFalse();
+        mockMvc.perform(
+                        post("/api/v1/edges")
+                                .with(csrf().asHeader())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(
+                                        new NavEdgeDto(firstPoint.getId(), secondPoint.getId(), Boolean.TRUE)
+                                ))
+                ).andExpect(status().isConflict())
+                .andReturn();
+
+        mockMvc.perform(
+                        post("/api/v1/edges")
+                                .with(csrf().asHeader())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(
+                                        new NavEdgeDto(secondPoint.getId(), firstPoint.getId(), Boolean.TRUE)
+                                ))
+                ).andExpect(status().isConflict())
+                .andReturn();
+
+
+    }
+
+        private void assertPersistedNavPoint(Consumer<List<NavPoint>> navPointAssertion) {
         navPointAssertion.accept(navPointRepository.findAll());
     }
 
