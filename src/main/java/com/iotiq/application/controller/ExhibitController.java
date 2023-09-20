@@ -49,14 +49,12 @@ public class ExhibitController {
     }
     
     @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority(@MuseumManagementAuth.UPDATE)")
     public void update(@PathVariable UUID id, @RequestBody @Valid ExhibitUpdateRequest request) {
         exhibitService.update(id, request);
     }
     
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority(@MuseumManagementAuth.DELETE)")
     public void delete(@PathVariable UUID id) {
         exhibitService.delete(id);
