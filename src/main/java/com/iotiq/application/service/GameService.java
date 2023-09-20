@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -29,11 +30,12 @@ public class GameService {
     public Game createGame(CreateGameRequest request) {
         // Retrieve the currently logged-in user
         User user = userService.getCurrentUser();
-
-        // TODO: Check Eligibility Before Creating a Game issue #82
-
+        
         // Get or create a Gamer entity associated with the user
         Gamer gamer = gamerService.getOrCreateGamerForUser(user);
+
+        // Check Eligibility Before Creating a Game
+        checkIfEligibleToCreateGame(gamer.getId());
 
         // Create a Game entity
         Game game = mapRequestToEntity(request);
@@ -153,5 +155,16 @@ public class GameService {
         gamerQuestion.setIsCorrect(answerResponse.isCorrect());
         gamerQuestion.setScore(answerResponse.totalScore());
         gameGamer.setTotalScore(totalScore);
+    }
+
+    private void checkIfEligibleToCreateGame(UUID gamerId) {
+        GameStatus gameStatus = GameStatus.ENDED;
+
+        Optional<Game> game = gameRepository.findByGameGamersGamerIdAndStatusNot(gamerId, gameStatus);
+
+        if (game.isPresent()) {
+            // If the game status is not "ENDED" the user is not eligible to create a game.
+            throw new GameException("userIneligibleToCreateGame", game.get().getId());
+        }
     }
 }
