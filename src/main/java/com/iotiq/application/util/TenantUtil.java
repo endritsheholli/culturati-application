@@ -63,7 +63,7 @@ public class TenantUtil {
         return this.tenants.stream().anyMatch(tenant -> tenant.getName().equals(tenantName));
     }
 
-    private static void loadPropertiesFromFile(File file, Properties tenantProperties) {
+    public static void loadPropertiesFromFile(File file, Properties tenantProperties) {
         try (FileInputStream inStream = new FileInputStream(file)) {
             tenantProperties.load(inStream);
         } catch (IOException e) {
@@ -71,7 +71,7 @@ public class TenantUtil {
         }
     }
 
-    private File[] getFiles() {
+    public File[] getFiles() {
         try {
             File folder = new ClassPathResource(tenantPropertiesPath).getFile();
             return folder.listFiles();
